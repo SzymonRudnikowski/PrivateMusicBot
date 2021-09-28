@@ -13,12 +13,10 @@ const prefix = "!";
  
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  util.status('mc.hypixel.net', {port: 25565}).then((response) => {
-    client.user.setActivity('Online:', {name: response.onlinePlayers}, {
-      type: "WATCHING",
+    client.user.setActivity('to music...', {
+      type: "LISTENING",
       url: "https://discord.gg/bzYXx8t3fE",
     })
-  });
 });
 
 
