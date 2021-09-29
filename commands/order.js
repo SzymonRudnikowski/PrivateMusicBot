@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    name: 'ticket',
-    description: 'open a ticket!',
+    name: 'order',
+    description: 'open a purchase ticket!',
     aliases: [],
     permissions: [], 
     async execute(message, args, client) {
@@ -22,8 +22,8 @@ module.exports = {
     const reactionEmbed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('Welcome!')
-            .setDescription('Hi!\n Please describe your order / problem.\n Our staff will reach out to you asap!')
-            .setFooter('If you think your problem is solved / order is finished, please react to with 🔒 or ⛔');
+            .setDescription('**Hi!\n Please describe your order.\n Our staff will reach out to you asap!**')
+            .setFooter('If you think your order is finished, please react to with 🔒 or ⛔');
 
     const reactionMessage = await channel.send(reactionEmbed);
 
@@ -44,7 +44,7 @@ module.exports = {
       switch (reaction.emoji.name) {
         case "🔒":
           channel.updateOverwrite(message.author, { SEND_MESSAGES: false });
-          channel.send("**Ticket owner just closed an order/issue!**");
+          channel.send("**Ticket owner just closed an order!**");
           break;
         case "⛔":
           channel.send("**Channel will be deleted in 5 seconds.**");
