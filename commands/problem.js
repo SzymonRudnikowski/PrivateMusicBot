@@ -1,23 +1,21 @@
 const Discord = require("discord.js");
 module.exports = {
-    name: 'suggest',
-    description: 'Suggestion command',
+    name: 'problem',
+    description: 'Problem command',
     permissions: [],
     execute(message, args, cmd, client) {
-        const channel = message.guild.channels.cache.find(c => c.name === '💡┇suggestions');
+        const channel = message.guild.channels.cache.find(c => c.name === '❌┇problems');
         if(!channel) return message.channel.send('Suggestion channel does not exist!');
 
         let messageArgs = args.join(' ');
         const embed = new Discord.MessageEmbed()
-        .setColor('FADF2E')
+        .setColor('#ff0000')
         .setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true }))
         .setDescription(messageArgs)
-        .setFooter('!suggest text_here.')
+        .setFooter('!problem text_here.')
         
 
         channel.send(embed).then((msg) =>{
-            msg.react('👍');
-            msg.react('👎');
             message.delete();
         }).catch((err)=>{
             throw err;
