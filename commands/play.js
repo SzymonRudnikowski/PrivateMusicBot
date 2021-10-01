@@ -99,5 +99,5 @@ const video_player = async (guild, song) => {
     });
     await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
-    //exports.song = song.title
+    exports.song = song.title
 }
