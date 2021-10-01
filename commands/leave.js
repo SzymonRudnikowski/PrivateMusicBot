@@ -7,7 +7,7 @@ module.exports = {
     async execute(message, args) {
         const voiceChannel = message.member.voice.channel;
  
-        if(!voiceChannel) return message.channel.send("**You are not in any voice channel!**");
+        if(!voiceChannel) return message.channel.send(`${message.author} **You are not in any voice channel!**`);
         await voiceChannel.leave();
         await message.channel.send('**Left the voice channel.**')
         console.log('Left the voice channel.')
