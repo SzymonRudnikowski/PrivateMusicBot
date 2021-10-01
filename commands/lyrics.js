@@ -13,7 +13,7 @@ module.exports = {
 
         try {
             const connection = await voice_channel.join();
-            console.log('Joined voice channel', voice_channel.name)
+            console.log('Showing lyrics for music in channel:', voice_channel.name)
         } catch (err) {
             message.channel.send('There was an error connecting!');
             console.log('Connection to channel error.')
