@@ -11,11 +11,7 @@ module.exports = {
     cooldown: 0,
     description: 'Advanced music bot',
     async execute(message, args, command, client){
-<<<<<<< Updated upstream
-=======
-        console.log(command)
         
->>>>>>> Stashed changes
         //Checking for the voicechannel and permissions.
         const voice_channel = message.member.voice.channel;
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
@@ -25,16 +21,9 @@ module.exports = {
 
         //This is our server queue. We are getting this server queue from the global queue.
         const server_queue = queue.get(message.guild.id);
-
         //If the user has used the play command
-<<<<<<< Updated upstream
-        if (command === 'play'){
-            if (!args.length) return message.channel.send('You need to send the second argument!');
-            let song = {};
-=======
         if (!args.length) return message.channel.send('You need to send the second argument!');
         let song = { title: "", url: ""}
->>>>>>> Stashed changes
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
@@ -47,22 +36,12 @@ module.exports = {
                 return (video_result.videos.length > 1) ? video_result.videos[0] : null;
             }
 
-<<<<<<< Updated upstream
-                const video = await video_finder(args.join(' '));
-                if (video){
-                    song = { title: video.title, url: video.url }
-                } else {
-                     message.channel.send('Error finding video.');
-                     console.log('Error while finding video.')
-                }
-=======
             const video = await video_finder(args.join(' '));
             if (video){
                 song = { title: video.title, url: video.url }
             } else {
                     message.channel.send('Error finding video.');
                     console.log('Error while finding video.')
->>>>>>> Stashed changes
             }
         }
 

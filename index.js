@@ -34,9 +34,11 @@ client.on("message", message => {
   ///const args = message.content;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+  const com = client.commands.get(command) || client.commands.find(a => a.aliases && a.aliases.includes(command))
+
   if(!client.commands.has(command)) return;
   try{
-      client.commands.get(command).execute(message, args, command, client);
+      if(com) com.execute(message, args, command, client);
   }catch(error){
       console.error(error);
       message.reply('**There was an issue executing that command!**');

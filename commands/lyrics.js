@@ -4,6 +4,7 @@ const songTitle = require('./play')
 
 module.exports = {
     name: 'lyrics',
+    aliases: ['l'],
     description: 'a command that checks the lyrics for a given song',
     async execute(message, prefix, Client){
         const voice_channel = message.member.voice.channel

@@ -1,3 +1,4 @@
+const { Queue } = require("discord-player");
 const Discord = require("discord.js");
 
 module.exports = {
@@ -10,6 +11,6 @@ module.exports = {
         await voiceChannel.leave();
         await message.channel.send('**Left the voice channel.**')
         console.log('Left the voice channel.')
- 
+        
     }
 }

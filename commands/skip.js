@@ -1,17 +1,15 @@
 const Discord = require('discord.js')
-const player = require('discord-player')
 
 module.exports = {
     name: 'skip',
     aliases: ['sk'],
-
-    execute(client, message) {
-        const queue = player.getQueue(message.guild.id);
-
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ?`);
-
-        const success = queue.skip();
-
-        return message.channel.send(success ? `Current music ${queue.current.title} skipped ?` : `Something went wrong ${message.author}... try again ? ?`);
-    },
+    decription: "skips song that is currently playing in the queue",
+    async execute(message, server_queue) {
+        if (!message.member.voice.channel) return message.channel.send('**You need to be in a channel to execute this command!**');
+        if(!server_queue){
+            console.log('Skip command while not in channel.')
+            return message.channel.send(`**There are no songs in queue ??**`);
+        }
+        server_queue.connection.dispatcher.end();
+    }
 };
