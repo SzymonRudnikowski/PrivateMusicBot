@@ -9,7 +9,7 @@ module.exports = {
     async execute(message, prefix, Client){
         const voice_channel = message.member.voice.channel
         if(!message.content.startsWith(prefix)) return
-        if (!voice_channel) return message.channel.send('**You need to be in a channel to execute this command!**');
+        if (!voice_channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
 
         try {
             const connection = await voice_channel.join();
