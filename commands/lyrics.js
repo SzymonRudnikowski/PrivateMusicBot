@@ -23,11 +23,10 @@ module.exports = {
         let singer = "";
         let pages = []
         let current = 0
-        let song = songTitle.song
 
-        console.log(song)
+        console.log(currentSongTitle)
         try{
-            let res = await lyricsFinder(singer, song) || "Not Found"
+            let res = await lyricsFinder(singer, currentSongTitle) || "Not Found"
 
             for(let i = 0; i < res.length; i += 2048) {
                 let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -36,7 +35,7 @@ module.exports = {
                 pages.push(page)
             }
 
-            const filter2 = (reaction, user) => ['??', '??'].includes(reaction.emoji.name) && (message.author.id == user.id)
+            const filter2 = (reaction, user) => ['??','??'].includes(reaction.emoji.name) && (message.author.id == user.id)
             const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
             await Embed.react('??')
             await Embed.react('??')
