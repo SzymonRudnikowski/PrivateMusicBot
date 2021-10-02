@@ -6,7 +6,7 @@ module.exports = {
         const suppEmbed = new Discord.MessageEmbed()
         .setTitle("Contact")
         .setDescription(
-            `**Email: privatebotsupport@gmail.com**\n **Discord: [server](https://discord.gg/6gap4w7QE2)**`
+            `**Discord: [server](https://discord.gg/6gap4w7QE2)**`
         )
         .setColor(15418782);
         message.channel.send(suppEmbed);
