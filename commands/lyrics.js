@@ -25,7 +25,6 @@ module.exports = {
         let current = 0
 
         console.log(currentSongTitle)
-        try{
             let res = await lyricsFinder(singer, currentSongTitle) || "Not Found"
 
             for(let i = 0; i < res.length; i += 2048) {
@@ -45,7 +44,7 @@ module.exports = {
             ReactionCol.on("collect", (reaction, user) => {
                 reaction.users.remove(reaction.users.cache.get(message.author.id))
 
-                if(reaction.emoji.name == '??') {
+                if(reaction.emoji.name === '??') {
                     if(current < pages.length - 1) {
                         current += 1
                         Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
@@ -59,8 +58,6 @@ module.exports = {
                     }
                 }
             })
-        }catch(error){
-            return;
-        }
+        
     }
 }
