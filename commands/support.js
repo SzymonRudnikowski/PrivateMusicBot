@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 
 const talkedRecently = new Set();
+
+
 module.exports = {
   name: 'support',
   description: 'open a support ticket!',
