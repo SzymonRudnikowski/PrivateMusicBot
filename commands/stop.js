@@ -11,5 +11,6 @@ module.exports = {
         }
         server_queue.songs = [];
         server_queue.connection.dispatcher.end();
+        return message.channel.send("**Stopped!**");
     }
 };

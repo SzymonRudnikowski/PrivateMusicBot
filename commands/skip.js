@@ -11,5 +11,6 @@ module.exports = {
             return message.channel.send(`**There are no songs in queue ??**`);
         }
         server_queue.connection.dispatcher.end();
+        return message.channel.send("**Skipped!**");
     }
 };
