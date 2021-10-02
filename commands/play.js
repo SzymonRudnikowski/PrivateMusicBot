@@ -4,6 +4,7 @@ const ytSearch = require('yt-search');
 
 //Global queue for your bot. Every server will have a key and value pair in this map. { guild.id, queue_constructor{} }
 global.queue = new Map();
+global.currentSongTitle = "";
 
 module.exports = {
     name: 'play',
@@ -99,5 +100,5 @@ const video_player = async (guild, song) => {
     });
     await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
-    exports.song = song.title
+    currentSongTitle = song.title
 }

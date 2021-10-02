@@ -5,6 +5,7 @@ module.exports = {
     description: 'open a support ticket!',
     aliases: [],
     permissions: [], 
+    cooldown: 3600000,
     async execute(message, args, client) {
         const channel = await message.guild.channels.create(`ticket: ${message.author.username}`);
     
