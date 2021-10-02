@@ -3,7 +3,7 @@ const ytdl = require('ytdl-core');
 const ytSearch = require('yt-search');
 
 //Global queue for your bot. Every server will have a key and value pair in this map. { guild.id, queue_constructor{} }
-const queue = new Map();
+global.queue = new Map();
 
 module.exports = {
     name: 'play',
@@ -20,7 +20,7 @@ module.exports = {
         if (!permissions.has('SPEAK')) return message.channel.send('You dont have the correct permissions');
 
         //This is our server queue. We are getting this server queue from the global queue.
-        const server_queue = queue.get(message.guild.id);
+        global.server_queue = queue.get(message.guild.id);
         //If the user has used the play command
         if (!args.length) return message.channel.send('You need to send the second argument!');
         let song = { title: "", url: ""}
