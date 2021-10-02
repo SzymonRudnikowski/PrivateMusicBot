@@ -34,23 +34,23 @@ module.exports = {
             pages.push(page)
         }
 
-        const filter2 = (reaction, user) => ["??","??"].includes(reaction.emoji.name) && (message.author.id == user.id)
+        const filter2 = (reaction, user) => ["⬅️","➡️"].includes(reaction.emoji.name) && (message.author.id == user.id)
         const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
-        await Embed.react("??")
-        await Embed.react("??")
+        await Embed.react("⬅️")
+        await Embed.react("➡️")
 
         let ReactionCol = Embed.createReactionCollector(filter2)
 
         ReactionCol.on("collect", (reaction, user) => {
             reaction.users.remove(reaction.users.cache.get(message.author.id))
 
-            if(reaction.emoji.name === "??") {
+            if(reaction.emoji.name === "➡️") {
                 if(current < pages.length - 1) {
                     current += 1
                     Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
                 }
             } else {
-                if(reaction.emoji.name === "??") {
+                if(reaction.emoji.name === "⬅️") {
                     if(current !== 0) {
                         current -= 1
                         Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
