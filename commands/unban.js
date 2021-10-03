@@ -8,16 +8,23 @@ module.exports = {
         console.log("tried to unban")
         if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(`**${message.author} You don\'t have the right permission to execute this command!**`)
         if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('**I don\'t have the permissions!**')
-        if(!args[0]) return message.channel.send('**Please specify a user!**');
+        if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
     
-        const member = message.mentions.members.first();
-    
+        let userId = args[0].toString().replace(/</g, '')
+        userId = userId.replace(/!/g, '')
+        userId = userId.replace(/>/g, '')
+        userId = userId.replace(/@/g, '')
+        
+        console.log(userId)
         
 
-        const userid = member.id.toString()
-        guild.members.unban(userid)
-            .then(user => message.channel.send(`**Unbanned ${user.username}. Welcome back!**`))
+        if(!message.guild.member(userId)) {
+            return message.channel.send("**There is no such a user!**");
+        }
+        
+        message.guild.members.unban(userId)
+            .then(message.channel.send(`**Unbanned ${args[0]}. Welcome back!**`))
                 .catch(console.error);
-        console.log(`Unbanned ${user.username} from ${guild.name}`);
+        console.log(`Unbanned ${args[0]}`);
     },
 };
