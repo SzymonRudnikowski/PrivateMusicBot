@@ -7,7 +7,7 @@ module.exports = {
     async execute(message, args) {
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to kick!***`); //if there is no 2nd argument
 
-        if (message.member.hasPermission("KICK_MEMBERS")) {
+        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
             if (message.mentions.members.first()) {
                 try {
                     message.mentions.members.first().kick();

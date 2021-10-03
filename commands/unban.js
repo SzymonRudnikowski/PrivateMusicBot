@@ -5,9 +5,10 @@ module.exports = {
     description: 'it does what u think it does',
     permissions: [],
     async execute(message, args) {
+        console.log("tried to unban")
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to unban!***`); //if there is no 2nd argument
 
-        if (message.member.hasPermission("BAN_MEMBERS")) {
+        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
             if (message.mentions.members.first()) {
                 unbanHavingError = new Boolean(false)
                 try {
