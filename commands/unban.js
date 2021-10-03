@@ -16,7 +16,8 @@ module.exports = {
 
         const userid = member.id.toString()
         guild.members.unban(userid)
-            .then(user => console.log(`**Unbanned ${user.username}. Welcome back!**`))
+            .then(user => message.channel.send(`**Unbanned ${user.username}. Welcome back!**`))
                 .catch(console.error);
+        console.log(`Unbanned ${user.username} from ${guild.name}`);
     },
 };
