@@ -146,3 +146,53 @@ module.exports = {
     },
 };
 */
+
+/*
+const Discord = require("discord.js");
+module.exports = {
+    name: 'embed',
+    description: 'Wiadomosc embed',
+    execute(message, args) {
+        const embed = new Discord.MessageEmbed()
+        // Kolor 
+        .setColor('0x03f4fc')
+        // Tytul 
+        .setTitle('PMB Access')
+        // Tekst, enter = \n
+        .setDescription('**For a small price of 1$ you can purchase access to our Private Music Bot!\n We offer high quality youtube music streaming, with all of the important functions. \n Our Bot is hosted 24/7, on European servers. \n If you have any additional questions, please go to:** <#892191184125054978> **channel.**')
+        /// Wiele pol do dodania (opcjonalne - zakomendtowane)
+        // .addFields(
+        //     {name: '', value: ''},
+        //     {name: '', value: ''}
+        // )
+        .setFooter('PMB');
+
+        message.channel.send(embed);
+    },
+};
+*/
+
+/*
+const Discord = require("discord.js");
+module.exports = {
+    name: 'embed',
+    description: 'Wiadomosc embed',
+    execute(message, args) {
+        const embed = new Discord.MessageEmbed()
+        // Kolor 
+        .setColor('0x03f4fc')
+        // Tytul 
+        .setTitle('Customer perks.')
+        // Tekst, enter = \n
+        .setDescription('**- Special server role. \n - Bot development preview. \n - Special giveaways. \n - Our endless respect.**')
+        /// Wiele pol do dodania (opcjonalne - zakomendtowane)
+        // .addFields(
+        //     {name: '', value: ''},
+        //     {name: '', value: ''}
+        // )
+        .setFooter('PMB');
+
+        message.channel.send(embed);
+    },
+};
+*/
