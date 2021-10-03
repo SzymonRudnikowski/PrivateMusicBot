@@ -9,11 +9,13 @@ module.exports = {
 
         if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
             let member = message.mentions.members.first();
-            if(!member) return message.reply("Please mention a valid member of this server");
-            if(!member.kickable) return message.reply("I cannot kick this member!");
+            if(!member) return message.reply("**Please mention a valid member of this server**");
+            if(!member.kickable) return message.reply("**I do not have the right permissions to kick this member!**");
 
             member.kick();
-            return message.channel.send(`***${member.name} kicked!***`)
+            return message.channel.send(`***${member} kicked!***`)
+        }else{
+            return message.channel.send(`**${message.author} you do not have the right permissions to execute this command!**`);
         }
     },
 };

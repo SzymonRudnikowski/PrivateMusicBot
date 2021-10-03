@@ -6,32 +6,17 @@ module.exports = {
     permissions: [],
     async execute(message, args) {
         console.log("tried to unban")
-        if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to unban!***`); //if there is no 2nd argument
+        if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(`**${message.author} You don\'t have the right permission to execute this command!**`)
+        if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('**I don\'t have the permissions!**')
+        if(!args[0]) return message.channel.send('**Please specify a user!**');
+    
+        const member = message.mentions.members.first();
+    
+        
 
-        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
-            if (message.mentions.members.first()) {
-                unbanHavingError = new Boolean(false)
-                try {
-                        message.guild.fetchBans().then(bans=> {
-                            if(bans.size == 0) {
-                                unbanHavingError = true
-                                return message.channel.send("**There are not any users banned right now!**");
-                            }
-                            let bUser = bans.find(b => b.user.id == userID)
-                            if(!bUser) {
-                                unbanHavingError = true
-                                return message.channel.send(`${bUser.user} ***is not banned!***`);
-                            }
-                            message.guild.members.unban(bUser.user)
-                    })
-                    console.log(`${bUser.user} unbanned`)
-                    return message.channel.send(`${message.mentions.members.first()} **has been successfuly unbanned!**`);
-                } catch {
-                    if(!unbanHavingError) return message.channel.send(`***I do not have permissions to unban ${message.mentions.members.first()}***`);
-                }
-            }
-        }else {
-            message.reply(`***You do not have permissions to unban *** ${message.mentions.members.first()}`);
-        }
+        const userid = member.id.toString()
+        guild.members.unban(userid)
+            .then(user => console.log(`**Unbanned ${user.username}. Welcome back!**`))
+                .catch(console.error);
     },
 };
