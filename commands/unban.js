@@ -9,17 +9,24 @@ module.exports = {
 
         if (message.member.hasPermission("BAN_MEMBERS")) {
             if (message.mentions.members.first()) {
+                unbanHavingError = new Boolean(false)
                 try {
                         message.guild.fetchBans().then(bans=> {
-                            if(bans.size == 0) return message.channel.send("**There are not any users banned right now!**");
+                            if(bans.size == 0) {
+                                unbanHavingError = true
+                                return message.channel.send("**There are not any users banned right now!**");
+                            }
                             let bUser = bans.find(b => b.user.id == userID)
-                            if(!bUser) return message.channel.send(`${bUser.user} ***is not banned!***`);
+                            if(!bUser) {
+                                unbanHavingError = true
+                                return message.channel.send(`${bUser.user} ***is not banned!***`);
+                            }
                             message.guild.members.unban(bUser.user)
                     })
                     console.log(`${bUser.user} unbanned`)
-                    return message.channel.send(`${message.mentions.members.first()} **has been successfuly unbanned from this server!**`);
+                    return message.channel.send(`${message.mentions.members.first()} **has been successfuly unbanned!**`);
                 } catch {
-                    message.reply(`***I do not have permissions to unban ${message.mentions.members.first()}***`);
+                    if(!unbanHavingError) return message.channel.send(`***I do not have permissions to unban ${message.mentions.members.first()}***`);
                 }
             }
         }else {
