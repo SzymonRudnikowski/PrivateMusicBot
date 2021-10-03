@@ -10,11 +10,14 @@ module.exports = {
             console.log('Stop song command while not in channel.')
             return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
         }
+        if(!message.guild.me.voice.channelID)
+            return message.channel.send('**I\'m not in your channel!**')
+
         if(!server_queue){
             return voice_channel.leave();
         } else {
-        server_queue.songs = [];
-        server_queue.connection.dispatcher.end();      
+            server_queue.songs = [];
+            server_queue.connection.dispatcher.end();      
         }
     }
 };
