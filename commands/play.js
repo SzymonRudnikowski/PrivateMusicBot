@@ -37,7 +37,8 @@ module.exports = {
                 const video_result = await ytSearch(query);
                 return (video_result.videos.length > 1) ? video_result.videos[0] : null;
             }
-            currentSongTitle = args.toString().replace(',', ' ')
+            const regex = /,/g;
+            currentSongTitle = args.toString().replace(regex, ' ')
 
             const video = await video_finder(args.join(' '));
             if (video){
@@ -89,8 +90,8 @@ const video_player = async (guild, song) => {
 
     //If no song is left in the server queue. Leave the voice channel and delete the key and value pair from the global queue.
     if (!song) {
-        console.log('Left voice channel', song_queue.voice_channel.name)
-        song_queue.voice_channel.leave();
+        console.log('Queue ended')
+        currentSongTitle = ""
         queue.delete(guild.id);
         return;
     }

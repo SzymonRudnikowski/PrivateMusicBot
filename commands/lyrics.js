@@ -23,6 +23,7 @@ module.exports = {
         let singer = "";
         let pages = []
         let current = 0
+        if(currentSongTitle === "") return message.channel.send("**No music is currently played!**");
 
         let reg = new RegExp("official music video|official|official video|official music|music video", "i")
         while(currentSongTitle.match(reg)){
