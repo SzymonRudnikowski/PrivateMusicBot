@@ -8,15 +8,12 @@ module.exports = {
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to kick!***`); //if there is no 2nd argument
 
         if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
-            if (message.mentions.members.first()) {
-                try {
-                    message.mentions.members.first().kick();
-                } catch {
-                    return message.reply("I do not have permissions to kick " + message.mentions.members.first());
-                }
-            } else {
-                return message.reply("You do not have permissions to kick " + message.mentions.members.first());
-            }
+            let member = message.mentions.members.first();
+            if(!member) return message.reply("Please mention a valid member of this server");
+            if(!member.kickable) return message.reply("I cannot kick this member!");
+
+            member.kick();
+            return message.channel.send(`***${member.name} kicked!***`)
         }
     },
 };
