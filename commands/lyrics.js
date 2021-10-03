@@ -24,7 +24,12 @@ module.exports = {
         let pages = []
         let current = 0
 
-        console.log(currentSongTitle)
+        let reg = new RegExp("official music video|official|official video|official music|music video", "i")
+        while(currentSongTitle.match(reg)){
+            currentSongTitle = currentSongTitle.replace(currentSongTitle.match(reg), '')
+        }
+        
+        console.log("current song title: " + currentSongTitle)
         let res = await lyricsFinder(singer, currentSongTitle) || "Not Found"
 
         for(let i = 0; i < res.length; i += 2048) {
