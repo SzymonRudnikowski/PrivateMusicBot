@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: 'join',
-    description: 'it does what u think it does',
+    description: 'makes the client to join users channel',
     permissions: [],
     async execute(message) {
         console.log('used')
