@@ -14,6 +14,11 @@ module.exports = {
             return message.channel.send('**I\'m not in your channel!**')
 
         if(!server_queue){
+            let song = { title: "", url: ""}
+            queue.set(message.guild.id, queue_constructor);
+            queue_constructor.songs.push(song);
+            server_queue.songs = [];
+            server_queue.connection.dispatcher.end();
             return voice_channel.leave();
         } else {
             server_queue.songs = [];

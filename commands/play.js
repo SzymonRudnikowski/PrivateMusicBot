@@ -52,7 +52,7 @@ module.exports = {
         //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
         if (!server_queue){
 
-            const queue_constructor = {
+            global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
                 connection: null,
