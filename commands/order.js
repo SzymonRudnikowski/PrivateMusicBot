@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 
+const talkedRecently = new Set();
+
 module.exports = {
     name: 'order',
     description: 'open a purchase ticket!',
@@ -62,5 +64,12 @@ module.exports = {
       .catch((err) => {
         throw err;
       });
+
+      //setting the timeout for 1 hour so that the user can only run this command once and then will have to wait 
+      talkedRecently.add(message.author.id);
+      setTimeout(() => {
+        // Removes the user from the set after an hour
+        talkedRecently.delete(message.author.id);
+      }, 3600000);
     },
 };

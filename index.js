@@ -33,6 +33,7 @@ for(const file of commandFiles) {
 }
 
 client.on("message", message => {
+  if(!message.content.startsWith(prefix)) return;
   let userID = message.author.id;
   if (userID == BOT_ID) {
     return;
