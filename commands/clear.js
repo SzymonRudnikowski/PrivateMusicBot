@@ -7,7 +7,7 @@ module.exports = {
     async execute(message) {
         let fetched;
         do {
-            fetched = await channel.fetchMessages({limit: 100});
+            fetched = await message.channel.fetchMessages({limit: 100});
             message.channel.bulkDelete(fetched);
         }
         while(fetched.size >= 2);
