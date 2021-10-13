@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 
 module.exports = {
     name: 'skip',
-    aliases: ['sk'],
+    aliases: ['s'],
     decription: "skips song that is currently playing in the queue",
     async execute(message, args) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
