@@ -55,7 +55,7 @@ module.exports = {
       }
     });
 
-    //setting the timeout for 1 hour so that the user can only run this command once and then will have to wait 
+    //setting the timeout for 1 day so that the user can only run this command once and then will have to wait 
 
     message.channel
       .send(`Your ticket is created! ${channel}`)
@@ -68,9 +68,9 @@ module.exports = {
       })
     talkedRecently.add(message.author.id);
     setTimeout(() => {
-      // Removes the user from the set after an hour
+      // Removes the user from the set after a day
       talkedRecently.delete(message.author.id);
-    }, 3600000);
+    }, (24*3600000));
       
     },
 };
