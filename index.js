@@ -43,9 +43,15 @@ client.on("message", message => {
   const com = client.commands.get(command) || client.aliases.get(command)
   console.log(command)
 
-  if(!client.aliases.has(command) && !client.commands.has(command)) return message.reply(`**There is no command \"${command}\"**`);
+  if(!client.aliases.has(command) && !client.commands.has(command)) {
+    const embed = new Discord.MessageEmbed()
+        .setColor('0x03f4fc')
+        .setTitle('Command does not exist!')
+        .setDescription(`**There is no command \"${command}\"\n For help type !help**`)
+        .setFooter('PMB');
 
-  
+    return message.channel.send(embed);
+  }
 
   try{
     com.execute(message, args, com, client);
