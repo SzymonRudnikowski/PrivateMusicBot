@@ -6,12 +6,14 @@ module.exports = {
     decription: "deletes all message in a channel",
     async execute(message) {
         let fetched;
+        let count = 0;
         do {
             fetched = await message.channel.messages.fetch({limit: 100});
             console.log(fetched.size)
             message.channel.bulkDelete(fetched);
+            count++;
         }
-        while(fetched.size >= 2);
-
+        while(fetched.size >= 2 && count < 10);
+        console.log("finished")
     }
 };
