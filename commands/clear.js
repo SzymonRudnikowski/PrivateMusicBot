@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 
 module.exports = {
     name: 'clear',
-    aliases: ['c'],
+    aliases: ['c', 'cl'],
     decription: "deletes all message in a channel",
     async execute(message) {
         let fetched;
