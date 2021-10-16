@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 
 module.exports = {
     name: 'leave',
-    aliases: [],
+    aliases: ['dsc'],
     decription: "stops the song that is currently playing in the queue",
     async execute(message, args) {
         const voice_channel = message.member.voice.channel;
@@ -13,11 +13,20 @@ module.exports = {
         if(!message.guild.me.voice.channelID)
             return message.channel.send('**I\'m not in your channel!**')
 
+        songTitles = [""]
+        YoutubeTitle = [""] 
         if(!server_queue){
+            try{
+                queue_constructor.connection.dispatcher.end()
+            }catch(err){
+                
+            }
+            queue_constructor.songs = []
             return voice_channel.leave();
         } else {
-            server_queue.songs = [];
-            server_queue.connection.dispatcher.end();      
+            server_queue.connection.dispatcher.end();  
+            server_queue.songs = [];  
+            return voice_channel.leave(); 
         }
     }
 };

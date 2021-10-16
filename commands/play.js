@@ -5,7 +5,8 @@ const ytSearch = require('yt-search');
 //Global queue for your bot. Every server will have a key and value pair in this map. { guild.id, queue_constructor{} }
 global.queue = new Map();
 global.currentSongTitle = "";
-global.YoutubeTitle = "";
+global.songTitles = [""];
+global.YoutubeTitle = [""];
 
 module.exports = {
     name: 'play',
@@ -32,6 +33,7 @@ module.exports = {
             const song_info = await ytdl.getInfo(args[0]);
             song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
             currentSongTitle = song.title
+            songTitles.push(currentSongTitle)
         } else {
             //If there was no link, we use keywords to search for a video. Set the song object to have two keys. Title and URl.
             const video_finder = async (query) =>{
@@ -40,6 +42,7 @@ module.exports = {
             }
             const regex = /,/g;
             currentSongTitle = args.toString().replace(regex, ' ')
+            songTitles.push(currentSongTitle)
 
             const video = await video_finder(args.join(' '));
             if (video){
@@ -92,8 +95,8 @@ const video_player = async (guild, song) => {
     //If no song is left in the server queue. Leave the voice channel and delete the key and value pair from the global queue.
     if (!song) {
         console.log('Queue ended')
-        currentSongTitle = ""
-        YoutubeTitle = ""
+        songTitles = [""]
+        YoutubeTitle = [""]
         queue.delete(guild.id);
         return;
     }
@@ -101,9 +104,11 @@ const video_player = async (guild, song) => {
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
         song_queue.songs.shift();
+        songTitles.splice(1, 1);
+        YoutubeTitle.splice(1, 1);
         video_player(guild, song_queue.songs[0]);
     });
     await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
-    YoutubeTitle = song.title;
+    YoutubeTitle.push(song.title)
 }
