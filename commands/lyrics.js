@@ -45,6 +45,7 @@ module.exports = {
 }
 
 const displayLyrics = async (pages, singer, songTitle, message) => {
+    try{
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
@@ -92,4 +93,5 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
             
         }
     })
+    }catch(err){}
 }
