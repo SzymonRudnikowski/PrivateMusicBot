@@ -27,7 +27,7 @@ module.exports = {
             server_queue.connection.dispatcher.end();  
             queue_constructor.songs = []
             server_queue.songs = [];  
-            queue.delete(message.guild.id)
+            server_queue = undefined
             return voice_channel.leave(); 
         }
     }
