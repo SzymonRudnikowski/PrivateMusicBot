@@ -26,7 +26,6 @@ module.exports = {
             server_queue.connection.dispatcher.end();  
             queue_constructor.songs = []
             server_queue.songs = [];  
-            server_queue.delete();
             return voice_channel.leave(); 
         }
     }
