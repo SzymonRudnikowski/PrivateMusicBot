@@ -16,6 +16,7 @@ module.exports = {
         songTitles = [""]
         YoutubeTitle = [""] 
         if(!server_queue){
+            console.log("chuj mi w dupe 2x")
             try{
                 queue_constructor.connection.dispatcher.end()
             }catch(err){}
