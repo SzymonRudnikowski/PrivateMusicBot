@@ -83,14 +83,9 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
             console.log("displaying new lyrics")
             changed = true
             pages = []
-            try{
-                Embed.delete();
-                displayLyrics(pages, singer, YoutubeTitle[1], message)
-            }catch(error){
-                console.log(error)
-                throw error;
-            }
             
+            Embed.delete();
+            displayLyrics(pages, singer, YoutubeTitle[1], message)  
         }
     })
     }catch(err){}
