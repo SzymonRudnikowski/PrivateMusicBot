@@ -33,19 +33,16 @@ module.exports = {
         while(YoutubeTitle[1].match(reg)){
             YoutubeTitle[1] = YoutubeTitle[1].replace(YoutubeTitle[1].match(reg), '')
         }
-        global.changed = new Boolean(false)
-        
-        if(Boolean(changed)){
-            displayLyrics(pages, singer, songTitles[1], message);
-        }
-        else {
-            displayLyrics(pages, singer, YoutubeTitle[1], message);
-        }
+        global.changed = false
+
+
+        displayLyrics(pages, singer, songTitles[1], message);
+
+  
     }
 }
 
 const displayLyrics = async (pages, singer, songTitle, message) => {
-    try{
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
@@ -57,7 +54,6 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
         .setDescription(lyrics)
         pages.push(page)
     }
-
     const filter2 = (reaction, user) => ["⬅️","➡️", "\u2757"].includes(reaction.emoji.name) && (message.author.id == user.id)
     const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
     await Embed.react("⬅️")
@@ -66,7 +62,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
 
     let ReactionCol = Embed.createReactionCollector(filter2)
 
-    ReactionCol.on("collect", (reaction, user) => {
+    ReactionCol.on("collect", (reaction) => {
         reaction.users.remove(reaction.users.cache.get(message.author.id))
 
         if(reaction.emoji.name === "➡️") {
@@ -81,12 +77,21 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
                 }
         } else{
             console.log("displaying new lyrics")
-            changed = true
             pages = []
+            if(!changed) {
+                changed = true
+                Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
+                displayLyrics(pages, singer, YoutubeTitle[1], message) 
+                Embed.delete()
+            }
+            else {
+                changed = false
+                Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
+                displayLyrics(pages, singer, songTitles[1], message) 
+                Embed.delete()
+            }
             
-            Embed.delete();
-            displayLyrics(pages, singer, YoutubeTitle[1], message)  
         }
     })
-    }catch(err){}
+    
 }
