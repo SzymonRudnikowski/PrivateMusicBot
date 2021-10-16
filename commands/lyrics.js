@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const lyricsFinder = require("lyrics-finder")
-const songTitle = require('./play')
+const songTitles = require("./play")
 
 module.exports = {
     name: 'lyrics',
@@ -22,48 +22,72 @@ module.exports = {
 
         let singer = "";
         let pages = []
-        let current = 0
         if(currentSongTitle === "") return message.channel.send("**No music is currently played!**");
 
-        let reg = new RegExp("official music video|official|official video|official music|music video", "i")
+        let reg = new RegExp("official music video|official|official video|official music|music video|video", "i")
         while(currentSongTitle.match(reg)){
             currentSongTitle = currentSongTitle.replace(currentSongTitle.match(reg), '')
         }
-        
-        console.log("current song title: " + currentSongTitle)
-        let res = await lyricsFinder(singer, currentSongTitle) || "Not Found"
-
-        for(let i = 0; i < res.length; i += 2048) {
-            let lyrics = res.substring(i, Math.min(res.length, i + 2048))
-            let page = new discord.MessageEmbed()
-            .setDescription(lyrics)
-            pages.push(page)
+        while(YoutubeTitle.match(reg)){
+            YoutubeTitle = YoutubeTitle.replace(YoutubeTitle.match(reg), '')
         }
+        global.changed = new Boolean(false)
+        
+        if(Boolean(changed)){
+            displayLyrics(pages, singer, currentSongTitle, message);
+        }
+        else {
+            displayLyrics(pages, singer, YoutubeTitle, message);
+        }
+    }
+}
 
-        const filter2 = (reaction, user) => ["⬅️","➡️"].includes(reaction.emoji.name) && (message.author.id == user.id)
-        const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
-        await Embed.react("⬅️")
-        await Embed.react("➡️")
+const displayLyrics = async (pages, singer, songTitle, message) => {
+    if(songTitle === "") return message.channel.send("**No music is currently played!**");
+    let current = 0
+    console.log("current song title: " + songTitle)
+    let res = await lyricsFinder(singer, songTitle) || "Not Found"
 
-        let ReactionCol = Embed.createReactionCollector(filter2)
+    for(let i = 0; i < res.length; i += 2048) {
+        let lyrics = res.substring(i, Math.min(res.length, i + 2048))
+        let page = new discord.MessageEmbed()
+        .setDescription(lyrics)
+        pages.push(page)
+    }
 
-        ReactionCol.on("collect", (reaction, user) => {
-            reaction.users.remove(reaction.users.cache.get(message.author.id))
+    const filter2 = (reaction, user) => ["⬅️","➡️", "\u2757"].includes(reaction.emoji.name) && (message.author.id == user.id)
+    const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
+    await Embed.react("⬅️")
+    await Embed.react("➡️")
+    await Embed.react("\u2757")
 
-            if(reaction.emoji.name === "➡️") {
-                if(current < pages.length - 1) {
-                    current += 1
+    let ReactionCol = Embed.createReactionCollector(filter2)
+
+    ReactionCol.on("collect", (reaction, user) => {
+        reaction.users.remove(reaction.users.cache.get(message.author.id))
+
+        if(reaction.emoji.name === "➡️") {
+            if(current < pages.length - 1) {
+                current += 1
+                Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
+            }
+        } else if(reaction.emoji.name === "⬅️") {
+                if(current !== 0) {
+                    current -= 1
                     Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
                 }
-            } else {
-                if(reaction.emoji.name === "⬅️") {
-                    if(current !== 0) {
-                        current -= 1
-                        Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
-                    }
-                }
+        } else{
+            console.log("displaying new lyrics")
+            changed = true
+            pages = []
+            try{
+                Embed.delete();
+                displayLyrics(pages, singer, YoutubeTitle, message)
+            }catch(error){
+                console.log(error)
+                throw error;
             }
-        })
-        
-    }
+            
+        }
+    })
 }
