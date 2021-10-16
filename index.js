@@ -42,7 +42,6 @@ client.on("message", message => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   const com = client.commands.get(command) || client.aliases.get(command)
-  console.log(command)
 
   if(!client.aliases.has(command) && !client.commands.has(command)) {
     const embed = new Discord.MessageEmbed()

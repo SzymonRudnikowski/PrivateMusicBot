@@ -1,6 +1,6 @@
 const discord = require('discord.js')
 const lyricsFinder = require("lyrics-finder")
-const songTitles = require("./play")
+const songTit = require("./play")
 
 module.exports = {
     name: 'lyrics',
@@ -22,22 +22,24 @@ module.exports = {
 
         let singer = "";
         let pages = []
-        if(currentSongTitle === "") return message.channel.send("**No music is currently played!**");
-
+        console.log(songTitles)
+        console.log(YoutubeTitle)
+        if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
+        
         let reg = new RegExp("official music video|official|official video|official music|music video|video", "i")
-        while(currentSongTitle.match(reg)){
-            currentSongTitle = currentSongTitle.replace(currentSongTitle.match(reg), '')
+        while(songTitles[1].match(reg)){
+            songTitles[1] = songTitles[1].replace(songTitles[1].match(reg), '')
         }
-        while(YoutubeTitle.match(reg)){
-            YoutubeTitle = YoutubeTitle.replace(YoutubeTitle.match(reg), '')
+        while(YoutubeTitle[1].match(reg)){
+            YoutubeTitle[1] = YoutubeTitle[1].replace(YoutubeTitle[1].match(reg), '')
         }
         global.changed = new Boolean(false)
         
         if(Boolean(changed)){
-            displayLyrics(pages, singer, currentSongTitle, message);
+            displayLyrics(pages, singer, songTitles[1], message);
         }
         else {
-            displayLyrics(pages, singer, YoutubeTitle, message);
+            displayLyrics(pages, singer, YoutubeTitle[1], message);
         }
     }
 }
@@ -82,7 +84,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
             pages = []
             try{
                 Embed.delete();
-                displayLyrics(pages, singer, YoutubeTitle, message)
+                displayLyrics(pages, singer, YoutubeTitle[1], message)
             }catch(error){
                 console.log(error)
                 throw error;
