@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 
 module.exports = {
     name: 'leave',
-    aliases: ['dsc'],
+    aliases: ['dsc', 'dc'],
     decription: "stops the song that is currently playing in the queue",
     async execute(message, args) {
         const voice_channel = message.member.voice.channel;
@@ -19,7 +19,7 @@ module.exports = {
             try{
                 queue_constructor.connection.dispatcher.end()
             }catch(err){
-                
+
             }
             queue_constructor.songs = []
             return voice_channel.leave();
