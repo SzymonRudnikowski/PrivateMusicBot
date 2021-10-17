@@ -7,7 +7,6 @@ global.queue = new Map();
 global.currentSongTitle = "";
 global.songTitles = [""];
 global.YoutubeTitle = [""];
-global.server_queue;
 
 module.exports = {
     name: 'play',
