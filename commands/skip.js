@@ -20,7 +20,7 @@ module.exports = {
         }
         catch(error){
             console.log(error)
-            return message.channel.send("**Nothing is currently played**")
+            return message.channel.send("**No music is currently played**")
         }
     }
 };
