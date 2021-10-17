@@ -10,8 +10,8 @@ module.exports = {
   permissions: [],
   async execute(message, args, client) {
     if (talkedRecently.has(message.author.id)) {
-      message.channel.send(`**You can only use this command once, wait 1 hour!** ` + `***${message.author}***`);
-    } else {
+      return message.channel.send(`**You can only use this command once, wait 1 hour!** ` + `***${message.author}***`);
+    } 
       const channel = await message.guild.channels.create(`ticket: ${message.author.username}`);
 
       channel.setParent("892829064564473886");
@@ -75,6 +75,5 @@ module.exports = {
           // Removes the user from the set after an hour
           talkedRecently.delete(message.author.id);
         }, 3600000);
-    }
   },
 };

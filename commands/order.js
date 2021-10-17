@@ -8,7 +8,10 @@ module.exports = {
     aliases: [],
     permissions: [], 
     async execute(message, args, client) {
-        const channel = await message.guild.channels.create(`ticket: ${message.author.username}`);
+      if (talkedRecently.has(message.author.id)) {
+          return message.channel.send(`**You can only use this command once, wait 24 hours!** ` + `***${message.author}***`);
+      }
+    const channel = await message.guild.channels.create(`ticket: ${message.author.username}`);
     
     channel.setParent("892179246406045787");
 
