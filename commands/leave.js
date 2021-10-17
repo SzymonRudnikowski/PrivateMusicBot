@@ -15,18 +15,18 @@ module.exports = {
         songTitles = [""]
         YoutubeTitle = [""] 
         try{
-           if(!server_queue){
-            console.log("chuj mi w dupe 2x")
-            queue_constructor.connection.dispatcher.end()
-            queue_constructor.songs = []
-            return voice_channel.leave();
-        } else {
-            console.log("chuj mi w dupe")
-            server_queue.connection.dispatcher.end();  
-            queue_constructor.songs = []
-            server_queue.songs = [];  
-            return voice_channel.leave(); 
-        } 
+            if(!server_queue){
+                console.log("chuj mi w dupe 2x")
+                queue_constructor.connection.dispatcher.end()
+                queue_constructor.songs = []
+                return voice_channel.leave();
+            } else {
+                console.log("chuj mi w dupe")
+                server_queue.connection.dispatcher.end();  
+                queue_constructor.songs = []
+                server_queue.songs = [];  
+                return voice_channel.leave(); 
+            } 
         }catch(err){
             console.log('no server queue, just leaving the channel')
             return voice_channel.leave();
