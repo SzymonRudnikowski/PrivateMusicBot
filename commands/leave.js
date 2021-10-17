@@ -14,11 +14,10 @@ module.exports = {
 
         songTitles = [""]
         YoutubeTitle = [""] 
-        if(!server_queue){
+        try{
+           if(!server_queue){
             console.log("chuj mi w dupe 2x")
-            try{
-                queue_constructor.connection.dispatcher.end()
-            }catch(err){}
+            queue_constructor.connection.dispatcher.end()
             queue_constructor.songs = []
             return voice_channel.leave();
         } else {
@@ -27,6 +26,11 @@ module.exports = {
             queue_constructor.songs = []
             server_queue.songs = [];  
             return voice_channel.leave(); 
+        } 
+        }catch(err){
+            console.log('no server queue, just leaving the channel')
+            return voice_channel.leave();
         }
+        
     }
 };
