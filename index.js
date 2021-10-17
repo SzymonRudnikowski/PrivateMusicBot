@@ -50,7 +50,8 @@ client.on("message", message => {
         .setDescription(`**There is no command \"${command}\"\n For help type !help**`)
         .setFooter('PMB');
 
-    return message.channel.send(embed);
+    //return message.channel.send(embed);
+    return console.log('Incorrect command.')
   }
 
   try{
