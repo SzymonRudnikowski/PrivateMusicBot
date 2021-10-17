@@ -20,7 +20,7 @@ module.exports = {
         }
         catch(error){
             console.log(error)
-            return message.channel.send("**Ups..! Something went wrong**")
+            return message.channel.send("**Nothing is currently played**")
         }
     }
 };
