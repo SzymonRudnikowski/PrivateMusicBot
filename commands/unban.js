@@ -23,8 +23,9 @@ module.exports = {
             const targetId = banList.get(userId).user
           
             if(!targetId){
-                console.log(`${bannedUser.tag} is not banned!`)
-                return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`);
+                var member = message.mentions.members.first()
+                console.log(`${member} is not banned!`)
+                return message.channel.send(`***${member}*** ** is not banned!**`);
             }
         } catch (err) {
              console.log(err);

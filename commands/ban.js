@@ -17,8 +17,9 @@ module.exports = {
             const targetId = banList.get(userId).user
           
             if(targetId){
-                console.log(`***${message.mentions.members.first()}*** ** is already banned!**`)
-                return message.channel.send(`***${message.mentions.members.first()}*** ** is already banned!**`)
+                var member = message.mentions.members.first()
+                console.log(`${member} is already banned!`)
+                return message.channel.send(`***${member}*** ** is already banned!**`)
             }
         } catch (err) {
              console.log(err);
