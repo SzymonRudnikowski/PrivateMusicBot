@@ -20,16 +20,15 @@ module.exports = {
         
         try {
             const banList = await message.guild.fetchBans();
+            const targetId = banList.get(guildmemberID).user
           
-            const bannedUser = banList.find(user => user.id === userId);
-          
-            if(!bannedUser && bannedUser !== undefined){
+            if(targetId){
                 console.log(`${bannedUser.tag} is not banned!`)
                 return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`);
             }
-          }catch(err) {
-            console.error(err);
-          }
+        } catch (err) {
+             console.log(err);
+        }
         
         console.log(userId)
 
