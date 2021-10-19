@@ -7,10 +7,24 @@ module.exports = {
     async execute(message, args) {
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
         if(!message.member.guild.me.hasPermission(['KICK_MEMBERS', "ADMINISTRATOR"])) return message.channel.send(`***I do not have permissions to ban ${message.mentions.members.first()}***`);
-        if(message.guild.fetchBans().find(user => user.id === userId)){
-            console.log(`***${message.mentions.members.first()}*** ** is already banned!**`)
-            return message.channel.send(`***${message.mentions.members.first()}*** ** is already banned!**`)
-        }
+            
+        let userId = args[0].toString().replace(/</g, '')
+        userId = userId.replace(/!/g, '')
+        userId = userId.replace(/>/g, '')
+        userId = userId.replace(/@/g, '')
+
+        try {
+            const banList = await message.guild.fetchBans();
+          
+            const bannedUser = banList.find(user => user.id === userId);
+          
+            if(bannedUser){
+                console.log(`***${message.mentions.members.first()}*** ** is already banned!**`)
+                return message.channel.send(`***${message.mentions.members.first()}*** ** is already banned!**`)
+            }
+          }catch(err) {
+            console.error(err);
+          }
 
         if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR']) || message.author.id === '259046058737270784' || message.author.id === '391983289122029578') {
             if (message.mentions.members.first()) {
