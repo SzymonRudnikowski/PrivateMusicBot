@@ -24,7 +24,7 @@ module.exports = {
             const bannedUser = banList.find(user => user.id === userId);
           
             if(!bannedUser && bannedUser !== undefined){
-                console.log(`${message.mentions.members.first()} is not banned!`)
+                console.log(`${bannedUser.tag} is not banned!`)
                 return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`);
             }
           }catch(err) {
