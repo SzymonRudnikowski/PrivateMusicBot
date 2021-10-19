@@ -20,7 +20,7 @@ module.exports = {
         
         try {
             const banList = await message.guild.fetchBans();
-            const targetId = banList.get(guildmemberID).user
+            const targetId = banList.get(message.guild.id).user
           
             if(!targetId){
                 console.log(`${bannedUser.tag} is not banned!`)
