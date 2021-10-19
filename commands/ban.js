@@ -7,7 +7,8 @@ module.exports = {
     async execute(message, args) {
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
         if(!message.member.guild.me.hasPermission(['KICK_MEMBERS', "ADMINISTRATOR"])) return message.channel.send(`***I do not have permissions to ban ${message.mentions.members.first()}***`);
-            
+        if(!message.guild.member(userId)) return message.channel.send("**There is no such a user!**"); 
+        
         let userId = args[0].toString().replace(/</g, '')
         userId = userId.replace(/!/g, '')
         userId = userId.replace(/>/g, '')
