@@ -28,7 +28,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            if(!message.guild.member(userId)) return message.channel.send(`**There is no user named** ***${args[0]}*** **or he/she does not exist!**`); 
+            if(!message.guild.member(userId)) return message.channel.send(`**There is no user named** ***${args[0]}*** **or he/she is not banned!**`); 
         }
         
         console.log(userId)
