@@ -11,12 +11,13 @@ module.exports = {
             if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('**I don\'t have the permissions!**')
         }
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to unban!***`); //if there is no 2nd argument
-        if(!message.guild.member(userId)) return message.channel.send("**There is no such a user!**"); 
 
         let userId = args[0].toString().replace(/</g, '')
         userId = userId.replace(/!/g, '')
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
+
+        if(!message.guild.member(userId)) return message.channel.send("**There is no such a user!**"); 
         
         try {
             const banList = await message.guild.fetchBans();
