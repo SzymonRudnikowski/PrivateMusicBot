@@ -14,9 +14,9 @@ module.exports = {
                 YoutubeTitle.splice(1, 1);
                 return message.channel.send("**Skipped!**");
             }
-        server_queue.connection.dispatcher.end();
-        console.log('Skipped!')
-        return message.channel.send("**Skipped!**");
+            server_queue.connection.dispatcher.end();
+            console.log('Skipped!')
+            return message.channel.send("**Skipped!**");
         }
         catch(error){
             console.log(error)
