@@ -17,10 +17,11 @@ module.exports = {
         userId = userId.replace(/!/g, '')
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
-        
+        if(!message.gild.fetchBans().find(user => user.id === userId)){
+            console.log(`***${message.mentions.members.first()}*** ** is not banned!**`)
+            return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`)
+        }
         console.log(userId)
-        if(!message.guild.fetchBans().get(message.mentions.members.first()).user) 
-            return message.channel.send(`***${message.mentions.members.first()}*** **is not banned!**`);
 
         if(!message.guild.member(userId)) {
             return message.channel.send("**There is no such a user!**");
