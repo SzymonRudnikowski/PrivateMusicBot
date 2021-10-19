@@ -7,7 +7,7 @@ module.exports = {
     async execute(message, args) {
         if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
         if(!message.member.guild.me.hasPermission(['KICK_MEMBERS', "ADMINISTRATOR"])) return message.channel.send(`***I do not have permissions to ban ${message.mentions.members.first()}***`);
-        if(message.gild.fetchBans().find(user => user.id === userId)){
+        if(message.guild.fetchBans().find(user => user.id === userId)){
             console.log(`***${message.mentions.members.first()}*** ** is already banned!**`)
             return message.channel.send(`***${message.mentions.members.first()}*** ** is already banned!**`)
         }

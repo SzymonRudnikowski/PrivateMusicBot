@@ -17,7 +17,7 @@ module.exports = {
         userId = userId.replace(/!/g, '')
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
-        if(!message.gild.fetchBans().find(user => user.id === userId)){
+        if(!message.guild.fetchBans().find(user => user.id === userId)){
             console.log(`***${message.mentions.members.first()}*** ** is not banned!**`)
             return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`)
         }
