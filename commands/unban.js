@@ -22,7 +22,7 @@ module.exports = {
             const banList = await message.guild.fetchBans();
             const targetId = banList.get(guildmemberID).user
           
-            if(targetId){
+            if(!targetId){
                 console.log(`${bannedUser.tag} is not banned!`)
                 return message.channel.send(`***${message.mentions.members.first()}*** ** is not banned!**`);
             }
