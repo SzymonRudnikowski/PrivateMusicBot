@@ -24,7 +24,7 @@ module.exports = {
             }
           }catch(err) {
             console.error(err);
-          }
+        }
 
         if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR']) || message.author.id === '259046058737270784' || message.author.id === '391983289122029578') {
             if (message.mentions.members.first()) {
