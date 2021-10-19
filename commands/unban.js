@@ -9,9 +9,8 @@ module.exports = {
         if(message.author.id !== '259046058737270784' && message.author.id !== '391983289122029578'){
             if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(`**${message.author} You don\'t have the right permission to execute this command!**`)
             if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('**I don\'t have the permissions!**')
-            if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
         }
-        
+        if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to ban!***`); //if there is no 2nd argument
     
         let userId = args[0].toString().replace(/</g, '')
         userId = userId.replace(/!/g, '')
