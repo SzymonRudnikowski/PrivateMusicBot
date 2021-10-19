@@ -27,7 +27,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            message.channel.send(`**There is no user named** ***${args[0]}***`); 
+            return message.channel.send(`**There is no user named** ***${args[0]}***`); 
         }
         
         console.log(userId)
