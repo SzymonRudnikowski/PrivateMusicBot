@@ -14,7 +14,7 @@ module.exports = {
         userId = userId.replace(/@/g, '')
         try {
             const banList = await message.guild.fetchBans();
-            const targetId = banList.get(message.guild.id).user
+            const targetId = banList.get(userId).user
           
             if(targetId){
                 console.log(`***${message.mentions.members.first()}*** ** is already banned!**`)
