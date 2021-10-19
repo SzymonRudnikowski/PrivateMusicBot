@@ -16,8 +16,6 @@ module.exports = {
         userId = userId.replace(/!/g, '')
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
-
-        if(!message.guild.member(userId)) return message.channel.send("**There is no such a user!**"); 
         
         try {
             const banList = await message.guild.fetchBans();
@@ -28,7 +26,8 @@ module.exports = {
                 return message.channel.send(`***${args[0]}*** ** is not banned!**`);
             }
         } catch (err) {
-             console.log(err);
+            console.log(err);
+            return message.channel.send("**There is no such a user!**"); 
         }
         
         console.log(userId)

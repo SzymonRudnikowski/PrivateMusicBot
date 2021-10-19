@@ -13,8 +13,6 @@ module.exports = {
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
         
-        if(!message.guild.member(userId)) return message.channel.send("**There is no such a user!**"); 
-        
         try {
             const banList = await message.guild.fetchBans();
             const targetId = banList.get(userId).user
@@ -24,7 +22,8 @@ module.exports = {
                 return message.channel.send(`***${args[0]}*** ** is already banned!**`)
             }
         } catch (err) {
-             console.log(err);
+            console.log(err);
+            return message.channel.send("**There is no such a user!**"); 
         }
 
         if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR']) || message.author.id === '259046058737270784' || message.author.id === '391983289122029578') {
