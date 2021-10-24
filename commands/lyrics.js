@@ -7,12 +7,13 @@ module.exports = {
     aliases: ['l'],
     description: 'a command that checks the lyrics for a given song',
     async execute(message, args, prefix, Client){
-        const voice_channel = message.member.voice.channel
+        
         if(!message.content.startsWith(prefix)) return
         if(args.length){
             const regex = /,/g;
             return displayLyricsNoPlay(pages, singer, args.toString().replace(regex, ' '), message)
         }
+        const voice_channel = message.member.voice.channel
         if (!voice_channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
 
         try {
