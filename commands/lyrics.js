@@ -27,7 +27,7 @@ module.exports = {
         console.log(YoutubeTitle)
         if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
         
-        let reg = new RegExp("official music video|official|official video|official music|music video|video", "i")
+        let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics", "i")
         while(songTitles[1].match(reg)){
             songTitles[1] = songTitles[1].replace(songTitles[1].match(reg), '')
         }
