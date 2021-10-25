@@ -20,6 +20,7 @@ module.exports = {
                 queue_constructor.connection.dispatcher.end()
                 queue_constructor.songs = []
                 looped = false;
+                console.log("unlooped leave! status: " + looped)
                 return voice_channel.leave();
             } else {
                 console.log("chuj mi w dupe")
@@ -27,6 +28,7 @@ module.exports = {
                 queue_constructor.songs = []
                 server_queue.songs = [];  
                 looped = false;
+                console.log("unlooped leave! status: " + looped)
                 return voice_channel.leave(); 
             } 
         }catch(err){

@@ -6,7 +6,10 @@ module.exports = {
     decription: "skips song that is currently playing in the queue",
     async execute(message, args) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
-        if(looped) return message.channel.send("**Can't skip while in loop!**");
+        if(looped){
+            console.log("skip while looped")
+            return message.channel.send("**Can't skip while in loop!**");
+        }
         try{
             if(!server_queue || server_queue.songs.length === 0){
                 queue_constructor.connection.dispatcher.end();

@@ -12,6 +12,7 @@ module.exports = {
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
         if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
         looped = true;
+        console.log("looped! status: " + looped)
         return message.channel.send("***" + songTitles[1] + "*** **looped!**");
     }
 }
