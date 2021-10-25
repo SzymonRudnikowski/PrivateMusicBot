@@ -6,13 +6,9 @@ module.exports = {
     name: 'lyrics',
     aliases: ['l'],
     description: 'a command that checks the lyrics for a given song',
-    async execute(message, args, prefix, Client){
+    async execute(message, prefix, Client){
         
         if(!message.content.startsWith(prefix)) return
-        if(args.length){
-            const regex = /,/g;
-            return displayLyricsNoPlay(pages, singer, args.toString().replace(regex, ' '), message)
-        }
         const voice_channel = message.member.voice.channel
         if (!voice_channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
 
@@ -29,7 +25,7 @@ module.exports = {
         let pages = []
         console.log(songTitles)
         console.log(YoutubeTitle)
-        if(songTitles.length === 1 && !args.length) return message.channel.send("**No music is currently played!**");
+        if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
         
         let reg = new RegExp("official music video|official|official video|official music|music video|video", "i")
         while(songTitles[1].match(reg)){
