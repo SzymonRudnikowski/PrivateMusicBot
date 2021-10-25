@@ -98,7 +98,7 @@ const video_player = async (guild, song) => {
         songTitles = [""]
         YoutubeTitle = [""]
         queue.delete(guild.id);
-        return;
+        return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { filter: 'audioonly' });
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
