@@ -3,7 +3,7 @@ const songTit = require("./play")
 
 module.exports = {
     name: 'stoploop',
-    aliases: ['sl'],
+    aliases: ['sl', 'unloop'],
     description: 'end looped song',
     async execute(message){
         const voice_channel = message.member.voice.channel;
