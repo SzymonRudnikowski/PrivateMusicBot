@@ -19,12 +19,14 @@ module.exports = {
                 console.log("chuj mi w dupe 2x")
                 queue_constructor.connection.dispatcher.end()
                 queue_constructor.songs = []
+                looped = false;
                 return voice_channel.leave();
             } else {
                 console.log("chuj mi w dupe")
                 server_queue.connection.dispatcher.end();  
                 queue_constructor.songs = []
                 server_queue.songs = [];  
+                looped = false;
                 return voice_channel.leave(); 
             } 
         }catch(err){

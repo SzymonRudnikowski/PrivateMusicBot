@@ -101,15 +101,15 @@ const video_player = async (guild, song) => {
         return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { filter: 'audioonly' });
-    do{
-        song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
-        .on('finish', () => {
+    song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
+    .on('finish', () => {
+        if(!looped){
             song_queue.songs.shift();
             songTitles.splice(1, 1);
             YoutubeTitle.splice(1, 1);
-            video_player(guild, song_queue.songs[0]);
-        });
-    }while(looped);
+        }
+        video_player(guild, song_queue.songs[0]);
+    });
     
     await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
