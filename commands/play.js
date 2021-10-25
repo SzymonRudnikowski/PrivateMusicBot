@@ -110,6 +110,7 @@ const video_player = async (guild, song) => {
             console.log("not looped shifting this shit")
         }
         else console.log("looped no shifting")
+        console.log("finished somehow")
         video_player(guild, song_queue.songs[0]);
     });
     
