@@ -6,13 +6,8 @@ module.exports = {
     name: 'lyrics',
     aliases: ['l'],
     description: 'a command that checks the lyrics for a given song',
-<<<<<<< HEAD
     async execute(message, args, prefix, Client){
         
-=======
-    async execute(message, prefix, Client){
-        const voice_channel = message.member.voice.channel
->>>>>>> parent of 744c626 (Update lyrics.js)
         if(!message.content.startsWith(prefix)) return
         if(args.length){
             const regex = /,/g;
@@ -34,11 +29,7 @@ module.exports = {
         let pages = []
         console.log(songTitles)
         console.log(YoutubeTitle)
-<<<<<<< HEAD
         if(songTitles.length === 1 && !args.length) return message.channel.send("**No music is currently played!**");
-=======
-        if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
->>>>>>> parent of 744c626 (Update lyrics.js)
         
         let reg = new RegExp("official music video|official|official video|official music|music video|video", "i")
         while(songTitles[1].match(reg)){
