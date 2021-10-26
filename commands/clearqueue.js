@@ -19,7 +19,7 @@ module.exports = {
         
         
         songTitles.splice(2, songTitles.length-2)
-        server_queue.songs = []
+        queue.delete(message.guild.id);
         return message.channel.send("**Queue has been successfully cleared!**");
     }
 }
