@@ -22,6 +22,8 @@ module.exports = {
                 looped = false;
                 serverQueueCreated = false;
                 console.log("unlooped leave! status: " + looped)
+                voted = []
+                vote_count = 0
                 return voice_channel.leave();
             } else {
                 console.log("chuj mi w dupe")
@@ -31,10 +33,14 @@ module.exports = {
                 looped = false;
                 serverQueueCreated = false;
                 console.log("unlooped leave! status: " + looped)
+                voted = []
+                vote_count = 0
                 return voice_channel.leave(); 
             } 
         }catch(err){
             console.log('no server queue, just leaving the channel')
+            voted = []
+            vote_count = 0
             return voice_channel.leave();
         }
         

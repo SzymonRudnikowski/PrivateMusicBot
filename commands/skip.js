@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 
-let voted = [];
-let vote_count = 0;
+global.voted = [];
+global.vote_count = 0;
 
 module.exports = {
     name: 'skip',
