@@ -10,6 +10,7 @@ module.exports = {
         do {
             fetched = await message.channel.messages.fetch({limit: 100});
             console.log(fetched.size)
+            console.log(fetched)
             message.channel.bulkDelete(fetched);
             count++;
         }
