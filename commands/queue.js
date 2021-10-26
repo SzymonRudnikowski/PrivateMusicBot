@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const songTit = require("./play")
 
 module.exports = {
