@@ -33,7 +33,7 @@ module.exports = {
                 return message.channel.send("**No music is currently played!**")
             }
         }
-        if(!voted.contains(message.author.id)){
+        if(!voted.includes(message.author.id)){
             voted.push(message.author.id)
             vote_count++;
             console.log("voted! vote count: " + vote_count);
