@@ -37,6 +37,8 @@ module.exports = {
                     server_queue.connection.dispatcher.end();
                     voted = []
                     vote_count = 0
+                    songTitles.splice(1, 1);
+                    YoutubeTitle.splice(1, 1);
                     console.log('Skipped!')
                     return message.channel.send("**Skipped!**"); 
                 }else{
