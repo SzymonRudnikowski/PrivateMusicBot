@@ -11,11 +11,16 @@ module.exports = {
         
         try{
             let text = ""
-            for(let i = 0; i < 10; i++){
-                if(i === server_queue.songs.length) break;
-                text += (i+1) + '. ' + server_queue.songs[i].title + '\n'
+            if(queue_constructor.songs.length === 1) text = "Empty"
+            else{
+                for(let i = 1; i <= 10; i++){
+                    if(i === server_queue.songs.length) break;
+                    text += (i+1) + '. ' + server_queue.songs[i].title + '\n'
+                }
             }
+            
             console.log("showing queue in channel: " + voice_channel.name)
+            
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('**Queue: **')
@@ -26,7 +31,12 @@ module.exports = {
         }catch(err){
             console.log(err)
             console.log("queue empty cant show");
-            return message.channel.send("**Queue is empty!**");
+            const embed = new Discord.MessageEmbed()
+            .setColor('0x03f4fc')
+            .setTitle('**Queue: **')
+            .setDescription(text)
+            .setFooter('PMB');
+            return message.channel.send(embed);
         }
         
     }
