@@ -16,12 +16,13 @@ module.exports = {
             }
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
-            .setTitle('Queue')
+            .setTitle('**Queue: **')
             .setDescription(text)
             .setFooter('PMB');
 
-            message.channel.send(embed);
+            return message.channel.send(embed);
         }catch(err){
+            console.log(err)
             console.log("queue empty cant show");
             return message.channel.send("**Queue is empty!**");
         }
