@@ -17,7 +17,7 @@ module.exports = {
             voted.push(message.author.id)
             vote_count++;
             console.log("voted! vote count: " + vote_count);
-            message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+            message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
             
             try{
                 if(!server_queue || server_queue.songs.length === 0){
