@@ -13,33 +13,33 @@ module.exports = {
             console.log("skip while looped")
             return message.channel.send("**Can't skip while in loop!**");
         }
-        if(vote_count === message.member.voice.channel.members.size - 1){
-            try{
-                if(!server_queue || server_queue.songs.length === 0){
-                    queue_constructor.connection.dispatcher.end();
-                    console.log('Skipped!')
-                    songTitles.splice(1, 1);
-                    YoutubeTitle.splice(1, 1);
-                    voted = []
-                    vote_count = 0
-                    return message.channel.send("**Skipped!**");
-                }
-                server_queue.connection.dispatcher.end();
-                voted = []
-                vote_count = 0
-                console.log('Skipped!')
-                return message.channel.send("**Skipped!**");
-            }
-            catch(error){
-                console.log("no music played")
-                return message.channel.send("**No music is currently played!**")
-            }
-        }
         if(!voted.includes(message.author.id)){
             voted.push(message.author.id)
             vote_count++;
             console.log("voted! vote count: " + vote_count);
-            return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+            message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+            if(vote_count === message.member.voice.channel.members.size - 1){
+                try{
+                    if(!server_queue || server_queue.songs.length === 0){
+                        queue_constructor.connection.dispatcher.end();
+                        console.log('Skipped!')
+                        songTitles.splice(1, 1);
+                        YoutubeTitle.splice(1, 1);
+                        voted = []
+                        vote_count = 0
+                        return message.channel.send("**Skipped!**");
+                    }
+                    server_queue.connection.dispatcher.end();
+                    voted = []
+                    vote_count = 0
+                    console.log('Skipped!')
+                    return message.channel.send("**Skipped!**");
+                }
+                catch(error){
+                    console.log("no music played")
+                    return message.channel.send("**No music is currently played!**")
+                }
+            }
         }else{
             console.log(message.author + " already voted");
             return message.reply("** already voted**");
