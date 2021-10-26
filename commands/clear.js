@@ -5,16 +5,11 @@ module.exports = {
     aliases: ['c', 'cl'],
     decription: "deletes all message in a channel",
     async execute(message) {
-        let fetched;
-        let count = 0;
-        do {
-            fetched = await message.channel.messages.fetch({limit: 100});
-            console.log(fetched.size)
-            console.log(fetched)
-            message.channel.bulkDelete(fetched);
-            count++;
-        }
-        while(fetched.size >= 2 && count < 10);
-        console.log("finished")
+
+        message.channel.bulkDelete(100).then(() => {
+            message.channel.send("**Deleted 100 messages!**").then(msg => msg.delete(3000));
+        });
+
+        console.log("deleted 100 messages")
     }
 };
