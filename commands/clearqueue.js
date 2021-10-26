@@ -1,8 +1,6 @@
 const discord = require('discord.js')
 const songTit = require("./play")
 
-global.queueCleared = false;
-
 module.exports = {
     name: 'clearqueue',
     aliases: ['cq', 'clearq'],
@@ -18,10 +16,16 @@ module.exports = {
             console.log("queue empty cant clear");
             return message.channel.send("**There is nothing to clear - the queue is empty!**");
         }
+        try{
+            songTitles.splice(2, songTitles.length-2)
+            server_queue.songs = []
+            console.log("server queue defined, clearing it")
+        }catch(err){
+            console.log("server queue not defined, clearing queue constructor")
+            queue_constructor.songs = []
+        }
         
-        songTitles.splice(2, songTitles.length-2)
-        queue.delete(message.guild.id);
-        queueCleared = true;
+
         return message.channel.send("**Queue has been successfully cleared!**");
     }
 }
