@@ -31,6 +31,7 @@ module.exports = {
                     return message.channel.send("**Skipped!**");
                     }
                 }
+                if(YoutubeTitle.length === 1) throw error;
                 if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                     server_queue.connection.dispatcher.end();
                     voted = []
