@@ -15,6 +15,7 @@ module.exports = {
             return message.channel.send("***" + removedTitle + "*** **has been successfully removed from the queue!**");
         }catch(err){
             console.log("tried to remove song from empty queue")
+            return message.channel.send("**Queue is empty!**");
         }
     }
 };
