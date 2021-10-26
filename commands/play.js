@@ -55,7 +55,7 @@ module.exports = {
 
         //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
         if (!server_queue || server_queue.songs.length == 0){
-
+            queueCleared = false;
             global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
@@ -98,7 +98,7 @@ const video_player = async (guild, song) => {
         songTitles = [""]
         YoutubeTitle = [""]
         queue.delete(guild.id);
-        return song_queue.voice_channel.leave();
+        if(!queueCleared) return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { filter: 'audioonly' });
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
