@@ -56,7 +56,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
-    let res = await lyricsFinder(singer, songTitle) || "Not Found"
+    let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -109,7 +109,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
 const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
     let current = 0
     console.log("current song title no play: " + songTitle)
-    let res = await lyricsFinder(singer, songTitle) || "Not Found"
+    let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
