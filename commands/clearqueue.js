@@ -10,7 +10,7 @@ module.exports = {
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
         try{
             if(!server_queue){
-                
+
             }
         }catch(err){
             console.log("queue empty cant clear");
@@ -19,7 +19,7 @@ module.exports = {
         
         
         songTitles.splice(2, songTitles.length-2)
-        queue.delete(message.guild.id);
+        server_queue.songs = []
         return message.channel.send("**Queue has been successfully cleared!**");
     }
 }
