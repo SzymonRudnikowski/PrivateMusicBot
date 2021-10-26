@@ -10,9 +10,11 @@ module.exports = {
         let singer = "";
         let pages = []
         if(!message.content.startsWith(prefix)) return
+        console.log(args)
         if(args.length){
             const regex = /,/g;
             songNoPlay = args.toString().replace(regex, ' ')
+            console.log("showing lyrics only: " + songNoPlay)
             return displayLyricsNoPlay(pages, singer, songNoPlay, message);
         }
         const voice_channel = message.member.voice.channel
