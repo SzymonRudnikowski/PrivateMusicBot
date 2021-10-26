@@ -12,7 +12,7 @@ module.exports = {
             let text = ""
             for(let i = 0; i < 10; i++){
                 if(i === server_queue.songs.length) break;
-                text += server_queue.songs[i] + '\n'
+                text += '%d' + '. ' + server_queue.songs[i] + '\n', i+1
             }
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
