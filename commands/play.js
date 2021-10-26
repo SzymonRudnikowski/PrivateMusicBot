@@ -98,6 +98,7 @@ const video_player = async (guild, song) => {
         console.log('Queue ended')
         songTitles = [""]
         YoutubeTitle = [""]
+        serverQueueCreated = false;
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
@@ -110,7 +111,10 @@ const video_player = async (guild, song) => {
             YoutubeTitle.splice(1, 1);
             console.log("not looped shifting this shit")
         }
-        else console.log("looped no shifting")
+        else {
+            console.log("looped no shifting")
+            return;
+        }
         console.log("finished somehow")
         video_player(guild, song_queue.songs[0]);
     });
