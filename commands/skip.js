@@ -6,7 +6,7 @@ global.vote_count = 0;
 module.exports = {
     name: 'skip',
     aliases: ['s'],
-    decription: "skips song that is currently playing in the queue",
+    decription: "skips song that is currently played",
     async execute(message) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
         if(looped){
