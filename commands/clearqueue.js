@@ -8,7 +8,15 @@ module.exports = {
     async execute(message){
         const voice_channel = message.member.voice.channel;
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
-        if(!server_queue) return message.channel.send("**There is nothing to clear - the queue is empty!**");
+        try{
+            if(!server_queue){
+                
+            }
+        }catch(err){
+            console.log("queue empty cant clear");
+            return message.channel.send("**There is nothing to clear - the queue is empty!**");
+        }
+        
         
         songTitles.splice(2, songTitles.length-2)
         queue.delete(message.guild.id);
