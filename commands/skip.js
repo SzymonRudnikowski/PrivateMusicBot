@@ -18,27 +18,30 @@ module.exports = {
             vote_count++;
             console.log("voted! vote count: " + vote_count);
             message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
-            if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
-                try{
-                    if(!server_queue || server_queue.songs.length === 0){
+            
+            try{
+                if(!server_queue || server_queue.songs.length === 0){
+                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                         queue_constructor.connection.dispatcher.end();
-                        console.log('Skipped!')
-                        songTitles.splice(1, 1);
-                        YoutubeTitle.splice(1, 1);
-                        voted = []
-                        vote_count = 0
-                        return message.channel.send("**Skipped!**");
+                    console.log('Skipped!')
+                    songTitles.splice(1, 1);
+                    YoutubeTitle.splice(1, 1);
+                    voted = []
+                    vote_count = 0
+                    return message.channel.send("**Skipped!**");
                     }
+                }
+                if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                     server_queue.connection.dispatcher.end();
                     voted = []
                     vote_count = 0
                     console.log('Skipped!')
-                    return message.channel.send("**Skipped!**");
+                    return message.channel.send("**Skipped!**"); 
                 }
-                catch(error){
-                    console.log("no music played")
-                    return message.channel.send("**No music is currently played!**")
-                }
+            }
+            catch(error){
+                console.log("no music played")
+                return message.channel.send("**No music is currently played!**")
             }
         }else{
             console.log(message.author + " already voted");
