@@ -13,6 +13,7 @@ module.exports = {
             console.log("skip while looped")
             return message.channel.send("**Can't skip while in loop!**");
         }
+        if(YoutubeTitle.length === 1) return message.channel.send("**No music is currently played!**")
         if(!voted.includes(message.author.id)){
             voted.push(message.author.id)
             vote_count++;
@@ -27,10 +28,6 @@ module.exports = {
                         vote_count = 0
                         queue_constructor.connection.dispatcher.end();
                         return message.channel.send("**Skipped!**");
-                    }
-                    if(YoutubeTitle.length === 1 || songTitles.length === 1) {
-                        console.log("error thrown") 
-                        throw error
                     }
                     console.log("voted! vote count: " + vote_count);
                     return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
