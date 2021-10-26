@@ -34,7 +34,7 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('**Queue: **')
-            .setDescription(text)
+            .setDescription("Empty")
             .setFooter('PMB');
             return message.channel.send(embed);
         }
