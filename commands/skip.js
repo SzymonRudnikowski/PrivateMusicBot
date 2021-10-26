@@ -16,19 +16,20 @@ module.exports = {
         if(!voted.includes(message.author.id)){
             voted.push(message.author.id)
             vote_count++;
-            console.log("voted! vote count: " + vote_count);
-            message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
             
             try{
                 if(!server_queue || server_queue.songs.length === 0){
                     if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                         queue_constructor.connection.dispatcher.end();
-                    console.log('Skipped!')
-                    songTitles.splice(1, 1);
-                    YoutubeTitle.splice(1, 1);
-                    voted = []
-                    vote_count = 0
-                    return message.channel.send("**Skipped!**");
+                        console.log('Skipped!')
+                        songTitles.splice(1, 1);
+                        YoutubeTitle.splice(1, 1);
+                        voted = []
+                        vote_count = 0
+                        return message.channel.send("**Skipped!**");
+                    }else{
+                        console.log("voted! vote count: " + vote_count);
+                        return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
                     }
                 }
                 if(YoutubeTitle.length === 1) throw error;
@@ -38,6 +39,9 @@ module.exports = {
                     vote_count = 0
                     console.log('Skipped!')
                     return message.channel.send("**Skipped!**"); 
+                }else{
+                    console.log("voted! vote count: " + vote_count);
+                    return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
                 }
             }
             catch(error){
