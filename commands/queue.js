@@ -9,7 +9,7 @@ module.exports = {
         const voice_channel = message.member.voice.channel;
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
         try{
-            if(!server_queue){
+            if(!server_queue || !queue_constructor){
 
             }
         }catch(err){
