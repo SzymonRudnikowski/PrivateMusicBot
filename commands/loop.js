@@ -14,6 +14,6 @@ module.exports = {
         if(looped) return message.channel.send("**Already in a loop!**");
         looped = true;
         console.log("looped! status: " + looped)
-        return message.channel.send("***" + songTitles[1] + "*** **looped!**");
+        return message.channel.send("***" + YoutubeTitle[1] + "*** **looped!**");
     }
 }
