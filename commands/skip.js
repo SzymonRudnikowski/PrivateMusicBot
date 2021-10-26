@@ -28,12 +28,12 @@ module.exports = {
                         queue_constructor.connection.dispatcher.end();
                         return message.channel.send("**Skipped!**");
                     }
+                    if(YoutubeTitle.length === 1 || songTitles.length === 1) {
+                        console.log("error thrown") 
+                        throw error
+                    }
                     console.log("voted! vote count: " + vote_count);
                     return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
-                }
-                if(YoutubeTitle.length === 1 || songTitles.length === 1) {
-                    console.log("error thrown") 
-                    throw error
                 }
                 if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                     voted = []
