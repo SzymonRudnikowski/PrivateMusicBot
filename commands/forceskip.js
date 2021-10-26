@@ -15,10 +15,10 @@ module.exports = {
                 if(!server_queue || server_queue.songs.length === 0){
                     voted = []
                     vote_count = 0
-                    queue_constructor.connection.dispatcher.end();
-                    console.log('Skipped!')
                     songTitles.splice(1, 1);
                     YoutubeTitle.splice(1, 1);
+                    queue_constructor.connection.dispatcher.end();
+                    console.log('Skipped!')
                     return message.channel.send("**Skipped!**");
                 }
                 voted = []
