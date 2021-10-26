@@ -9,7 +9,7 @@ client.aliases = new Discord.Collection();
 
 const BOT_ID = "892442837252206633";
 
-const prefix = "!";
+global.prefix = "!";
 
  
 client.on("ready", () => {
