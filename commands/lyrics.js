@@ -108,7 +108,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
 
 const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
     let current = 0
-    console.log("current song title: " + songTitle)
+    console.log("current song title no play: " + songTitle)
     let res = await lyricsFinder(singer, songTitle) || "Not Found"
 
     for(let i = 0; i < res.length; i += 2048) {
