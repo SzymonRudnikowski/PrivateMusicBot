@@ -13,7 +13,7 @@ module.exports = {
             console.log("skip while looped")
             return message.channel.send("**Can't skip while in loop!**");
         }
-        if(vote_count > message.member.voice.channel.members.size - 1){
+        if(vote_count + 1 === message.member.voice.channel.members.size - 1){
             try{
                 if(!server_queue || server_queue.songs.length === 0){
                     queue_constructor.connection.dispatcher.end();
@@ -37,7 +37,7 @@ module.exports = {
             voted.push(message.author.id)
             vote_count++;
             console.log("voted! vote count: " + vote_count);
-            message.channel.send("**Voted! (**" + vote_count + "**/**" + Math.ceil((message.member.voice.channel.members.size-1)/2) + "**)**");
+            message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
         }else{
             console.log(message.author + " already voted");
             return message.reply("** already voted**");
