@@ -8,12 +8,14 @@ module.exports = {
     async execute(message){
         const voice_channel = message.member.voice.channel;
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
+        
         try{
             let text = ""
             for(let i = 0; i < 10; i++){
                 if(i === server_queue.songs.length) break;
-                text += (i+1) + '. ' + server_queue.songs[i] + '\n'
+                text += (i+1) + '. ' + server_queue.songs[i].toString() + '\n'
             }
+            console.log("showing queue in channel: " + voice_channel.name)
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('**Queue: **')
