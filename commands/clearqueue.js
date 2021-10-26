@@ -18,11 +18,11 @@ module.exports = {
         }
         try{
             songTitles.splice(2, songTitles.length-2)
-            server_queue.songs = []
+            server_queue.songs.splice(1, server_queue.songs.length-1)
             console.log("server queue defined, clearing it")
         }catch(err){
             console.log("server queue not defined, clearing queue constructor")
-            queue_constructor.songs = []
+            queue_constructor.songs.splice(1, queue_constructor.songs.length-1)
         }
         
 
