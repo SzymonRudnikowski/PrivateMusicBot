@@ -15,7 +15,7 @@ module.exports = {
             else{
                 for(let i = 1; i <= 10; i++){
                     if(i === server_queue.songs.length) break;
-                    text += (i+1) + '. ' + server_queue.songs[i].title + '\n'
+                    text += i + '. ' + server_queue.songs[i].title + '\n'
                 }
             }
             
