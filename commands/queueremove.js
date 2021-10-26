@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 module.exports = {
     name: 'queueremove',
     aliases: ['queue_remove', 'qr'],
-    decription: "skips song that is currently playing in the queue",
+    decription: "removes a specific song from queue",
     async execute(message, args) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
         if(!args.length) return message.channel.send(`${message.author} **You need to specify position in queue to remove!**`);
