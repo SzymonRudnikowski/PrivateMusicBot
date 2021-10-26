@@ -33,13 +33,16 @@ module.exports = {
         console.log(YoutubeTitle)
         if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
         
-        let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics", "i")
-        while(songTitles[1].match(reg)){
-            songTitles[1] = songTitles[1].replace(songTitles[1].match(reg), '')
-        }
-        while(YoutubeTitle[1].match(reg)){
-            YoutubeTitle[1] = YoutubeTitle[1].replace(YoutubeTitle[1].match(reg), '')
-        }
+        try{
+            let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics", "i")
+            while(songTitles[1].match(reg)){
+                songTitles[1] = songTitles[1].replace(songTitles[1].match(reg), '')
+            }
+            while(YoutubeTitle[1].match(reg)){
+                YoutubeTitle[1] = YoutubeTitle[1].replace(YoutubeTitle[1].match(reg), '')
+            }
+        }catch(err){}
+        
         global.changed = false
 
 
