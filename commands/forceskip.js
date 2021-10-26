@@ -10,7 +10,7 @@ module.exports = {
             console.log("skip while looped")
             return message.channel.send("**Can't skip while in loop!**");
         }
-        if(message.member.hasPermission(['ADMINISTRATOR']) || member.roles.cache.some(role => role.name === 'DJ') || message.author.id === '259046058737270784' || message.author.id === '391983289122029578'){
+        if(message.member.hasPermission(['ADMINISTRATOR']) || message.member.roles.cache.some(role => role.name === 'DJ') || message.author.id === '259046058737270784' || message.author.id === '391983289122029578'){
             try{
                 if(!server_queue || server_queue.songs.length === 0){
                     queue_constructor.connection.dispatcher.end();
