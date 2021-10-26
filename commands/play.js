@@ -7,6 +7,7 @@ global.queue = new Map();
 global.currentSongTitle = "";
 global.songTitles = [""];
 global.YoutubeTitle = [""];
+global.serverQueueCreated = false;
 
 module.exports = {
     name: 'play',
@@ -54,7 +55,7 @@ module.exports = {
         }
 
         //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
-        if (!server_queue || server_queue.songs.length == 0){
+        if (!server_queue || server_queue.songs.length == 0 && !serverQueueCreated){
             global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
@@ -65,6 +66,7 @@ module.exports = {
             //Add our key and value pair into the global queue. We then use this to get our server queue.
             queue.set(message.guild.id, queue_constructor);
             queue_constructor.songs.push(song);
+            serverQueueCreated = true
 
             //Establish a connection and play the song with the vide_player function.
             try {
