@@ -1,7 +1,7 @@
 const Discord = require('discord.js')
 
-voted = [];
-vote_count = 0;
+let voted = [];
+let vote_count = 0;
 
 module.exports = {
     name: 'skip',
@@ -23,6 +23,8 @@ module.exports = {
                     return message.channel.send("**Skipped!**");
                 }
                 server_queue.connection.dispatcher.end();
+                voted = []
+                vote_count = 0
                 console.log('Skipped!')
                 return message.channel.send("**Skipped!**");
             }
