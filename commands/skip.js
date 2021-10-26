@@ -42,6 +42,8 @@ module.exports = {
             }
             catch(error){
                 console.log("no music played")
+                vote_count = 0
+                voted = []
                 return message.channel.send("**No music is currently played!**")
             }
         }else{
