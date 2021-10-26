@@ -13,7 +13,7 @@ module.exports = {
             let text = ""
             for(let i = 0; i < 10; i++){
                 if(i === server_queue.songs.length) break;
-                text += (i+1) + '. ' + server_queue.songs[i].toString() + '\n'
+                text += (i+1) + '. ' + server_queue.songs[i].title + '\n'
             }
             console.log("showing queue in channel: " + voice_channel.name)
             const embed = new Discord.MessageEmbed()
