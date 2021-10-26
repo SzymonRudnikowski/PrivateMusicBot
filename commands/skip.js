@@ -19,7 +19,7 @@ module.exports = {
             
             try{
                 if(!server_queue || server_queue.songs.length === 0){
-                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
+                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                         queue_constructor.connection.dispatcher.end();
                         console.log('Skipped!')
                         songTitles.splice(1, 1);
@@ -29,10 +29,10 @@ module.exports = {
                         return message.channel.send("**Skipped!**");
                     }
                     console.log("voted! vote count: " + vote_count);
-                    return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
+                    return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
                 }
                 if(YoutubeTitle.length === 1) throw error;
-                if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
+                if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                     voted = []
                     vote_count = 0
                     server_queue.connection.dispatcher.end();
@@ -40,7 +40,7 @@ module.exports = {
                     return message.channel.send("**Skipped!**"); 
                 }
                 console.log("voted! vote count: " + vote_count);
-                return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
+                return message.channel.send("**Voted! **(" + vote_count + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
             }
             catch(error){
                 console.log("no music played")
