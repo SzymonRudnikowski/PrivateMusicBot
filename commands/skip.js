@@ -23,7 +23,7 @@ module.exports = {
             return message.channel.send("**Skipped!**");
         }
         catch(error){
-            console.log(error)
+            console.log("no music played")
             return message.channel.send("**No music is currently played!**")
         }
     }
