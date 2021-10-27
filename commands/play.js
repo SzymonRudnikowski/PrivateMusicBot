@@ -121,6 +121,6 @@ const video_player = async (guild, song) => {
     
     if(!looped) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
-    YoutubeTitle.push(song.title)
+    if(!looped) YoutubeTitle.push(song.title)
     console.log(YoutubeTitle)
 }
