@@ -110,13 +110,17 @@ const video_player = async (guild, song) => {
             songTitles.splice(1, 1);
             YoutubeTitle.splice(1, 1);
             console.log("not looped shifting this shit")
+            return video_player(guild, song_queue.songs[0]);
         }
-        else console.log("looped no shifting")
-
-        video_player(guild, song_queue.songs[0]);
+        else {
+            console.log("looped no shifting")
+            return video_player(guild, song_queue.songs[0]);
+        }
+        
     });
     
     if(!looped) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
     YoutubeTitle.push(song.title)
+    console.log(YoutubeTitle)
 }
