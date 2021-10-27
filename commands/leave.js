@@ -4,13 +4,17 @@ module.exports = {
     name: 'leave',
     aliases: ['dsc', 'dc'],
     decription: "stops the song that is currently playing in the queue and leaves the channel",
-    async execute(message, args) {
+    async execute(message, args, command, client) {
         const voice_channel = message.member.voice.channel;
         if (!message.member.voice.channel) {
             console.log('Stop song command while not in channel.')
             return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
         }
-        if(!message.guild.me.voice.channelID) return message.channel.send('**I\'m not in your channel!**')
+        const inSameChannel = client.voice.connections.some(
+            (connection) => connection.channel.id === message.member.voice.channelID
+        )
+          
+        if (!inSameChannel) return message.channel.send('You need to be in the same channel as the bot!')
 
         songTitles = [""]
         YoutubeTitle = [""] 
