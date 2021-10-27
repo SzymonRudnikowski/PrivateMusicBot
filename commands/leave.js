@@ -14,7 +14,7 @@ module.exports = {
             (connection) => connection.channel.id === message.member.voice.channelID
         )
           
-        if (!inSameChannel) return message.channel.send('You need to be in the same channel as the bot!')
+        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
 
         songTitles = [""]
         YoutubeTitle = [""] 
