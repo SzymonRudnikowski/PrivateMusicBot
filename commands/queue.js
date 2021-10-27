@@ -29,7 +29,6 @@ module.exports = {
 
             return message.channel.send(embed);
         }catch(err){
-            console.log(err)
             console.log("queue empty cant show");
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
