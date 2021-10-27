@@ -1,9 +1,6 @@
 const discord = require('discord.js')
 const lyricsFinder = require("lyrics-finder")
-const Xvfb = require('xvfb');
 const songTit = require("./play")
-
-const xvfb = new Xvfb();
 
 module.exports = {
     name: 'lyrics',
@@ -59,9 +56,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
-    xvfb.startSync();
     let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
-    xvfb.stopSync();
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -114,9 +109,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
 const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
     let current = 0
     console.log("current song title no play: " + songTitle)
-    xvfb.startSync();
     let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
-    xvfb.stopSync();
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
