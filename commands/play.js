@@ -110,11 +110,11 @@ const video_player = async (guild, song) => {
             songTitles.splice(1, 1);
             YoutubeTitle.splice(1, 1);
             console.log("not looped shifting this shit")
-            return video_player(guild, song_queue.songs[0]);
+            video_player(guild, song_queue.songs[0]);
         }
         else {
             console.log("looped no shifting")
-            return video_player(guild, song_queue.songs[0]);
+            video_player(guild, song_queue.songs[0]);
         }
         
     });
