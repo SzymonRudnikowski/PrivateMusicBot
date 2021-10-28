@@ -32,7 +32,7 @@ module.exports = {
             
             try{
                 if(!server_queue || server_queue.songs.length === 0){
-                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
+                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                         console.log('Skipped!')
                         songTitles.get(message.guild.id).splice(1, 1);
                         YoutubeTitle.get(message.guild.id).splice(1, 1);
@@ -42,9 +42,9 @@ module.exports = {
                         return message.channel.send("**Skipped!**");
                     }
                     console.log("voted! vote count: " + vote_count.get(message.guild.id));
-                    return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                    return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
                 }
-                if(vote_count.get(message.guild.id) === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
+                if(vote_count.get(message.guild.id) === Math.ceil((message.member.voice.channel.members.size-1)*0.5)){
                     voted.set(message.guild.id, []);
                     vote_count.set(message.guild.id, 0);
                     server_queue.connection.dispatcher.end();
@@ -52,7 +52,7 @@ module.exports = {
                     return message.channel.send("**Skipped!**"); 
                 }
                 console.log("voted! vote count: " + vote_count.get(message.guild.id));
-                return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.5) + ")");
             }
             catch(error){
                 console.log("no music played")
