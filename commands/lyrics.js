@@ -1,6 +1,8 @@
 const discord = require('discord.js')
 const lyricsFinder = require("lyrics-finder")
 const songTit = require("./play")
+const Genius = require("genius-lyrics");
+const Client = new Genius.Client();
 
 module.exports = {
     name: 'lyrics',
@@ -56,7 +58,16 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
-    let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
+    //let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
+    
+    let res;
+    try{
+        const searches = await Client.songs.search(songTitle);
+        const firstSong = searches[0];
+        res = await firstSong.lyrics()
+    }catch(err){
+        res = "Not Found"
+    }
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -109,7 +120,17 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
 const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
     let current = 0
     console.log("current song title no play: " + songTitle)
-    let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
+    //let res = await lyricsFinder(singer, songTitle) || "Not Found or Google is blocking the connection"
+    
+    let res;
+    try{
+        const searches = await Client.songs.search(songTitle);
+        const firstSong = searches[0];
+        res = await firstSong.lyrics()
+    }catch(err){
+        res = "Not Found"
+    }
+    
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
