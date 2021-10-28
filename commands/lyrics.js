@@ -2,7 +2,7 @@ const discord = require('discord.js')
 const lyricsFinder = require("lyrics-finder")
 const songTit = require("./play")
 const Genius = require("genius-lyrics");
-const Client = new Genius.Client("PfeeBIzat8Qig5aDqJ7OvPXhLVGJzD1KQHm9GkB0PsW9tpVzkfv3WoaBzebQ6chAr8jSgQ2lsgZUf8-go2Kr5Q");
+const Client = new Genius.Client("8OE3KOHpWhaqAu-iLOWsX7X7hSLSAXKAYAUiu43usf-mmZmknsDAi5jlvSxdZVIg");
 
 module.exports = {
     name: 'lyrics',
