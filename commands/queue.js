@@ -1,6 +1,8 @@
 const Discord = require('discord.js')
 const songTit = require("./play")
 
+global.text = new Map();
+
 module.exports = {
     name: 'queue',
     aliases: ['q'],
@@ -10,12 +12,13 @@ module.exports = {
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
         
         try{
-            let text = ""
-            if(queue_constructor.songs.length === 1) text = "Empty"
+            if(!text.has(message.guild.id)) text.set(message.guild.id, "Empty");
+            else text.set(message.guild.id, "");
+            if(queue_constructor.songs.length === 1) text.set(message.guild.id, "Empty");
             else{
                 for(let i = 1; i <= 10; i++){
-                    if(i === server_queue.songs.length) break;
-                    text += i + '. ' + server_queue.songs[i].title + '\n'
+                    if(i === queue.get(message.guild.id).songs.length) break;
+                    text.set(message.guild.id, text.get(message.guild.id) + i + '. ' + queue.get(message.guild.id).songs[i].title + '\n')
                 }
             }
             
@@ -24,7 +27,7 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('**Queue: **')
-            .setDescription(text)
+            .setDescription(text.get(message.guild.id))
             .setFooter('PMB');
 
             return message.channel.send(embed);

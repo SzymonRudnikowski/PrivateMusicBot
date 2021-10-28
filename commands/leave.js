@@ -16,35 +16,35 @@ module.exports = {
           
         if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
 
-        songTitles = [""]
-        YoutubeTitle = [""] 
+        songTitles.set(message.guild.id, [""])
+        YoutubeTitle.set(message.guild.id, [""]) 
         try{
             if(!server_queue){
                 console.log("chuj mi w dupe 2x")
                 queue_constructor.connection.dispatcher.end()
                 queue_constructor.songs = []
-                looped = false;
-                serverQueueCreated = false;
+                looped.delete(message.guild.id);
+                queueCreated.delete(message.guild.id);
                 console.log("unlooped leave! status: " + looped)
-                voted = []
-                vote_count = 0
+                voted.delete(message.guild.id)
+                vote_count.delete(message.guild.id);
                 return voice_channel.leave();
             } else {
                 console.log("chuj mi w dupe")
                 server_queue.connection.dispatcher.end();  
                 queue_constructor.songs = []
                 server_queue.songs = [];  
-                looped = false;
-                serverQueueCreated = false;
+                looped.delete(message.guild.id);
+                queueCreated.delete(message.guild.id);
                 console.log("unlooped leave! status: " + looped)
-                voted = []
-                vote_count = 0
+                voted.delete(message.guild.id)
+                vote_count.delete(message.guild.id);
                 return voice_channel.leave(); 
             } 
         }catch(err){
             console.log('no server queue, just leaving the channel')
-            voted = []
-            vote_count = 0
+            voted.delete(message.guild.id)
+            vote_count.delete(message.guild.id);
             return voice_channel.leave();
         }
         

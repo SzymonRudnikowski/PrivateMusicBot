@@ -4,10 +4,9 @@ const ytSearch = require('yt-search');
 
 //Global queue for your bot. Every server will have a key and value pair in this map. { guild.id, queue_constructor{} }
 global.queue = new Map();
-global.currentSongTitle = "";
-global.songTitles = [""];
-global.YoutubeTitle = [""];
-global.serverQueueCreated = false;
+global.songTitles = new Map();
+global.YoutubeTitle = new Map();
+global.queueCreated = new Map();
 
 module.exports = {
     name: 'play',
@@ -25,16 +24,20 @@ module.exports = {
 
         //This is our server queue. We are getting this server queue from the global queue.
         global.server_queue = queue.get(message.guild.id);
+        if(!queueCreated.has(message.guild.id)) queueCreated.set(message.guild.id, false);
+        if(!songTitles.has(message.guild.id)) songTitles.set(message.guild.id, [""]);
+        if(!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
         if (!args.length) return message.channel.send('You need to send the second argument!');
         let song = { title: "", url: ""}
+        let currentSongTitle = "";
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
             const song_info = await ytdl.getInfo(args[0]);
             song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
             currentSongTitle = song.title
-            songTitles.push(currentSongTitle)
+            songTitles.get(message.guild.id).push(currentSongTitle)
         } else {
             //If there was no link, we use keywords to search for a video. Set the song object to have two keys. Title and URl.
             const video_finder = async (query) =>{
@@ -43,7 +46,7 @@ module.exports = {
             }
             const regex = /,/g;
             currentSongTitle = args.toString().replace(regex, ' ')
-            songTitles.push(currentSongTitle)
+            songTitles.get(message.guild.id).push(currentSongTitle)
 
             const video = await video_finder(args.join(' '));
             if (video){
@@ -55,7 +58,7 @@ module.exports = {
         }
 
         //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
-        if (!server_queue || server_queue.songs.length == 0 && !serverQueueCreated){
+        if (!server_queue || server_queue.songs.length == 0 && !queueCreated.get(message.guild.id)){
             global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
@@ -66,7 +69,7 @@ module.exports = {
             //Add our key and value pair into the global queue. We then use this to get our server queue.
             queue.set(message.guild.id, queue_constructor);
             queue_constructor.songs.push(song);
-            serverQueueCreated = true
+            queueCreated.set(message.guild.id, true);
 
             //Establish a connection and play the song with the vide_player function.
             try {
@@ -96,19 +99,19 @@ const video_player = async (guild, song) => {
     //If no song is left in the server queue. Leave the voice channel and delete the key and value pair from the global queue.
     if (!song) {
         console.log('Queue ended')
-        songTitles = [""]
-        YoutubeTitle = [""]
-        serverQueueCreated = false;
+        songTitles.delete(guild.id);
+        YoutubeTitle.delete(guild.id);
+        queueCreated.delete(guild.id);
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { filter: 'audioonly' });
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
-        if(!looped){
+        if(!looped.get(song_queue.text_channel.guild.id)){
             song_queue.songs.shift();
-            songTitles.splice(1, 1);
-            YoutubeTitle.splice(1, 1);
+            songTitles.get(guild.id).splice(1, 1);
+            YoutubeTitle.get(guild.id).splice(1, 1);
             console.log("not looped shifting this shit")
             video_player(guild, song_queue.songs[0]);
         }
@@ -119,8 +122,8 @@ const video_player = async (guild, song) => {
         
     });
     
-    if(!looped) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
+    if(!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
-    if(!looped) YoutubeTitle.push(song.title)
-    console.log(YoutubeTitle)
+    if(!looped.get(guild.id)) YoutubeTitle.get(guild.id).push(song.title)
+    console.log(YoutubeTitle.get(guild.id))
 }

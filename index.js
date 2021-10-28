@@ -10,7 +10,6 @@ client.aliases = new Discord.Collection();
 const BOT_ID = "892442837252206633";
 
 global.prefix = "!";
-
  
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -55,7 +54,7 @@ client.on("message", message => {
   }
 
   try{
-    com.execute(message, args, com, client);
+      com.execute(message, args, com, client);
   }catch(error){
       console.error(error);
       message.reply('**There was an issue executing this command!**');

@@ -8,7 +8,6 @@ module.exports = {
     aliases: ['l'],
     description: 'a command that checks the lyrics for a given song',
     async execute(message, args, command, Client){
-        let singer = "";
         let pages = []
         if(!message.content.startsWith(prefix)) return
         console.log(args)
@@ -16,7 +15,7 @@ module.exports = {
             const regex = /,/g;
             songNoPlay = args.toString().replace(regex, ' ')
             console.log("showing lyrics only: " + songNoPlay)
-            return displayLyricsNoPlay(pages, singer, songNoPlay, message);
+            return displayLyricsNoPlay(pages, songNoPlay, message);
         }
         const voice_channel = message.member.voice.channel
         if (!voice_channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
@@ -30,30 +29,31 @@ module.exports = {
             throw err;
         }
 
-        console.log(songTitles)
-        console.log(YoutubeTitle)
-        if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
+        console.log(songTitles.get(message.guild.id))
+        console.log(YoutubeTitle.get(message.guild.id))
+        if(!songTitles.has(message.guild.id) || songTitles.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
         
         try{
             let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics", "i")
-            while(songTitles[1].match(reg)){
-                songTitles[1] = songTitles[1].replace(songTitles[1].match(reg), '')
+            while(songTitles.get(message.guild.id)[1].match(reg)){
+                songTitles.get(message.guild.id)[1] = songTitles.get(message.guild.id)[1].replace(songTitles.get(message.guild.id)[1].match(reg), '')
             }
-            while(YoutubeTitle[1].match(reg)){
-                YoutubeTitle[1] = YoutubeTitle[1].replace(YoutubeTitle[1].match(reg), '')
+            while(YoutubeTitle.get(message.guild.id)[1].match(reg)){
+                YoutubeTitle.get(message.guild.id)[1] = YoutubeTitle.get(message.guild.id)[1].replace(YoutubeTitle.get(message.guild.id)[1].match(reg), '')
             }
         }catch(err){}
         
-        global.changed = false
+        global.changed = new Map();
+        if(changed.has(message.guild.id)) changed.set(message.guild.id, false);
 
 
-        displayLyrics(pages, singer, songTitles[1], message);
+        displayLyrics(pages, songTitles.get(message.guild.id)[1], message);
 
   
     }
 }
 
-const displayLyrics = async (pages, singer, songTitle, message) => {
+const displayLyrics = async (pages, songTitle, message) => {
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
     let current = 0
     console.log("current song title: " + songTitle)
@@ -101,13 +101,13 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
             if(!changed) {
                 changed = true
                 Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
-                displayLyrics(pages, singer, YoutubeTitle[1], message) 
+                displayLyrics(pages, YoutubeTitle.get(message.guild.id)[1], message) 
                 Embed.delete()
             }
             else {
                 changed = false
                 Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
-                displayLyrics(pages, singer, songTitles[1], message) 
+                displayLyrics(pages, songTitles.get(message.guild.id)[1], message) 
                 Embed.delete()
             }
             
@@ -116,7 +116,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
     
 }
 
-const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
+const displayLyricsNoPlay = async (pages, songTitle, message) => {
     let current = 0
     console.log("current song title no play: " + songTitle)
     
