@@ -66,6 +66,7 @@ const displayLyrics = async (pages, singer, songTitle, message) => {
         const firstSong = searches[0];
         res = await firstSong.lyrics()
     }catch(err){
+        console.log(err)
         res = "Not Found"
     }
 
@@ -128,6 +129,7 @@ const displayLyricsNoPlay = async (pages, singer, songTitle, message) => {
         const firstSong = searches[0];
         res = await firstSong.lyrics()
     }catch(err){
+        console.log(err)
         res = "Not Found"
     }
     
