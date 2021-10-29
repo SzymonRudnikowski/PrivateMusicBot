@@ -11,7 +11,7 @@ module.exports = {
         }).catch(
             (error) => {
                 console.log(error);
-                return message.channel.send("**Ups... An error occurred while deleting the messages :(**");
+                return message.channel.send("**You can only delete messages that are under 14 days old!**");
             }
         );
         
