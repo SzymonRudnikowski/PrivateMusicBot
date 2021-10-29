@@ -7,14 +7,19 @@ module.exports = {
     name: 'queue',
     aliases: ['q'],
     description: 'shows first 10 songs in the queue',
-    async execute(message){
+    async execute(message, args, command, client){
         const voice_channel = message.member.voice.channel;
         if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
+        const inSameChannel = client.voice.connections.some(
+            (connection) => connection.channel.id === message.member.voice.channelID
+        )
+          
+        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
         
         try{
-            if(!text.has(message.guild.id)) text.set(message.guild.id, "Empty");
-            else text.set(message.guild.id, "");
-            if(queue_constructor.songs.length === 1) text.set(message.guild.id, "Empty");
+            if(!text.has(message.guild.id)) text.set(message.guild.id, "");
+            
+            if(queue_constructor.songs.length === 1 || queue.get(message.guild.id).songs.length === 1) text.set(message.guild.id, "Empty");
             else{
                 for(let i = 1; i <= 10; i++){
                     if(i === queue.get(message.guild.id).songs.length) break;

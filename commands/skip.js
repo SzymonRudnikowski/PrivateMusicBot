@@ -9,7 +9,7 @@ module.exports = {
     decription: "skips song that is currently played",
     async execute(message, args, com, client) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
-        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.length === 1) return message.channel.send("**No music is currently played!**")
+        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )
