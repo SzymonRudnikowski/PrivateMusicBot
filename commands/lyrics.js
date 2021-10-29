@@ -88,12 +88,12 @@ const displayLyrics = async (pages, songTitle, message) => {
         if(reaction.emoji.name === "➡️") {
             if(current < pages.length - 1) {
                 current += 1
-                Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
+                Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
             }
         } else if(reaction.emoji.name === "⬅️") {
                 if(current !== 0) {
                     current -= 1
-                    Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
+                    Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
                 }
         } else{
             console.log("displaying new lyrics")

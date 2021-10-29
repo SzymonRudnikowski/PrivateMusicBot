@@ -8,7 +8,15 @@ module.exports = {
 
         message.channel.bulkDelete(100).then(() => {
             message.channel.send("**Deleted 100 messages!**").then(msg => msg.delete(3000));
-        });
+        }).catch(
+            (error) => {
+                console.log(error);
+                return message.channel.send("**Ups... An error occurred while deleting the messages :(**");
+            }
+        );
+        
+        
+        
 
         console.log("deleted 100 messages")
     }
