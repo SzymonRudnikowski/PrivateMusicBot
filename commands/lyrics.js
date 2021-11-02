@@ -44,7 +44,7 @@ module.exports = {
         }catch(err){}
         
         global.changed = new Map();
-        if(changed.has(message.guild.id)) changed.set(message.guild.id, false);
+        if(!changed.has(message.guild.id)) changed.set(message.guild.id, false);
 
 
         displayLyrics(pages, songTitles.get(message.guild.id)[1], message);
@@ -88,24 +88,24 @@ const displayLyrics = async (pages, songTitle, message) => {
         if(reaction.emoji.name === "➡️") {
             if(current < pages.length - 1) {
                 current += 1
-                Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
+                Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
             }
         } else if(reaction.emoji.name === "⬅️") {
                 if(current !== 0) {
                     current -= 1
-                    Embed.edit(`Page: ${current+1}/${pages.length}`, pages[current])
+                    Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
                 }
         } else{
             console.log("displaying new lyrics")
             pages = []
-            if(!changed) {
-                changed = true
+            if(!changed.get(message.guild.id)) {
+                changed.set(message.guild.id, true);
                 Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
                 displayLyrics(pages, YoutubeTitle.get(message.guild.id)[1], message) 
                 Embed.delete()
             }
             else {
-                changed = false
+                changed.set(message.guild.id, false);
                 Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
                 displayLyrics(pages, songTitles.get(message.guild.id)[1], message) 
                 Embed.delete()

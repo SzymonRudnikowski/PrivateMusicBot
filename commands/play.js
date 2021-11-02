@@ -85,6 +85,11 @@ module.exports = {
             }
         } else{
             server_queue.songs.push(song);
+            const inSameChannel = client.voice.connections.some(
+                (connection) => connection.channel.id === message.member.voice.channelID
+            )
+              
+            if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
             console.log(`${song.title} added to queue!`)
             return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
         }
