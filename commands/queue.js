@@ -16,6 +16,7 @@ module.exports = {
             else text.set(message.guild.id, "");
             if(queue_constructor.songs.length === 1) text.set(message.guild.id, "Empty");
             else{
+                text.set(message.guild.id, "");
                 for(let i = 1; i <= 10; i++){
                     if(i === queue.get(message.guild.id).songs.length) break;
                     text.set(message.guild.id, text.get(message.guild.id) + i + '. ' + queue.get(message.guild.id).songs[i].title + '\n')

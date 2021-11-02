@@ -21,11 +21,10 @@ module.exports = {
 
         if(!voted.get(message.guild.id).includes(message.author.id)){
             voted.get(message.guild.id).push(message.author.id)
-            vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
             
             try{
                 if(!server_queue || server_queue.songs.length === 0){
-                    if(vote_count === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
+                    if(vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                         console.log('Skipped!')
                         songTitles.get(message.guild.id).splice(1, 1);
                         YoutubeTitle.get(message.guild.id).splice(1, 1);
@@ -34,16 +33,18 @@ module.exports = {
                         queue_constructor.connection.dispatcher.end();
                         return message.channel.send("**Skipped!**");
                     }
+                    vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
                     console.log("voted! vote count: " + vote_count.get(message.guild.id));
                     return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
                 }
-                if(vote_count.get(message.guild.id) === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
+                if(vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                     voted.set(message.guild.id, []);
                     vote_count.set(message.guild.id, 0);
                     server_queue.connection.dispatcher.end();
                     console.log('Skipped!')
                     return message.channel.send("**Skipped!**"); 
                 }
+                vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
                 console.log("voted! vote count: " + vote_count.get(message.guild.id));
                 return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
             }
