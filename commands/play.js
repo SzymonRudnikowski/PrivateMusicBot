@@ -17,10 +17,10 @@ module.exports = {
         
         //Checking for the voicechannel and permissions.
         const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
+        if (!voice_channel) return message.channel.send('**You need to be in a channel to execute this command!**');
         const permissions = voice_channel.permissionsFor(message.client.user);
-        if (!permissions.has('CONNECT')) return message.channel.send('You dont have the correct permissions');
-        if (!permissions.has('SPEAK')) return message.channel.send('You dont have the correct permissions');
+        if (!permissions.has('CONNECT')) return message.channel.send('**You dont have the correct permissions**');
+        if (!permissions.has('SPEAK')) return message.channel.send('**You dont have the correct permissions**');
 
         //This is our server queue. We are getting this server queue from the global queue.
         global.server_queue = queue.get(message.guild.id);
@@ -28,7 +28,7 @@ module.exports = {
         if(!songTitles.has(message.guild.id)) songTitles.set(message.guild.id, [""]);
         if(!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
-        if (!args.length) return message.channel.send('You need to send the second argument!');
+        if (!args.length) return message.channel.send('**You need to send the second argument!**');
         let song = { title: "", url: ""}
         let currentSongTitle = "";
 
