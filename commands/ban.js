@@ -33,7 +33,7 @@ module.exports = {
                     console.log(`${message.mentions.members.first()} banned!`)
                     return message.channel.send(`${message.mentions.members.first()} **has been successfuly banned from this server!**`)
                 } catch {
-                    
+                    return message.reply(`***I do not have permissions to ban ${message.mentions.members.first()}***`);
                 }
             } 
         }

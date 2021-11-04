@@ -9,6 +9,7 @@ module.exports = {
         if(!args.length) return message.channel.send(`${message.author} **You need to specify position in queue to remove!**`);
 
         try{
+            if(parseInt(args[0]) > server_queue.songs.length - 1 || parseInt(args[0]) < 1) return message.channel.send("**There is no such a position!**");
             let removedTitle = server_queue.songs[args[0]].title
             server_queue.songs.splice(args[0], 1);
             console.log("removed an item from queue")
