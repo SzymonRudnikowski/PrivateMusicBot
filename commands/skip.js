@@ -17,7 +17,7 @@ module.exports = {
 
         if(!voted.has(message.guild.id)) voted.set(message.guild.id, []);
 
-        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.length === 1) return message.channel.send("**No music is currently played!**")
+        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
 
         if(!voted.get(message.guild.id).includes(message.author.id)){
             voted.get(message.guild.id).push(message.author.id)
