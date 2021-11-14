@@ -34,7 +34,7 @@ module.exports = {
         if(!songTitles.has(message.guild.id) || songTitles.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
         
         try{
-            let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics", "i")
+            let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics|audio", "i")
             while(songTitles.get(message.guild.id)[1].match(reg)){
                 songTitles.get(message.guild.id)[1] = songTitles.get(message.guild.id)[1].replace(songTitles.get(message.guild.id)[1].match(reg), '')
             }
