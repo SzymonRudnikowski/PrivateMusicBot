@@ -57,8 +57,16 @@ module.exports = {
             }
         }
 
-        //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
-        if (!server_queue || server_queue.songs.length == 0 && !queueCreated.get(message.guild.id)){
+        try{
+            server_queue.songs.push(song);
+            const inSameChannel = client.voice.connections.some(
+                (connection) => connection.channel.id === message.member.voice.channelID
+            )
+              
+            if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
+            console.log(`${song.title} added to queue!`)
+            return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
+        }catch(err){
             global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
@@ -71,7 +79,7 @@ module.exports = {
             queue_constructor.songs.push(song);
             queueCreated.set(message.guild.id, true);
 
-            //Establish a connection and play the song with the vide_player function.
+            //Establish a connection and play the song with the video_player function.
             try {
                 const connection = await voice_channel.join();
                 console.log('Joined voice channel', voice_channel.name)
@@ -83,16 +91,9 @@ module.exports = {
                 console.log('Connection to channel error.')
                 throw err;
             }
-        } else{
-            server_queue.songs.push(song);
-            const inSameChannel = client.voice.connections.some(
-                (connection) => connection.channel.id === message.member.voice.channelID
-            )
-              
-            if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
-            console.log(`${song.title} added to queue!`)
-            return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
         }
+            
+        
         
     }
     
