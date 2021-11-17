@@ -6,7 +6,6 @@ const ytSearch = require('yt-search');
 global.queue = new Map();
 global.songTitles = new Map();
 global.YoutubeTitle = new Map();
-global.queueCreated = new Map();
 
 module.exports = {
     name: 'play',
@@ -24,7 +23,6 @@ module.exports = {
 
         //This is our server queue. We are getting this server queue from the global queue.
         global.server_queue = queue.get(message.guild.id);
-        if(!queueCreated.has(message.guild.id)) queueCreated.set(message.guild.id, false);
         if(!songTitles.has(message.guild.id)) songTitles.set(message.guild.id, [""]);
         if(!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
@@ -77,7 +75,6 @@ module.exports = {
             //Add our key and value pair into the global queue. We then use this to get our server queue.
             queue.set(message.guild.id, queue_constructor);
             queue_constructor.songs.push(song);
-            queueCreated.set(message.guild.id, true);
 
             //Establish a connection and play the song with the video_player function.
             try {
@@ -107,7 +104,6 @@ const video_player = async (guild, song) => {
         console.log('Queue ended')
         songTitles.delete(guild.id);
         YoutubeTitle.delete(guild.id);
-        queueCreated.delete(guild.id);
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
@@ -131,5 +127,6 @@ const video_player = async (guild, song) => {
     if(!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
     if(!looped.get(guild.id)) YoutubeTitle.get(guild.id).push(song.title)
-    console.log(YoutubeTitle.get(guild.id))
+    console.log("youtube titles: " + YoutubeTitle.get(guild.id))
+    console.log("song titles: " + songTitles.get(guild.id))
 }

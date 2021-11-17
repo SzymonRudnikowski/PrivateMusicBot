@@ -13,7 +13,7 @@ module.exports = {
         )
           
         if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
-        if(songTitles.length === 1) return message.channel.send("**No music is currently played!**");
+        if(songTitles.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
         if(!looped.get(message.guild.id)) return message.channel.send("**Nothing is looped!**");
         looped.set(message.guild.id, false)
         console.log("unlooped using stoploop! status: " + looped.get(message.guild.id))
