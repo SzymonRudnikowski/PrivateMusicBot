@@ -36,6 +36,7 @@ module.exports = {
             song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
+            console.log("arg is a link")
         } else {
             //If there was no link, we use keywords to search for a video. Set the song object to have two keys. Title and URl.
             const video_finder = async (query) =>{
@@ -53,6 +54,7 @@ module.exports = {
                     message.channel.send('Error finding video.');
                     console.log('Error while finding video.')
             }
+            console.log("arg is not a link")
         }
 
         try{
