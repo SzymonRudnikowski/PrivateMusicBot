@@ -14,8 +14,15 @@ module.exports = {
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )
-          
         if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
+        try{
+            if(server_queue.songs.length === 1) throw err;
+        }catch(err){
+            console.log("loop while no music played")
+            return message.channel.send("**No music is currently played!**");
+        }
+          
+        
         if(songTitles.get(message.guild.id).length === 1 || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
         if(looped.get(message.guild.id)) return message.channel.send("***" + YoutubeTitle.get(message.guild.id)[1] + "*** **is already in a loop!**");
         looped.set(message.guild.id, true);

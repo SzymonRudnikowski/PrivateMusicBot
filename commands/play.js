@@ -106,7 +106,6 @@ const video_player = async (guild, song) => {
         console.log('Queue ended')
         songTitles.delete(guild.id);
         YoutubeTitle.delete(guild.id);
-        queueCreated.delete(guild.id);
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
