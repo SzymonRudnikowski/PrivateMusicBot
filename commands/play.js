@@ -6,7 +6,6 @@ const ytSearch = require('yt-search');
 global.queue = new Map();
 global.songTitles = new Map();
 global.YoutubeTitle = new Map();
-global.queueCreated = new Map();
 
 module.exports = {
     name: 'play',
@@ -24,7 +23,6 @@ module.exports = {
 
         //This is our server queue. We are getting this server queue from the global queue.
         global.server_queue = queue.get(message.guild.id);
-        if(!queueCreated.has(message.guild.id)) queueCreated.set(message.guild.id, false);
         if(!songTitles.has(message.guild.id)) songTitles.set(message.guild.id, [""]);
         if(!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
@@ -38,6 +36,7 @@ module.exports = {
             song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
+            console.log("arg is a link")
         } else {
             //If there was no link, we use keywords to search for a video. Set the song object to have two keys. Title and URl.
             const video_finder = async (query) =>{
@@ -55,10 +54,19 @@ module.exports = {
                     message.channel.send('Error finding video.');
                     console.log('Error while finding video.')
             }
+            console.log("arg is not a link")
         }
 
-        //If the server queue does not exist (which doesn't for the first video queued) then create a constructor to be added to our global queue.
-        if (!server_queue || server_queue.songs.length == 0 && !queueCreated.get(message.guild.id)){
+        try{
+            server_queue.songs.push(song);
+            const inSameChannel = client.voice.connections.some(
+                (connection) => connection.channel.id === message.member.voice.channelID
+            )
+              
+            if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
+            console.log(`${song.title} added to queue!`)
+            return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
+        }catch(err){
             global.queue_constructor = {
                 voice_channel: voice_channel,
                 text_channel: message.channel,
@@ -69,9 +77,8 @@ module.exports = {
             //Add our key and value pair into the global queue. We then use this to get our server queue.
             queue.set(message.guild.id, queue_constructor);
             queue_constructor.songs.push(song);
-            queueCreated.set(message.guild.id, true);
 
-            //Establish a connection and play the song with the vide_player function.
+            //Establish a connection and play the song with the video_player function.
             try {
                 const connection = await voice_channel.join();
                 console.log('Joined voice channel', voice_channel.name)
@@ -83,16 +90,9 @@ module.exports = {
                 console.log('Connection to channel error.')
                 throw err;
             }
-        } else{
-            server_queue.songs.push(song);
-            const inSameChannel = client.voice.connections.some(
-                (connection) => connection.channel.id === message.member.voice.channelID
-            )
-              
-            if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
-            console.log(`${song.title} added to queue!`)
-            return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
         }
+            
+        
         
     }
     
@@ -129,5 +129,6 @@ const video_player = async (guild, song) => {
     if(!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
     console.log(`Now playing: ${song.title}`)
     if(!looped.get(guild.id)) YoutubeTitle.get(guild.id).push(song.title)
-    console.log(YoutubeTitle.get(guild.id))
+    console.log("youtube titles: " + YoutubeTitle.get(guild.id))
+    console.log("song titles: " + songTitles.get(guild.id))
 }

@@ -7,8 +7,13 @@ module.exports = {
     name: 'skip',
     aliases: ['s'],
     decription: "skips song that is currently played",
-    async execute(message) {
+    async execute(message, args, command, client) {
         if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
+        const inSameChannel = client.voice.connections.some(
+            (connection) => connection.channel.id === message.member.voice.channelID
+        )
+          
+        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
         if(looped.get(message.guild.id)){
             console.log("skip while looped")
             return message.channel.send("**Can't skip while in loop!**");
@@ -17,7 +22,7 @@ module.exports = {
 
         if(!voted.has(message.guild.id)) voted.set(message.guild.id, []);
 
-        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.length === 1) return message.channel.send("**No music is currently played!**")
+        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
 
         if(!voted.get(message.guild.id).includes(message.author.id)){
             voted.get(message.guild.id).push(message.author.id)
