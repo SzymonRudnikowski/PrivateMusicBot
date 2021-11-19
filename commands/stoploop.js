@@ -14,7 +14,7 @@ module.exports = {
           
         if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
         try{
-            if(server_queue.songs.length === 1) throw err;
+            if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) throw err;
         }catch(err){
             console.log("loop while no music played")
             return message.channel.send("**No music is currently played!**");
