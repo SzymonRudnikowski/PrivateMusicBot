@@ -58,12 +58,13 @@ module.exports = {
         }
 
         try{
-            server_queue.songs.push(song);
+            if(YoutubeTitle.get(message.guild.id).length === 1) throw 1;
             const inSameChannel = client.voice.connections.some(
                 (connection) => connection.channel.id === message.member.voice.channelID
             )
               
             if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
+            server_queue.songs.push(song);
             console.log(`${song.title} added to queue!`)
             return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
         }catch(err){
