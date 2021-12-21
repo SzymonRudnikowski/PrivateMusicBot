@@ -111,7 +111,7 @@ const video_player = async (guild, song) => {
         return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { filter: 'audioonly' });
-    song_queue.connection.play(stream, { seek: 0, volume: 0.5 }).catch(err)
+    song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
         if(!looped.get(song_queue.text_channel.guild.id)){
             song_queue.songs.shift();
