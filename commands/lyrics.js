@@ -55,18 +55,25 @@ module.exports = {
 
 const displayLyrics = async (pages, songTitle, message) => {
     if(songTitle === "") return message.channel.send("**No music is currently played!**");
+    songTitle = encodeURI(songTitle)
     let current = 0
     console.log("current song title: " + songTitle)
     
     let res;
     try{
-        await ("matcher.lyrics.get?"+songTitle)
-        .then(res => res.text())
-        .then(res => console.log(res));
+        await fetch('http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track='+songTitle+'&apikey='+API_KEY)
+        .then(function(u){ return u.json();})
+            .then(function(json){
+                    res = json;
+                    
+                })
+        console.log(res.message.body.lyrics)
+        res = res.message.body.lyrics.lyrics_body;
     }catch(err){
         console.log(err)
         res = "Not Found"
     }
+    if(res == "") res = "Not Found";
 
     for(let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -118,6 +125,7 @@ const displayLyrics = async (pages, songTitle, message) => {
 
 const displayLyricsNoPlay = async (pages, songTitle, message) => {
     let current = 0
+    songTitle = encodeURI(songTitle)
     console.log("current song title no play: " + songTitle)
     
     let res;

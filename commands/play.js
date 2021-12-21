@@ -110,7 +110,15 @@ const video_player = async (guild, song) => {
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
-    const stream = ytdl(song.url, { filter: 'audioonly' });
+    const stream = ytdl(song.url, { 
+        filter: 'audioonly',
+        quality: 'highestaudio',
+        dlChunkSize: 0,
+        highWaterMark: 1<<25,
+    }).on('error', err=>{
+        console.log(err);
+    });
+
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
         if(!looped.get(song_queue.text_channel.guild.id)){
