@@ -7,17 +7,13 @@ module.exports = {
     async execute(message) {
 
         message.channel.bulkDelete(100).then(() => {
-            message.channel.send("**Deleted 100 messages!**").then(msg => msg.delete(3000));
+            message.channel.send("**Deleted 100 messages!**").then(msg => msg.delete({timeout: 3000}));
         }).catch(
             (error) => {
                 console.log(error);
                 return message.channel.send("**You can only delete messages that are under 14 days old!**");
             }
         );
-        
-        
-        
-
         console.log("deleted 100 messages")
     }
 };
