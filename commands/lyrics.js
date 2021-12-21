@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const songTit = require("./play")
-const Genius = require("genius-lyrics");
-const Client = new Genius.Client("8OE3KOHpWhaqAu-iLOWsX7X7hSLSAXKAYAUiu43usf-mmZmknsDAi5jlvSxdZVIg");
+const fetch = require("node-fetch")
+const API_KEY = '81770d4c8270875acb7bed4b0c0f7d2d';
 
 module.exports = {
     name: 'lyrics',
@@ -60,9 +60,9 @@ const displayLyrics = async (pages, songTitle, message) => {
     
     let res;
     try{
-        const searches = await Client.songs.search(songTitle);
-        const firstSong = searches[0];
-        res = await firstSong.lyrics()
+        await ("matcher.lyrics.get?"+songTitle)
+        .then(res => res.text())
+        .then(res => console.log(res));
     }catch(err){
         console.log(err)
         res = "Not Found"
@@ -122,42 +122,46 @@ const displayLyricsNoPlay = async (pages, songTitle, message) => {
     
     let res;
     try{
-        const searches = await Client.songs.search(songTitle);
-        const firstSong = searches[0];
-        res = await firstSong.lyrics()
+        await fetch('http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track='+songTitle+'&apikey='+API_KEY)
+        .then(function(u){ return u.json();})
+            .then(function(json){
+                    res = json;
+                    
+                })
+        console.log(res.message.body.lyrics)
     }catch(err){
         console.log(err)
         res = "Not Found"
     }
-    
+    if(res == "") res = "Not Found";
 
-    for(let i = 0; i < res.length; i += 2048) {
-        let lyrics = res.substring(i, Math.min(res.length, i + 2048))
-        let page = new discord.MessageEmbed()
-        .setDescription(lyrics)
-        pages.push(page)
-    }
-    const filter2 = (reaction, user) => ["⬅️","➡️"].includes(reaction.emoji.name) && (message.author.id == user.id)
-    const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
-    await Embed.react("⬅️")
-    await Embed.react("➡️")
+    // for(let i = 0; i < res.length; i += 2048) {
+    //     let lyrics = res.substring(i, Math.min(res.length, i + 2048))
+    //     let page = new discord.MessageEmbed()
+    //     .setDescription(lyrics)
+    //     pages.push(page)
+    // }
+    // const filter2 = (reaction, user) => ["⬅️","➡️"].includes(reaction.emoji.name) && (message.author.id == user.id)
+    // const Embed = await message.channel.send(`**Page: ${current+1}/${pages.length}**`, pages[current])
+    // await Embed.react("⬅️")
+    // await Embed.react("➡️")
 
-    let ReactionCol = Embed.createReactionCollector(filter2)
+    // let ReactionCol = Embed.createReactionCollector(filter2)
 
-    ReactionCol.on("collect", (reaction) => {
-        reaction.users.remove(reaction.users.cache.get(message.author.id))
+    // ReactionCol.on("collect", (reaction) => {
+    //     reaction.users.remove(reaction.users.cache.get(message.author.id))
 
-        if(reaction.emoji.name === "➡️") {
-            if(current < pages.length - 1) {
-                current += 1
-                Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
-            }
-        } else if(reaction.emoji.name === "⬅️") {
-                if(current !== 0) {
-                    current -= 1
-                    Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
-                }
-        }
-    })
+    //     if(reaction.emoji.name === "➡️") {
+    //         if(current < pages.length - 1) {
+    //             current += 1
+    //             Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
+    //         }
+    //     } else if(reaction.emoji.name === "⬅️") {
+    //             if(current !== 0) {
+    //                 current -= 1
+    //                 Embed.edit(`**Page: ${current+1}/${pages.length}**`, pages[current])
+    //             }
+    //     }
+    //})
     
 }
