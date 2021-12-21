@@ -118,6 +118,9 @@ const video_player = async (guild, song) => {
     }).on('error', err=>{
         console.log(err);
     });
+    //https://www.youtube.com/watch?v=PmYc6kKTKbs
+    //https://www.youtube.com/watch?v=v_Sfw_jvIA8
+    //https://www.youtube.com/watch?v=UQH3c1o3Elg
 
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
