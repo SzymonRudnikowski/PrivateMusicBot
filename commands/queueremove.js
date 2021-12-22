@@ -5,7 +5,7 @@ module.exports = {
     aliases: ['queue_remove', 'qr'],
     decription: "removes a specific song from queue",
     async execute(message, args) {
-        if (!message.member.voice.channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
+        if (!message.member.voice.channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
         if(!args.length) return message.channel.send(`${message.author} **You need to specify position in queue to remove!**`);
 
         try{

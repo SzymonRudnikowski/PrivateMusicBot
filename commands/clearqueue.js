@@ -7,7 +7,7 @@ module.exports = {
     description: 'clears song queue',
     async execute(message){
         const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
+        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
         try{
             if(server_queue.songs.length === 1) throw err;
             songTitles.get(message.guild.id).splice(2, songTitles.get(message.guild.id).length-2)

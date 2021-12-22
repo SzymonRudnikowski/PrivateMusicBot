@@ -18,7 +18,7 @@ module.exports = {
             return displayLyricsNoPlay(pages, songNoPlay, message);
         }
         const voice_channel = message.member.voice.channel
-        if (!voice_channel) return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
+        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
 
         try {
             const connection = await voice_channel.join();

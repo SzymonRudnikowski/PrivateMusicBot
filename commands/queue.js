@@ -9,7 +9,7 @@ module.exports = {
     description: 'shows first 10 songs in the queue',
     async execute(message, args, command, client){
         const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send('You need to be in a channel to execute this command!');
+        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )

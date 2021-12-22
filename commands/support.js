@@ -8,7 +8,7 @@ module.exports = {
   description: 'open a support ticket!',
   aliases: [],
   permissions: [],
-  async execute(message, args, client) {
+  async execute(message) {
     if (talkedRecently.has(message.author.id)) {
       return message.channel.send(`**You can only use this command once, wait 1 hour!** ` + `***${message.author}***`);
     } 

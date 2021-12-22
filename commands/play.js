@@ -16,7 +16,7 @@ module.exports = {
         
         //Checking for the voicechannel and permissions.
         const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send('**You need to be in a channel to execute this command!**');
+        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`);
         const permissions = voice_channel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT')) return message.channel.send('**You dont have the correct permissions**');
         if (!permissions.has('SPEAK')) return message.channel.send('**You dont have the correct permissions**');
@@ -109,14 +109,8 @@ const video_player = async (guild, song) => {
         YoutubeTitle.delete(guild.id);
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
-    }else if(song_queue.voice_channel.members.size - 1 === 0){
-        console.log('No users in the channel, leaving it')
-        songTitles.delete(guild.id);
-        YoutubeTitle.delete(guild.id);
-        looped.delete(guild.id);
-        queue.delete(guild.id);
-        return song_queue.voice_channel.leave();
     }
+
     const stream = ytdl(song.url, { 
         filter: 'audioonly',
         quality: 'highestaudio',

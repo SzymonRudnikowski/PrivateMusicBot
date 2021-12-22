@@ -8,7 +8,7 @@ module.exports = {
         const voice_channel = message.member.voice.channel;
         if (!message.member.voice.channel) {
             console.log('leave command while not in channel.')
-            return message.channel.send(`${message.author} **You need to be in a channel to execute this command!**`);
+            return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
         }
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
