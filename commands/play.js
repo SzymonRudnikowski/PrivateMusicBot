@@ -109,6 +109,13 @@ const video_player = async (guild, song) => {
         YoutubeTitle.delete(guild.id);
         queue.delete(guild.id);
         return song_queue.voice_channel.leave();
+    }else if(song_queue.voice_channel.members.size - 1 === 0){
+        console.log('No users in the channel, leaving it')
+        songTitles.delete(guild.id);
+        YoutubeTitle.delete(guild.id);
+        looped.delete(guild.id);
+        queue.delete(guild.id);
+        return song_queue.voice_channel.leave();
     }
     const stream = ytdl(song.url, { 
         filter: 'audioonly',
