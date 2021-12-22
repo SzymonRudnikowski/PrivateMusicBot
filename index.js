@@ -10,6 +10,8 @@ const commandUsedRecently = new Set();
 
 const BOT_ID = "892442837252206633";
 
+//add anti spam protection
+//check every 5 sec if there are any users in the voice channel
 global.prefix = "!";
  
 client.on("ready", () => {
