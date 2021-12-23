@@ -6,15 +6,16 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 client.aliases = new Discord.Collection();
+
 let commandUsedRecently = new Map();
 let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
+
 let intervals = [5000, 30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
             //    5s    30s    60s    5min    30min    1hour    3hours    12hours   24hours
 const BOT_ID = "892442837252206633";
 //btw simon is a ni33er
 
-//check every 5 sec if there are any users in the voice channel
 global.prefix = "!";
  
 client.on("ready", () => {
@@ -37,23 +38,29 @@ for(const file of commandFiles) {
 }
 
 client.on('voiceStateUpdate', (oldState, newState) => {
+  if(!client.voice.connections.size) return;
 
-  // if nobody left the channel in question, return.
-  if (oldState.channelID !==  oldState.guild.me.voice.channelID || newState.channel)
-    return;
-
-  // otherwise, check how many people are in the channel now
-  if (oldState.channel.members.size - 1 === 0) 
-    setTimeout(() => { // if 1 (you), wait five seconds
+  if(oldState.channelID != null && newState.channelID != null && newState.channelID != oldState.channelID || newState.channelID === null){
+    console.log("someone left or switched channels");
       if (oldState.channel.members.size - 1 === 0){
-          console.log('No users in the channel, leaving it');
-          if(songTitles.has(oldState.guild.id)) songTitles.delete(oldState.guild.id);
-          if(YoutubeTitle.has(oldState.guild.id)) YoutubeTitle.delete(oldState.guild.id);
-          if(looped.has(oldState.guild.id)) looped.delete(oldState.guild.id);
-          if(queue.has(oldState.guild.id)) queue.delete(oldState.guild.id);
-          return oldState.channel.leave();
-      }
-     }, 5000);
+        console.log("no users in a channel, leaving in 5 secs");
+        setTimeout(() => { 
+          if (oldState.channel.members.size - 1 === 0){
+              console.log('No users in the channel, leaving it');
+              if(songTitles.has(oldState.guild.id)) songTitles.delete(oldState.guild.id);
+              if(YoutubeTitle.has(oldState.guild.id)) YoutubeTitle.delete(oldState.guild.id);
+              if(looped.has(oldState.guild.id)) looped.delete(oldState.guild.id);
+              if(queue.has(oldState.guild.id)) queue.delete(oldState.guild.id);
+              return oldState.channel.leave();
+          }else{
+            console.log("still someone in the channel")
+          }
+        }, 5000);
+        }
+  }
+
+  
+    
 });
 
 client.on("message", message => {
@@ -63,6 +70,7 @@ client.on("message", message => {
 
   setTimeout(() => {
     mutedUsers.clear();
+    console.log("muted registry cleared");
   },86400000); //clear mute stage every day
 
   if(commandUsedRecently.get(message.author.id) === 3){
