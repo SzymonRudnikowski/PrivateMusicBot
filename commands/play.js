@@ -124,7 +124,10 @@ const video_player = async (guild, song) => {
     //https://www.youtube.com/watch?v=UQH3c1o3Elg
 
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
-    .on('error', err=>{console.log(err)})
+    .on('error', err=>{
+        console.log(err)
+        message.channel.send("**An error occurred while downloading the video (probably due to its length)**")
+    })
     .on('finish', () => {
         if(!looped.get(song_queue.text_channel.guild.id)){
             song_queue.songs.shift();
