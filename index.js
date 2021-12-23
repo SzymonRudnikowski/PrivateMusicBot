@@ -37,6 +37,7 @@ for(const file of commandFiles) {
   }
 }
 
+
 // client.setInterval(() => {
 //   // Checks every sec if there are no users in the channel
 //   if (client.voice.size - 1 === 0) {
@@ -82,8 +83,15 @@ client.on("message", message => {
 
       console.log(`${message.author} is spamming, blocked`);
       return;
+  
+      
   }
-  else{
+  else {
+    /*if(!fs.existsSync(`./jsons/${message.member.guild.id}.json`)) {
+      message.channel.send('**This server is not authorized!**')
+      return; 
+    } 
+    */
     let userID = message.author.id;
     if (userID == BOT_ID) return;
   
@@ -100,10 +108,15 @@ client.on("message", message => {
           .setDescription(`**There is no command \"${command}\"\n For help type !help**`)
           .setFooter('PMB');
   
-      //return message.channel.send(embed);
+      ///return message.channel.send(embed);
       return console.log('Incorrect command.')
     }
-  
+
+    if((message.author.id != '391983289122029578' && message.author.id != '259046058737270784') && !fs.existsSync(`./jsons/${message.member.guild.id}.json`)) {
+      message.channel.send('**This server is not authorized!**')
+      return; 
+    } 
+
     client.setTimeout(function(){
         commandUsedRecently.set(message.author.id, 0);
     }, 3000);
