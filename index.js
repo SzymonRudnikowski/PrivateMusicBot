@@ -56,7 +56,7 @@ client.on("message", message => {
       message.channel.send('**You are sending messages to fast! Try again in 60 seconds**');
       mutedUsers.add(message.author.id);
       setTimeout(() => {
-        // Removes the user from the set after an hour
+        // Removes the user from the set after 60 secs
         mutedUsers.delete(message.author.id);
       }, 60000);
       console.log(`${message.author} is spamming, blocked for 60 secs`);
