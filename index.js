@@ -36,18 +36,6 @@ for(const file of commandFiles) {
   }
 }
 
-
-// client.setInterval(() => {
-//   // Checks every sec if there are no users in the channel
-//   if (client.voice.size - 1 === 0) {
-//     console.log('No users in the channel, leaving it');
-//     if(songTitles.has(client.user.guild.id)) songTitles.delete(guild.id);
-//     if(YoutubeTitle.has(client.user.guild.id)) YoutubeTitle.delete(guild.id);
-//     if(looped.has(client.user.guild.id)) looped.delete(guild.id);
-//     if(queue.has(client.user.guild.id)) queue.delete(guild.id);
-//     return client.user.channel.leave();
-//   }
-// }, 10000);
 client.on('voiceStateUpdate', (oldState, newState) => {
 
   // if nobody left the channel in question, return.
@@ -57,9 +45,15 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   // otherwise, check how many people are in the channel now
   if (oldState.channel.members.size - 1 === 0) 
     setTimeout(() => { // if 1 (you), wait five minutes
-      if (oldState.channel.members.size - 1 === 0) // if there's still 1 member, 
-         oldState.channel.leave(); // leave
-     }, 5000); // (5 min in ms)
+      if (oldState.channel.members.size - 1 === 0){
+          console.log('No users in the channel, leaving it');
+          if(songTitles.has(oldState.guild.id)) songTitles.delete(oldState.guild.id);
+          if(YoutubeTitle.has(oldState.guild.id)) YoutubeTitle.delete(oldState.guild.id);
+          if(looped.has(oldState.guild.id)) looped.delete(oldState.guild.id);
+          if(queue.has(oldState.guild.id)) queue.delete(oldState.guild.id);
+          return oldState.channel.leave();
+      }
+     }, 5000);
 });
 
 client.on("message", message => {
