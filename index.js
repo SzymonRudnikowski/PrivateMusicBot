@@ -44,7 +44,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
   // otherwise, check how many people are in the channel now
   if (oldState.channel.members.size - 1 === 0) 
-    setTimeout(() => { // if 1 (you), wait five minutes
+    setTimeout(() => { // if 1 (you), wait five seconds
       if (oldState.channel.members.size - 1 === 0){
           console.log('No users in the channel, leaving it');
           if(songTitles.has(oldState.guild.id)) songTitles.delete(oldState.guild.id);
