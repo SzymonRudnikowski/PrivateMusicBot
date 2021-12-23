@@ -58,9 +58,6 @@ client.on('voiceStateUpdate', (oldState, newState) => {
         }, 5000);
         }
   }
-
-  
-    
 });
 
 client.on("message", message => {
