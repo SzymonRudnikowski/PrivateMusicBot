@@ -14,7 +14,6 @@ let intervals = [5000, 30000, 60000, 300000, 1800000, 3600000, 10800000, 4320000
 const BOT_ID = "892442837252206633";
 //btw simon is a ni33er
 
-//add anti spam protection
 //check every 5 sec if there are any users in the voice channel
 global.prefix = "!";
  
@@ -49,6 +48,19 @@ for(const file of commandFiles) {
 //     return client.user.channel.leave();
 //   }
 // }, 10000);
+client.on('voiceStateUpdate', (oldState, newState) => {
+
+  // if nobody left the channel in question, return.
+  if (oldState.channelID !==  oldState.guild.me.voice.channelID || newState.channel)
+    return;
+
+  // otherwise, check how many people are in the channel now
+  if (oldState.channel.members.size - 1 === 0) 
+    setTimeout(() => { // if 1 (you), wait five minutes
+      if (oldState.channel.members.size - 1 === 0) // if there's still 1 member, 
+         oldState.channel.leave(); // leave
+     }, 5000); // (5 min in ms)
+});
 
 client.on("message", message => {
   if(!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
@@ -118,8 +130,10 @@ client.on("message", message => {
     } 
 
     client.setTimeout(function(){
+  
+    setTimeout(function(){
         commandUsedRecently.set(message.author.id, 0);
-    }, 3000);
+    }, 2000)});
   
     try{
         com.execute(message, args, com, client);
