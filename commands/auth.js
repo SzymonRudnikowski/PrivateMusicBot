@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: 'auth',
     description: 'guild authorization',
-    execute(message, args) {
+    execute(message) {
         if(message.author.id === '391983289122029578' || message.author.id === '259046058737270784' || message.author.id === '403246346745675787'){
             
             const serwis = {
