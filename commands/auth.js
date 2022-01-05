@@ -18,21 +18,20 @@ module.exports = {
                 return message.channel.send("**This server is already authorized!**");
             }
             
-            if(!fs.existsSync(`./jsons/${message.member.guild.id}.json`)) {
-                console.log('Auhtorized new guild',message.member.guild.name)
-                
-                fs.writeFileSync(`./jsons/${message.member.guild.id}.json`, jsonString, err => {
-                
-                    if (err) {
-                        console.log('Error writing file', err)
-                    } else {
-                        console.log('Successfully wrote file')
-                        
-                    }
-                });
+            
+            
+            fs.writeFileSync(`./jsons/${message.member.guild.id}.json`, jsonString, err => {
+            
+                if (err) {
+                    console.log('Error writing file', err)
+                } else {
+                    console.log('Successfully wrote file')
+                    console.log('Auhtorized new guild',message.member.guild.name)
+                }
+            });
 
-                return message.channel.send('**Successfully authorized this server!**');
-            }   
+            return message.channel.send('**Successfully authorized this server!**');
+               
         }
         
     },
