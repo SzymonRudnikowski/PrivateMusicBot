@@ -11,8 +11,8 @@ let commandUsedRecently = new Map();
 let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
 
-let intervals = [5000, 30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
-            //    5s    30s    60s    5min    30min    1hour    3hours    12hours   24hours
+let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
+            //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
 const BOT_ID = "892442837252206633";
 //btw simon is a ni33er
 
