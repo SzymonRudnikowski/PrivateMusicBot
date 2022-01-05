@@ -17,6 +17,6 @@ module.exports = {
                 return message.channel.send("**You can only delete messages that are under 14 days old!**");
             }
         );
-        console.log("deleted 100 messages")
+        console.log(`deleted ${number} messages`)
     }
 };
