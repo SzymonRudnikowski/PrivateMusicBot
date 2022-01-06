@@ -39,7 +39,7 @@ for(const file of commandFiles) {
 }
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-  if(!client.voice.connections.size) return;
+  if(!hasJoinedChannel.has(oldState.guild.id)) return;
 
   if(oldState.channelID != null && newState.channelID != null && newState.channelID != oldState.channelID || newState.channelID === null){
     console.log("someone left or switched channels");
