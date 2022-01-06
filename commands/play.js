@@ -82,6 +82,7 @@ module.exports = {
             try {
                 const connection = await voice_channel.join();
                 console.log('Joined voice channel', voice_channel.name)
+                hasJoinedChannel.set(message.guild.id, true);
                 queue_constructor.connection = connection;
                 video_player(message.guild, queue_constructor.songs[0]);
             } catch (err) {
@@ -107,6 +108,7 @@ const video_player = async(guild, song) => {
         songTitles.delete(guild.id);
         YoutubeTitle.delete(guild.id);
         queue.delete(guild.id);
+        hasJoinedChannel.delete(guild.id);
         return song_queue.voice_channel.leave();
     }
 

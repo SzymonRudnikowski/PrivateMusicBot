@@ -35,6 +35,7 @@ module.exports = {
                         voted.set(message.guild.id, []);
                         vote_count.set(message.guild.id, 0);
                         queue_constructor.connection.dispatcher.end();
+                        hasJoinedChannel.delete(message.guild.id);
                         return message.channel.send("**Skipped!**");
                     }
                     vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
@@ -46,6 +47,7 @@ module.exports = {
                     vote_count.set(message.guild.id, 0);
                     server_queue.connection.dispatcher.end();
                     console.log('Skipped!')
+                    hasJoinedChannel.delete(message.guild.id);
                     return message.channel.send("**Skipped!**"); 
                 }
                 vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );

@@ -27,12 +27,14 @@ module.exports = {
                     YoutubeTitle.get(message.guild.id).splice(1, 1);
                     queue_constructor.connection.dispatcher.end();
                     console.log('Skipped!')
+                    hasJoinedChannel.delete(message.guild.id);
                     return message.channel.send("**Skipped!**");
                 }
                 voted.set(message.guild.id, [])
                 vote_count.set(message.guild.id, 0)
                 server_queue.connection.dispatcher.end();
                 console.log('Skipped!')
+                hasJoinedChannel.delete(message.guild.id);
                 return message.channel.send("**Skipped!**"); 
             }catch(error){
                 console.log("no music played")

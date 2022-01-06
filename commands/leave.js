@@ -28,6 +28,7 @@ module.exports = {
                 console.log("unlooped leave! status: " + looped)
                 voted.delete(message.guild.id)
                 vote_count.delete(message.guild.id);
+                hasJoinedChannel.delete(message.guild.id);
                 return voice_channel.leave();
             } else {
                 console.log("chuj mi w dupe")
@@ -39,12 +40,14 @@ module.exports = {
                 console.log("unlooped leave! status: " + looped)
                 voted.delete(message.guild.id)
                 vote_count.delete(message.guild.id);
+                hasJoinedChannel.delete(message.guild.id);
                 return voice_channel.leave(); 
             } 
         }catch(err){
             console.log('no server queue, just leaving the channel')
             voted.delete(message.guild.id)
             vote_count.delete(message.guild.id);
+            hasJoinedChannel.delete(message.guild.id);
             return voice_channel.leave();
         }
         

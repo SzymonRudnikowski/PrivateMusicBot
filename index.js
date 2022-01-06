@@ -10,6 +10,7 @@ client.aliases = new Discord.Collection();
 let commandUsedRecently = new Map();
 let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
+global.hasJoinedChannel = new Map();
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
             //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
@@ -51,6 +52,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
               if(YoutubeTitle.has(oldState.guild.id)) YoutubeTitle.delete(oldState.guild.id);
               if(looped.has(oldState.guild.id)) looped.delete(oldState.guild.id);
               if(queue.has(oldState.guild.id)) queue.delete(oldState.guild.id);
+              if(hasJoinedChannel.has(oldState.guild.id)) hasJoinedChannel.delete(oldState.guild.id);
               return oldState.channel.leave();
           }else{
             console.log("still someone in the channel")

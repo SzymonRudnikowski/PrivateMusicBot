@@ -6,7 +6,7 @@ module.exports = {
     permissions: [],
     async execute(message, args, com, client) {
         console.log('used')
-        if(client.voice.connections.size){
+        if(hasJoinedChannel.has(message.guild.id)){
             message.channel.send("**I'm already in a channel!**");
             return console.log("tried to join but client already in a channel");
         }
