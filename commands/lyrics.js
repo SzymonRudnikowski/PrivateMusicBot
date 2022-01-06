@@ -20,15 +20,6 @@ module.exports = {
         const voice_channel = message.member.voice.channel
         if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
 
-        try {
-            const connection = await voice_channel.join();
-            console.log('Showing lyrics for music in channel:', voice_channel.name)
-        } catch (err) {
-            message.channel.send('There was an error connecting!');
-            console.log('Connection to channel error.')
-            throw err;
-        }
-
         console.log(songTitles.get(message.guild.id))
         console.log(YoutubeTitle.get(message.guild.id))
         if(!songTitles.has(message.guild.id) || songTitles.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
