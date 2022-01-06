@@ -15,6 +15,7 @@ module.exports = {
 
         try {
             voice_channel.join();
+            hasJoinedChannel.set(message.guild.id, true)
             console.log('Joined voice channel', voice_channel.name)
         } catch (err) {
             message.channel.send('**There was an error connecting!**');
