@@ -125,11 +125,13 @@ client.on("message", message => {
       return console.log('Incorrect command.')
     }
 
+    /*
     if((message.author.id != '391983289122029578' && message.author.id != '259046058737270784') && !fs.existsSync(`./jsons/${message.member.guild.id}.json`)) {
       message.channel.send('**This server is not authorized!**')
       return; 
     } 
-
+    */
+   
     client.setTimeout(function(){
   
     setTimeout(function(){
