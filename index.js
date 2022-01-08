@@ -91,6 +91,7 @@ client.on("message", message => {
 
       setTimeout(() => {
         // Removes the user from the set after proper amount of time
+        commandUsedRecently.delete(message.author.id);
         mutedUsersCurrently.delete(message.author.id);
       }, intervals[mutedUsers.get(message.author.id)]);
 
