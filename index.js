@@ -2,10 +2,13 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const util = require("minecraft-server-util");
 
-const client = new Discord.Client();
+global.client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 client.aliases = new Discord.Collection();
+
+const { MessageEmbed, WebhookClient } = require('discord.js');
+const webhookClient = new WebhookClient({ id: '892442837252206633', token: 'ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8' });
 
 let commandUsedRecently = new Map();
 let mutedUsers = new Map();
@@ -14,7 +17,8 @@ global.hasJoinedChannel = new Map();
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
             //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
-const BOT_ID = "892442837252206633";
+//const BOT_ID = "892442837252206633";
+const BOT_ID = "929498467791945729";
 //btw simon is a ni33er
 
 global.prefix = "!";
@@ -25,6 +29,7 @@ client.on("ready", () => {
       type: "LISTENING",
       url: "https://discord.gg/bzYXx8t3fE",
     })
+  
 });
 
 for(const file of commandFiles) {
@@ -147,6 +152,6 @@ client.on("message", message => {
   }
 });
 
-client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
-
+//client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
+client.login("OTI5NDk4NDY3NzkxOTQ1NzI5.YdoM5w.41LdoQOlJTEK87SSQ8y_d238__Q");
 

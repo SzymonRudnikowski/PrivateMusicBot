@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
+
 module.exports = {
-    name: 'contact',
+    name: 'dcontact',
     description: 'Contact with developers',
     execute(message, args) {
         const suppEmbed = new Discord.MessageEmbed()
@@ -10,5 +11,8 @@ module.exports = {
         )
         .setColor(15418782);
         message.channel.send(suppEmbed);
+        
+        const logchannel = client.channels.cache.get('929495106292174848');
+        logchannel.send('test log here');
     },
 };
