@@ -143,7 +143,6 @@ const video_player = async(guild, song) => {
                 console.log("looped no shifting")
                 video_player(guild, song_queue.songs[0]);
             }
-
         });
 
     if (!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
