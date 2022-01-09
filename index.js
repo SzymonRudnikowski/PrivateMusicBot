@@ -67,15 +67,15 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
 });
 
+client.setInterval(() => {
+  mutedUsers.clear();
+  console.log("muted registry cleared");
+},10000); //clear mute stage every day 86400000
+
 client.on("message", message => {
   if(!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
 
   if(!commandUsedRecently.has(message.author.id)) commandUsedRecently.set(message.author.id, 1);
-
-  setTimeout(() => {
-    mutedUsers.clear();
-    console.log("muted registry cleared");
-  },86400000); //clear mute stage every day
 
   if(commandUsedRecently.get(message.author.id) === 3){
       console.log(mutedUsers.has(message.author.id));
