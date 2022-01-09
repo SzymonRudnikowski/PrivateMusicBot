@@ -1,6 +1,7 @@
 const fs = require("fs");
 const Discord = require("discord.js");
 const util = require("minecraft-server-util");
+const config = require("./config.json");
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -14,10 +15,11 @@ global.hasJoinedChannel = new Map();
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
             //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
-const BOT_ID = "892442837252206633";
+//const BOT_ID = "892442837252206633";
+const BOT_ID = config.id;
 //btw simon is a ni33er
 
-global.prefix = "!";
+global.prefix = config.prefix;
  
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -148,6 +150,6 @@ client.on("message", message => {
   }
 });
 
-client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
-
+//client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
+client.login(config.token);
 
