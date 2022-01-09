@@ -95,7 +95,7 @@ client.on("message", message => {
         mutedUsersCurrently.delete(message.author.id);
       }, intervals[mutedUsers.get(message.author.id)]);
 
-      console.log(`${message.author} is spamming, blocked`);
+      console.log(`${message.author.tag} in ${message.guild.name} is spamming, blocked`);
       return;
   
       

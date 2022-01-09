@@ -8,7 +8,7 @@ module.exports = {
         let number;
         if(!args[0]) number = 25 << 2;
         else {
-            if(args[0] < 1 || args[0] > 100) return message.channel.send('**The number of message to delete must be between 1 and 100 inclusive**');
+            if(args[0] < 1 || args[0] > 100) return message.channel.send('**The number of messages to delete must be between 1 and 100 inclusive**');
             number = args[0];
         }
 
