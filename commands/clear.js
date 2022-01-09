@@ -9,6 +9,8 @@ module.exports = {
         if(!args) number = 100;
         else number = args[0];
 
+        console.log(`user wants to delete ${number} message(s)`);
+
         message.channel.bulkDelete(number).then(() => {
             message.channel.send(`**Deleted ${number} messages!**`).then(msg => msg.delete({timeout: 3000}).catch(
                 (error) => {
