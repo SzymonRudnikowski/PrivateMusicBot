@@ -51,7 +51,7 @@ module.exports = {
             if (video) {
                 song = { title: video.title, url: video.url }
             } else {
-                message.channel.send('Error finding video.');
+                message.channel.send('Error while finding the video.');
                 console.log('Error while finding video.')
             }
             console.log("arg is not a link")
@@ -127,7 +127,7 @@ const video_player = async(guild, song) => {
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
         .on('error', err => {
             console.log(err)
-            message.channel.send("**An error occurred while downloading the video (internet connection interrupted)**")
+            return message.channel.send("**An error occurred while downloading the video (internet connection interrupted)**")
         })
         .on('finish', () => {
             if (!looped.get(song_queue.text_channel.guild.id)) {
