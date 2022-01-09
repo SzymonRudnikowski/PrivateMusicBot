@@ -7,7 +7,10 @@ module.exports = {
     async execute(message, args, com, client) {
         let number;
         if(!args[0]) number = 25 << 2;
-        else number = args[0];
+        else {
+            if(args[0] < 1 || args[0] > 100) return message.channel.send('**The number of message to delete must be between 1 and 100 inclusive**');
+            number = args[0];
+        }
 
         console.log(`user wants to delete ${number} message(s)`);
 
