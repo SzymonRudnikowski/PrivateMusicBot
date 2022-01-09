@@ -6,7 +6,7 @@ module.exports = {
     decription: "deletes all message in a channel",
     async execute(message, args, com, client) {
         let number;
-        if(!args) number = 1 << 2;
+        if(!args[0]) number = 1 << 2;
         else number = args[0];
 
         console.log(`user wants to delete ${number} message(s)`);
