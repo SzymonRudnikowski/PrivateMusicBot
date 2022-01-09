@@ -13,6 +13,7 @@ module.exports = {
 
         message.channel.bulkDelete(number).then(() => {
             message.channel.send(`**Deleted ${number} messages!**`).then(msg => {
+                console.log(`deleting message: ${msg}`);
                 msg.delete({timeout: 3000}).catch(
                     (error) => {
                         console.log(error);
