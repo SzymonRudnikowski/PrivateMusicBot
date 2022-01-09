@@ -13,7 +13,6 @@ module.exports = {
 
         message.channel.bulkDelete(number).then(() => {
             message.channel.send(`**Deleted ${number} messages!**`).then(msg => {
-                console.log(`deleting message: ${msg}`);
                 msg.delete({timeout: 3000}).catch(
                     (error) => {
                         console.log(error);
@@ -26,6 +25,6 @@ module.exports = {
                 return message.channel.send("**You can only delete messages that are under 14 days old!**");
             }
         );
-        console.log(`deleted ${number} messages`)
+        console.log(`deleted ${number} message(s)`)
     }
 };
