@@ -127,6 +127,9 @@ const video_player = async(guild, song) => {
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
         .on('error', err => {
             console.log(err)
+            song_queue.songs.shift();
+            songTitles.get(guild.id).splice(1, 1);
+            YoutubeTitle.get(guild.id).splice(1, 1);
             return song_queue.text_channel.send("**An error occurred while downloading the video (internet connection interrupted)**")
         })
         .on('finish', () => {
