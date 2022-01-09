@@ -12,12 +12,13 @@ module.exports = {
         console.log(`user wants to delete ${number} message(s)`);
 
         message.channel.bulkDelete(number).then(() => {
-            message.channel.send(`**Deleted ${number} messages!**`).then(msg => msg.delete({timeout: 3000}).catch(
-                (error) => {
-                    console.log(error);
-                    return message.channel.send(`**There was en error while deleting message: ** ***${msg}***`);
-                }
-            ));
+            message.channel.send(`**Deleted ${number} messages!**`).then(msg => {
+                msg.delete({timeout: 3000}).catch(
+                    (error) => {
+                        console.log(error);
+                        return message.channel.send(`**There was en error while deleting message: ** ***${msg}***`);
+                    })
+            })
         }).catch(
             (error) => {
                 console.log(error);
