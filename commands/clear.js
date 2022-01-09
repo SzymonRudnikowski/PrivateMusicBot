@@ -10,7 +10,12 @@ module.exports = {
         else number = args[0];
 
         message.channel.bulkDelete(number).then(() => {
-            message.channel.send(`**Deleted ${number} messages!**`).then(msg => msg.delete({timeout: 3000}));
+            message.channel.send(`**Deleted ${number} messages!**`).then(msg => msg.delete({timeout: 3000}).catch(
+                (error) => {
+                    console.log(error);
+                    return message.channel.send(`**There was en error while deleting message: ** ***${msg}***`);
+                }
+            ));
         }).catch(
             (error) => {
                 console.log(error);

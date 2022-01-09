@@ -127,7 +127,7 @@ const video_player = async(guild, song) => {
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
         .on('error', err => {
             console.log(err)
-            return message.channel.send("**An error occurred while downloading the video (internet connection interrupted)**")
+            return song_queue.text_channel.send("**An error occurred while downloading the video (internet connection interrupted)**")
         })
         .on('finish', () => {
             if (!looped.get(song_queue.text_channel.guild.id)) {
