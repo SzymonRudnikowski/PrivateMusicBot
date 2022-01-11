@@ -28,13 +28,26 @@ module.exports = {
         if (!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
         if (!args.length) return message.channel.send('**You need to send the second argument!**');
-        let song = { title: "", url: "" }
+        let song = { title: "", url: "", length: "" }
         let currentSongTitle = "";
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
             const song_info = await ytdl.getInfo(args[0]);
-            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
+            let video_length_formatted = "";
+            let len_sec = song_info.videoDetails.lengthSeconds;
+
+            if (len_sec / 60 / 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 / 60) + ":";
+            else video_length_formatted += Math.floor(len_sec / 60 / 60) + ":";
+
+            if (len_sec / 60 % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 % 60) + ":";
+            else video_length_formatted += Math.floor(len_sec / 60 % 60) + ":";
+
+            if (len_sec % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec % 60);
+            else video_length_formatted += Math.floor(len_sec % 60);
+
+
+            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url, length: video_length_formatted }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
             console.log("arg is a link")
@@ -50,7 +63,7 @@ module.exports = {
 
             const video = await video_finder(args.join(' '));
             if (video) {
-                song = { title: video.title, url: video.url }
+                song = { title: video.title, url: video.url, length: video.duration.timestamp }
             } else {
                 message.channel.send('Error while finding the video.');
                 console.log('Error while finding video.')
