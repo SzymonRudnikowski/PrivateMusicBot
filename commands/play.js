@@ -66,15 +66,15 @@ module.exports = {
             if (!inSameChannel && client.voice.connections.size) return message.reply('** you need to be in the same channel as the bot!**')
             server_queue.songs.push(song);
             console.log(`${song.title} added to queue!`)
-            
+
             //LOGS SYSTEM SETUP
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
-                .setTitle(`${song.title} added to queue!`).setColor('PURPLE').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name}, { name: 'Voice Channel', value: voice_channel.name})
+                .setTitle(`${song.title} added to queue!`).setColor('PURPLE').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name }, { name: 'Voice Channel', value: voice_channel.name })
             wc.send({
-                    username : message.author.tag,
-                    avatarURL : message.author.displayAvatarURL({ dynamic : true }),
-                    embeds : [embed]
+                username: message.author.tag,
+                avatarURL: message.author.displayAvatarURL({ dynamic: true }),
+                embeds: [embed]
             })
             return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
         } catch (err) {
@@ -86,13 +86,13 @@ module.exports = {
             }
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
-                .setTitle(`${song.title} issued this song!`).setColor('GREEN').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name}, { name: 'Voice Channel', value: voice_channel.name})
+                .setTitle(`${song.title} issued this song!`).setColor('GREEN').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name }, { name: 'Voice Channel', value: voice_channel.name })
             wc.send({
-                    username : message.author.tag,
-                    avatarURL : message.author.displayAvatarURL({ dynamic : true }),
-                    embeds : [embed]
-            })
-            //Add our key and value pair into the global queue. We then use this to get our server queue.
+                    username: message.author.tag,
+                    avatarURL: message.author.displayAvatarURL({ dynamic: true }),
+                    embeds: [embed]
+                })
+                //Add our key and value pair into the global queue. We then use this to get our server queue.
             queue.set(message.guild.id, queue_constructor);
             queue_constructor.songs.push(song);
 
@@ -105,10 +105,10 @@ module.exports = {
                 video_player(message.guild, queue_constructor.songs[0]);
                 const wc = new WebhookClient('929817046164832337', '3J4GfuLhWYS7QOve7RVzpja3ZMyD7gBcGLSbfTtkllMUa_u1LhINCjgobJljW_e2kEfu')
                 const embed = new MessageEmbed()
-                    .setTitle('Queue Started! Joining the channel.').setColor('GREEN').setTimestamp().addFields( { name: 'Voice Channel', value: voice_channel.name})
+                    .setTitle('Queue Started! Joining the channel.').setColor('GREEN').setTimestamp().addFields({ name: 'Voice Channel', value: voice_channel.name })
                 wc.send({
-                        username: 'Logs',
-                        embeds : [embed]
+                    username: 'Logs',
+                    embeds: [embed]
                 })
 
             } catch (err) {
@@ -138,10 +138,10 @@ const video_player = async(guild, song) => {
         // https://discord.com/api/webhooks/929817046164832337/3J4GfuLhWYS7QOve7RVzpja3ZMyD7gBcGLSbfTtkllMUa_u1LhINCjgobJljW_e2kEfu
         const wc = new WebhookClient('929817046164832337', '3J4GfuLhWYS7QOve7RVzpja3ZMyD7gBcGLSbfTtkllMUa_u1LhINCjgobJljW_e2kEfu')
         const embed = new MessageEmbed()
-            .setTitle('Queue ended! Leaving the channel.').setColor('RED').setTimestamp().addFields( { name: 'Voice Channel', value: song_queue.voice_channel.name})
+            .setTitle('Queue ended! Leaving the channel.').setColor('RED').setTimestamp().addFields({ name: 'Voice Channel', value: song_queue.voice_channel.name })
         wc.send({
-                username: 'Logs',
-                embeds : [embed]
+            username: 'Logs',
+            embeds: [embed]
         })
 
         return song_queue.voice_channel.leave();
@@ -186,7 +186,7 @@ const video_player = async(guild, song) => {
     console.log("youtube titles: " + YoutubeTitle.get(guild.id))
     console.log("song titles: " + songTitles.get(guild.id))
 
-    
-    
+
+
 
 }
