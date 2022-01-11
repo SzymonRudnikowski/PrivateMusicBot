@@ -80,12 +80,12 @@ module.exports = {
             server_queue.songs.push(song);
             console.log(`${song.title} added to queue!`)
             const messEmbed = new MessageEmbed()
-                .setTitle(`👍 ***${song.title}*** added to queue!`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
+                .setTitle(`👍 ***${song.title}*** added to queue! (${song.length})`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
 
             //LOGS SYSTEM SETUP
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
-                .setTitle(`${song.title} added to queue! (${song.length})`).setColor('PURPLE').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name }, { name: 'Voice Channel', value: voice_channel.name })
+                .setTitle(`${song.title} added to queue!`).setColor('PURPLE').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name }, { name: 'Voice Channel', value: voice_channel.name })
             wc.send({
                 username: message.author.tag,
                 avatarURL: message.author.displayAvatarURL({ dynamic: true }),
