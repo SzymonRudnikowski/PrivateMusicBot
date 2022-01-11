@@ -34,7 +34,20 @@ module.exports = {
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
             const song_info = await ytdl.getInfo(args[0]);
-            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url, length: Math.floor(song_info.videoDetails.lengthSeconds / 60) + ':' + song_info.videoDetails.lengthSeconds % 60 }
+            let video_length_formatted = "";
+            let len_sec = song_info.videoDetails.lengthSeconds;
+
+            if (len_sec / 60 / 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 / 60) + ":";
+            else video_length_formatted += Math.floor(len_sec / 60 / 60) + ":";
+
+            if (len_sec / 60 % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 % 60) + ":";
+            else video_length_formatted += Math.floor(len_sec / 60 % 60) + ":";
+
+            if (len_sec % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec % 60);
+            else video_length_formatted += Math.floor(len_sec % 60);
+
+
+            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url, length: video_length_formatted }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
             console.log("arg is a link")
