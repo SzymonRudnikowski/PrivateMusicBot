@@ -23,6 +23,7 @@ module.exports = {
         const Embed = await message.channel.send(page)
         await Embed.react("\u2714") //here checkmark
 
+
         let ReactionCol = Embed.createReactionCollector(filter2)
 
         ReactionCol.on("collect", (reaction) => {
