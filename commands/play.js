@@ -68,7 +68,7 @@ module.exports = {
             console.log(`${song.title} added to queue!`)
             const messEmbed = new MessageEmbed()
                 .setTitle(`👍 ***${song.title}*** added to queue!`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
-               
+
             //LOGS SYSTEM SETUP
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
@@ -187,7 +187,7 @@ const video_player = async(guild, song) => {
             }
         });
     const messEmbednow = new MessageEmbed()
-        .setTitle(`**🎶 Now playing:** ***${song.title}***`).setColor('BLUE').setTimestamp();
+        .setTitle(`**🎶 Now playing:** ***${song.title}*** ** (${song.length})**`).setColor('BLUE').setTimestamp();
     //send(`🎶 **Now playing:** ***${song.title}***`
     if (!looped.get(guild.id)) await song_queue.text_channel.send(messEmbednow)
     console.log(`Now playing: ${song.title}`)
