@@ -28,7 +28,7 @@ module.exports = {
         let ReactionCol = Embed.createReactionCollector(filter2)
 
         ReactionCol.on("collect", (reaction) => {
-            console.log('??');
+            console.log(reaction);
             if (reaction.emoji.name === "\u2714") {
                 ServerPlaylists.delete(message.guild.id);
                 console.log(`removed playlist ${args[0]}`)
