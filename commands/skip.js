@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const { WebhookClient, MessageEmbed } = require('discord.js')
 
 global.voted = new Map();
 global.vote_count = new Map();
@@ -36,11 +37,16 @@ module.exports = {
                         vote_count.set(message.guild.id, 0);
                         queue_constructor.connection.dispatcher.end();
                         hasJoinedChannel.delete(message.guild.id);
-                        return message.channel.send("**Skipped!**");
+                        const messEmbed = new MessageEmbed()
+                            .setTitle('Song Skipped!').setColor('GREEN').setTimestamp()
+                        return message.channel.send(messEmbed); 
                     }
                     vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
                     console.log("voted! vote count: " + vote_count.get(message.guild.id));
-                    return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                    const messEmbed = new MessageEmbed()
+                        .setTitle(`**Voted!** (` + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ')').setColor('YELLOW').setTimestamp()
+                    //return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                    return message.channel.send(messEmbed)
                 }
                 if(vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size-1)*0.7)){
                     voted.set(message.guild.id, []);
@@ -48,11 +54,16 @@ module.exports = {
                     server_queue.connection.dispatcher.end();
                     console.log('Skipped!')
                     hasJoinedChannel.delete(message.guild.id);
-                    return message.channel.send("**Skipped!**"); 
+                    const messEmbed = new MessageEmbed()
+                        .setTitle('Song Skipped!').setColor('GREEN').setTimestamp()
+                    return message.channel.send(messEmbed); 
                 }
                 vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1 );
                 console.log("voted! vote count: " + vote_count.get(message.guild.id));
-                return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                //return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
+                const messEmbed = new MessageEmbed()
+                    .setTitle("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")").setColor('YELLOW').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
+                return message.channel.send(messEmbed)
             }
             catch(error){
                 console.log("no music played")

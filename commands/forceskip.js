@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const { WebhookClient, MessageEmbed } = require('discord.js')
 
 module.exports = {
     name: 'forceskip',
@@ -15,7 +16,9 @@ module.exports = {
 
         if(looped.get(message.guild.id)){
             console.log("skip while looped")
-            return message.channel.send("**Can't skip while in loop!**");
+            const messEmbed = new MessageEmbed()
+                .setTitle("**Can't skip while in a loop!**").setColor('RED').setTimestamp()
+            return message.channel.send(messEmbed);
         }
 
         if(message.member.hasPermission(['ADMINISTRATOR']) || message.member.roles.cache.some(role => role.name === 'DJ') || message.author.id === '259046058737270784' || message.author.id === '391983289122029578'){

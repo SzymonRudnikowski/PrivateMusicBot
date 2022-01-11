@@ -66,7 +66,9 @@ module.exports = {
             if (!inSameChannel && client.voice.connections.size) return message.reply('** you need to be in the same channel as the bot!**')
             server_queue.songs.push(song);
             console.log(`${song.title} added to queue!`)
-
+            const messEmbed = new MessageEmbed()
+                .setTitle(`👍 ***${song.title}*** added to queue!`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
+               
             //LOGS SYSTEM SETUP
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
@@ -76,7 +78,7 @@ module.exports = {
                 avatarURL: message.author.displayAvatarURL({ dynamic: true }),
                 embeds: [embed]
             })
-            return message.channel.send(`👍 ***${song.title}*** **added to queue!**`);
+            return message.channel.send(messEmbed);
         } catch (err) {
             global.queue_constructor = {
                 voice_channel: voice_channel,
@@ -84,6 +86,11 @@ module.exports = {
                 connection: null,
                 songs: []
             }
+
+            //const messEmbediss = new MessageEmbed()
+            //    .setTitle(`**👍** ***${song.title}*** **added to queue!**`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
+            //message.channel.send(messEmbediss);
+
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
                 .setTitle(`${song.title} issued this song!`).setColor('GREEN').setTimestamp().addFields({ name: 'Guild Name:', value: message.guild.name }, { name: 'Voice Channel', value: voice_channel.name })
@@ -179,8 +186,10 @@ const video_player = async(guild, song) => {
                 video_player(guild, song_queue.songs[0]);
             }
         });
-
-    if (!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
+    const messEmbednow = new MessageEmbed()
+        .setTitle(`**🎶 Now playing:** ***${song.title}***`).setColor('BLUE').setTimestamp();
+    //send(`🎶 **Now playing:** ***${song.title}***`
+    if (!looped.get(guild.id)) await song_queue.text_channel.send(messEmbednow)
     console.log(`Now playing: ${song.title}`)
     if (!looped.get(guild.id)) YoutubeTitle.get(guild.id).push(song.title)
     console.log("youtube titles: " + YoutubeTitle.get(guild.id))
