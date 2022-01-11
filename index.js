@@ -151,4 +151,4 @@ client.on("message", message => {
 });
 
 //client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
-client.login(config.token);
+client.login(config.tokendev);

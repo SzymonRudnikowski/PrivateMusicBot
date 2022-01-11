@@ -17,25 +17,25 @@ module.exports = {
 
             });
         }
-        if (exist) return;
+        if (!exist) {
+            let playlist = {
+                name: args[0],
+                size: 0,
+                total_length: "0:00",
+                songs: [],
+            }
 
-        let playlist = {
-            name: args[0],
-            size: 0,
-            total_length: 0,
-            songs: [],
+            let playlist_list = [];
+
+            if (!ServerPlaylists.has(message.guild.id)) {
+                playlist_list.push(playlist);
+                console.log(`first playlist created ${playlist.name}`)
+                ServerPlaylists.set(message.guild.id, playlist_list);
+            } else {
+                console.log(`new playlist created ${playlist.name}`)
+                ServerPlaylists.get(message.guild.id).push(playlist);
+            }
+            return message.channel.send("**Playlist created!**")
         }
-
-        let playlist_list = [];
-
-        if (!ServerPlaylists.has(message.guild.id)) {
-            playlist_list.push(playlist);
-            console.log(`first playlist created ${playlist.name}`)
-            ServerPlaylists.set(message.guild.id, playlist_list);
-        } else {
-            console.log(`new playlist created ${playlist.name}`)
-            ServerPlaylists.get(message.guild.id).push(playlist);
-        }
-        return message.channel.send("**Playlist created!**")
     },
 };
