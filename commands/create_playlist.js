@@ -6,7 +6,7 @@ module.exports = {
     name: 'create_playlist',
     aliases: ['cp'],
     async execute(message, args, com, client) {
-        if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist**');
+        if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to create**');
         let playlist = {
             name: args[0],
             size: 0,

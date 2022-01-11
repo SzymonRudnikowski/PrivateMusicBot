@@ -4,7 +4,7 @@ module.exports = {
     name: 'delete_playlist',
     aliases: ['dp'],
     async execute(message, args, com, client) {
-        if (!args[0] || !args[0].length) return message.reply(' you have to specify the name of the playlist to remove');
+        if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to remove**');
         let exists = false;
 
         if (ServerPlaylists.has(message.guild.id)) {
@@ -22,15 +22,22 @@ module.exports = {
 
         const Embed = await message.channel.send(page)
         await Embed.react("\u2714") //here checkmark
+        await Embed.react("\u274C") //here x mark
 
 
         let ReactionCol = Embed.createReactionCollector(filter2)
 
         ReactionCol.on("collect", (reaction) => {
-            ServerPlaylists.delete(message.guild.id);
-            console.log(`removed playlist ${args[0]}`)
-            Embed.delete();
-            return message.channel.send(`**Playlist** ***${args[0]}*** **has been removed**`);
+            console.log('??');
+            if (reaction.emoji.name === "\u2714") {
+                ServerPlaylists.delete(message.guild.id);
+                console.log(`removed playlist ${args[0]}`)
+                Embed.delete();
+                return message.channel.send(`**Playlist** ***${args[0]}*** **has been removed**`);
+            } else if (reaction.emoji.name === "\u274C") {
+                console.log('deleting the playlist canceled')
+                Embed.delete();
+            }
         })
     },
 };
