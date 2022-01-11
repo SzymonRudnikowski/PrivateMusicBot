@@ -28,26 +28,13 @@ module.exports = {
         if (!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
         if (!args.length) return message.channel.send('**You need to send the second argument!**');
-        let song = { title: "", url: "", length: "" }
+        let song = { title: "", url: "" }
         let currentSongTitle = "";
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
             const song_info = await ytdl.getInfo(args[0]);
-            let video_length_formatted = "";
-            let len_sec = song_info.videoDetails.lengthSeconds;
-
-            if (len_sec / 60 / 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 / 60) + ":";
-            else video_length_formatted += Math.floor(len_sec / 60 / 60) + ":";
-
-            if (len_sec / 60 % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 % 60) + ":";
-            else video_length_formatted += Math.floor(len_sec / 60 % 60) + ":";
-
-            if (len_sec % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec % 60);
-            else video_length_formatted += Math.floor(len_sec % 60);
-
-
-            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url, length: video_length_formatted }
+            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
             console.log("arg is a link")
@@ -63,7 +50,7 @@ module.exports = {
 
             const video = await video_finder(args.join(' '));
             if (video) {
-                song = { title: video.title, url: video.url, length: video.duration.timestamp }
+                song = { title: video.title, url: video.url }
             } else {
                 message.channel.send('Error while finding the video.');
                 console.log('Error while finding video.')
@@ -81,7 +68,7 @@ module.exports = {
             console.log(`${song.title} added to queue!`)
             const messEmbed = new MessageEmbed()
                 .setTitle(`👍 ***${song.title}*** added to queue!`).setColor('PURPLE').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
-
+               
             //LOGS SYSTEM SETUP
             const wc = new WebhookClient('929495033365819402', 'ntIE1kywkXZ6_oeBhrDVYiYxIa-Ml69Up5Teed0TKdRyoTi2JPP6zBhE_TlHlCYG7Um-')
             const embed = new MessageEmbed()
@@ -200,7 +187,7 @@ const video_player = async(guild, song) => {
             }
         });
     const messEmbednow = new MessageEmbed()
-        .setTitle(`**🎶 Now playing:** ***${song.title}*** ** (${song.length})**`).setColor('BLUE').setTimestamp();
+        .setTitle(`**🎶 Now playing:** ***${song.title}***`).setColor('BLUE').setTimestamp();
     //send(`🎶 **Now playing:** ***${song.title}***`
     if (!looped.get(guild.id)) await song_queue.text_channel.send(messEmbednow)
     console.log(`Now playing: ${song.title}`)
