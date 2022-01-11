@@ -28,13 +28,13 @@ module.exports = {
         if (!YoutubeTitle.has(message.guild.id)) YoutubeTitle.set(message.guild.id, [""]);
         //If the user has used the play command
         if (!args.length) return message.channel.send('**You need to send the second argument!**');
-        let song = { title: "", url: "" }
+        let song = { title: "", url: "", length: 0 }
         let currentSongTitle = "";
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
             const song_info = await ytdl.getInfo(args[0]);
-            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url }
+            song = { title: song_info.videoDetails.title, url: song_info.videoDetails.video_url, length: song_info.videoDetails.lengthSeconds }
             currentSongTitle = song.title
             songTitles.get(message.guild.id).push(currentSongTitle)
             console.log("arg is a link")
@@ -180,7 +180,7 @@ const video_player = async(guild, song) => {
             }
         });
 
-    if (!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}***`)
+    if (!looped.get(guild.id)) await song_queue.text_channel.send(`🎶 **Now playing:** ***${song.title}*** ** (${song.length/60}.${song.length%60})**`)
     console.log(`Now playing: ${song.title}`)
     if (!looped.get(guild.id)) YoutubeTitle.get(guild.id).push(song.title)
     console.log("youtube titles: " + YoutubeTitle.get(guild.id))

@@ -7,6 +7,18 @@ module.exports = {
     aliases: ['cp'],
     async execute(message, args, com, client) {
         if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to create**');
+        let exist = false;
+        if (ServerPlaylists.has(message.guild.id)) {
+            ServerPlaylists.get(message.guild.id).forEach(playlist => {
+                if (playlist.name == args[0]) {
+                    message.channel.send(`**Playlist named** *** ${args[0]}*** ** already exists!**`);
+                    exist = true;
+                }
+
+            });
+        }
+        if (exist) return;
+
         let playlist = {
             name: args[0],
             size: 0,
