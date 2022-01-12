@@ -4,6 +4,7 @@ module.exports = {
     name: 'show_playlists',
     aliases: ['sp', 'showp', 'playlists'],
     async execute(message, args, com, client) {
+        //working
         let page = new Discord.MessageEmbed();
         let page_text = "";
         let count = 1;

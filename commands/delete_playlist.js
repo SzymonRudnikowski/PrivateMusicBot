@@ -4,6 +4,7 @@ module.exports = {
     name: 'delete_playlist',
     aliases: ['dp'],
     async execute(message, args, com, client) {
+        //working
         if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to remove**');
         let exists = false;
 

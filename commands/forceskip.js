@@ -35,6 +35,8 @@ module.exports = {
                 }
                 voted.set(message.guild.id, [])
                 vote_count.set(message.guild.id, 0)
+                songTitles.get(message.guild.id).splice(1, 1);
+                YoutubeTitle.get(message.guild.id).splice(1, 1);
                 server_queue.connection.dispatcher.end();
                 console.log('Skipped!')
                 hasJoinedChannel.delete(message.guild.id);
