@@ -38,7 +38,7 @@ module.exports = {
                 songTitles.get(message.guild.id).splice(1, 1);
                 YoutubeTitle.get(message.guild.id).splice(1, 1);
                 server_queue.connection.dispatcher.end();
-                console.log('Skipped!')
+                console.log('Skipped! 12345')
                 hasJoinedChannel.delete(message.guild.id);
                 return message.channel.send("**Skipped!**"); 
             }catch(error){
