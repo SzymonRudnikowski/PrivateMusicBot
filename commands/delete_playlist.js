@@ -19,23 +19,24 @@ module.exports = {
         }
 
         if(fs.existsSync(`./jsons_playlists/${message.guild.id}.json`)){
-                fs.readFile(`./jsons_playlists/${message.guild.id}.json`, 'utf-8', (err, data) => {
-                    if (err) {
-                        console.log('Error while reading the file');
-                    } else {
-                        const serverLocal = JSON.parse(data.toString());
-                        serverLocal[guildID].forEach(playlist => {
-                            if (playlist.name == playlistName) {
-                                exist = true;
-                            }
-                        });
-                    }
-                    
-                });
+            fs.readFile(`./jsons_playlists/${message.guild.id}.json`, 'utf-8', (err, data) => {
+                if (err) {
+                    console.log('Error while reading the file');
+                } else {
+                    const serverLocal = JSON.parse(data.toString());
+                    serverLocal[guildID].forEach(playlist => {
+                        if (playlist.name == playlistName) {
+                            exist = true;
+                        }
+                    });
+                }
                 
+            });    
+        }else{
+            return message.channel.send(`**Playlist named** ***${playlistName}*** **does not exist!**`);
         }
         setTimeout(async function(){
-            if (!exist) return message.channel.send(`**Playlist named** ***${args[0]}*** **does not exist!**`);
+            if (!exist) return message.channel.send(`**Playlist named** ***${playlistName}*** **does not exist!**`);
 
             const filter2 = (reaction, user) => ["\u2714"].includes(reaction.emoji.name) && (message.author.id == user.id)
             let page = new Discord.MessageEmbed();
@@ -50,12 +51,26 @@ module.exports = {
             let ReactionCol = Embed.createReactionCollector(filter2)
 
             ReactionCol.on("collect", (reaction) => {
-                console.log(reaction);
                 if (reaction.emoji.name === "\u2714") {
-                    ServerPlaylists.delete(message.guild.id);
-                    console.log(`removed playlist ${args[0]}`)
+                    fs.readFile(`./jsons_playlists/${message.guild.id}.json`, 'utf-8', (err, data) => {
+                        if (err) {
+                            console.log('Error reading file', err)
+                        } else {
+                            const serverLocal = JSON.parse(data.toString());
+                            serverLocal[guildID].splice(serverLocal[guildID].indexOf(guildID), 1)
+                            const serverLocalString = JSON.stringify(serverLocal, null, 4);
+                            fs.writeFile(`./jsons_playlists/${message.guild.id}.json`,serverLocalString , err => {
+                                if (err) {
+                                    console.log('Error writing file', err)
+                                }else{
+                                    console.log(`deleted playlist: ${playlistName}`)
+                                }
+                            });
+                        }
+                    });
+                    console.log(`removed playlist ${playlistName}`)
                     Embed.delete();
-                    return message.channel.send(`**Playlist** ***${args[0]}*** **has been removed**`);
+                    return message.channel.send(`**Playlist** ***${playlistName}*** **has been removed**`);
                 } else if (reaction.emoji.name === "\u274C") {
                     console.log('deleting the playlist canceled')
                     Embed.delete();
