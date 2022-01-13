@@ -1,14 +1,11 @@
 const Discord = require("discord.js");
 const fs = require('fs');
-const { abort } = require("process");
-
-var exist = false;
 
 module.exports = {
     name: 'create_playlist',
     aliases: ['cp'],
     async execute(message, args, com, client) {
-        
+        let exist = false;
         //working
         if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to create**');
        
@@ -29,7 +26,7 @@ module.exports = {
                         serverLocal[guildID].forEach(playlist => {
                             if (playlist.name == playlistName) {
                                 exist = true;
-                                return message.channel.send(`**Playlist named** *** ${args[0]}*** ** already exists!**`);
+                                message.channel.send(`**Playlist named** *** ${args[0]}*** ** already exists!**`);
                             }
                         });
                     }
@@ -41,7 +38,7 @@ module.exports = {
         setTimeout(() => {
             console.log(exist);
             if (!exist) {
-            
+                console.log("asd")
                 let playlist = {
                     name: playlistName,
                     size: 0,
@@ -54,8 +51,9 @@ module.exports = {
                 }
                 const jsonString = JSON.stringify(server, null, 4);
                 
+                
                 if(!fs.existsSync(`./jsons_playlists/${message.guild.id}.json`)) {
-                    fs.writeFileSync(`./jsons_playlists/${message.guild.id}.json`, jsonString, err => {
+                    fs.writeFile(`./jsons_playlists/${message.guild.id}.json`, jsonString, err => {
                         if (err) {
                             console.log('Error writing file', err)
                         }else{
@@ -63,6 +61,7 @@ module.exports = {
                         }
                     });     
                 }
+
                 fs.readFile(`./jsons_playlists/${message.guild.id}.json`, 'utf-8', (err, data) => {
                     if (err) {
                         console.log('Error reading file', err)
@@ -74,7 +73,7 @@ module.exports = {
                             if (err) {
                                 console.log('Error writing file', err)
                             }else{
-                                console.log(`created playlist: ${playlist.name}`)
+                                console.log(`created playlist: ${playlistName}`)
                             }
                         });
                     }
