@@ -37,11 +37,12 @@ module.exports = {
             let video_length_formatted = "";
             let len_sec = song_info.videoDetails.lengthSeconds;
 
-            if (len_sec / 60 / 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 / 60) + ":";
-            else video_length_formatted += Math.floor(len_sec / 60 / 60) + ":";
+            if (len_sec >= 3600) {
+                if (len_sec / 60 / 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 / 60) + ":";
+                else video_length_formatted += Math.floor(len_sec / 60 / 60) + ":";
+            }
 
-            if (len_sec / 60 % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec / 60 % 60) + ":";
-            else video_length_formatted += Math.floor(len_sec / 60 % 60) + ":";
+            video_length_formatted += Math.floor(len_sec / 60 % 60) + ":";
 
             if (len_sec % 60 < 10) video_length_formatted += "0" + Math.floor(len_sec % 60);
             else video_length_formatted += Math.floor(len_sec % 60);
@@ -65,7 +66,7 @@ module.exports = {
             if (video) {
                 song = { title: video.title, url: video.url, length: video.duration.timestamp }
             } else {
-                message.channel.send('Error while finding the video.');
+                return message.channel.send('**Error while finding the video.**');
                 console.log('Error while finding video.')
             }
             console.log("arg is not a link")
@@ -149,6 +150,25 @@ global.video_player = async(guild, song) => {
 
     //If no song is left in the server queue. Leave the voice channel and delete the key and value pair from the global queue.
     if (!song) {
+        if (playlistPlayType.has(guild.id)) {
+            switch (playlistPlayType.get(guild.id)) {
+                case "repeat":
+                    {
+
+                        break;
+                    }
+                case "shuffle":
+                    {
+
+                        break;
+                    }
+                default:
+                    {
+
+                        break;
+                    }
+            }
+        }
         console.log('Queue ended')
         songTitles.delete(guild.id);
         YoutubeTitle.delete(guild.id);

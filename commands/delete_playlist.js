@@ -8,17 +8,17 @@ module.exports = {
     async execute(message, args, com, client) {
         //working
         if (!args[0] || !args[0].length) return message.reply(' **you have to specify the name of the playlist to delete**');
-       
+
         let guildID = message.guild.id;
         let exist = false;
         console.log(args);
         let playlistName = "";
-        for(let i = 0; i < args.length; i++){
-            if(i == args.length - 1) playlistName += args[i];
+        for (let i = 0; i < args.length; i++) {
+            if (i == args.length - 1) playlistName += args[i];
             else playlistName += args[i] + " ";
         }
 
-        if(fs.existsSync(`./jsons_playlists/${message.guild.id}.json`)){
+        if (fs.existsSync(`./jsons_playlists/${message.guild.id}.json`)) {
             fs.readFile(`./jsons_playlists/${message.guild.id}.json`, 'utf-8', (err, data) => {
                 if (err) {
                     console.log('Error while reading the file');
@@ -30,12 +30,12 @@ module.exports = {
                         }
                     });
                 }
-                
-            });    
-        }else{
+
+            });
+        } else {
             return message.channel.send(`**Playlist named** ***${playlistName}*** **does not exist!**`);
         }
-        setTimeout(async function(){
+        setTimeout(async function() {
             if (!exist) return message.channel.send(`**Playlist named** ***${playlistName}*** **does not exist!**`);
 
             const filter2 = (reaction, user) => ["\u2714"].includes(reaction.emoji.name) && (message.author.id == user.id)
@@ -59,16 +59,15 @@ module.exports = {
                             const serverLocal = JSON.parse(data.toString());
                             serverLocal[guildID].splice(serverLocal[guildID].indexOf(guildID), 1)
                             const serverLocalString = JSON.stringify(serverLocal, null, 4);
-                            fs.writeFile(`./jsons_playlists/${message.guild.id}.json`,serverLocalString , err => {
+                            fs.writeFile(`./jsons_playlists/${message.guild.id}.json`, serverLocalString, err => {
                                 if (err) {
                                     console.log('Error writing file', err)
-                                }else{
+                                } else {
                                     console.log(`deleted playlist: ${playlistName}`)
                                 }
                             });
                         }
                     });
-                    console.log(`removed playlist ${playlistName}`)
                     Embed.delete();
                     return message.channel.send(`**Playlist** ***${playlistName}*** **has been removed**`);
                 } else if (reaction.emoji.name === "\u274C") {
@@ -77,9 +76,9 @@ module.exports = {
                 }
             })
         }, 1000);
-        
-            
 
-        
+
+
+
     },
 };
