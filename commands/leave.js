@@ -6,7 +6,8 @@ module.exports = {
     aliases: ['dsc', 'dc'],
     decription: "stops the song that is currently playing in the queue and leaves the channel",
     async execute(message, args, command, client) {
-        if (!message.member.voice.channel) {
+        let voice_channel = message.member.voice.channel;
+        if (!voice_channel) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`${message.author.tag} ***you need to be in a voice channel to execute this command!***`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
