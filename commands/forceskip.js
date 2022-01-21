@@ -6,24 +6,32 @@ module.exports = {
     aliases: ['fs'],
     decription: "force skips song that is currently played",
     async execute(message, args, com, client) {
-        if (!message.member.voice.channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
-        if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
+        if (!message.member.voice.channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`${message.author} ***You need to be in a voice channel to execute this command!***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+        if (!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )
-          
-        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
 
-        if(looped.get(message.guild.id)){
+        if (!inSameChannel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+
+        if (looped.get(message.guild.id)) {
             console.log("skip while looped")
             const messEmbed = new MessageEmbed()
                 .setTitle("**Can't skip while in a loop!**").setColor('RED').setTimestamp()
             return message.channel.send(messEmbed);
         }
 
-        if(message.member.hasPermission(['ADMINISTRATOR']) || message.member.roles.cache.some(role => role.name === 'DJ') || message.author.id === '259046058737270784' || message.author.id === '391983289122029578'){
-            try{
-                if(!server_queue || server_queue.songs.length === 0){
+        if (message.member.hasPermission(['ADMINISTRATOR']) || message.member.roles.cache.some(role => role.name === 'DJ') || message.author.id === '259046058737270784' || message.author.id === '391983289122029578') {
+            try {
+                if (!server_queue || server_queue.songs.length === 0) {
                     voted.set(message.guild.id, [])
                     vote_count.set(message.guild.id, 0)
                     songTitles.get(message.guild.id).splice(1, 1);
@@ -31,22 +39,30 @@ module.exports = {
                     queue_constructor.connection.dispatcher.end();
                     console.log('Skipped!')
                     hasJoinedChannel.delete(message.guild.id);
-                    return message.channel.send("**Skipped!**");
+                    const messEmbed = new MessageEmbed()
+                        .setTitle('Song Skipped!').setColor('GREEN').setTimestamp()
+                    return message.channel.send(messEmbed);
                 }
                 voted.set(message.guild.id, [])
                 vote_count.set(message.guild.id, 0)
                 server_queue.connection.dispatcher.end();
                 console.log('Skipped! 12345')
                 hasJoinedChannel.delete(message.guild.id);
-                return message.channel.send("**Skipped!**"); 
-            }catch(error){
+                const messEmbed = new MessageEmbed()
+                    .setTitle('Song Skipped!').setColor('GREEN').setTimestamp()
+                return message.channel.send(messEmbed);
+            } catch (error) {
                 console.log("no music played")
                 voted.set(message.guild.id, [])
                 vote_count.set(message.guild.id, 0)
-                return message.channel.send("**No music is currently played!**")
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**No music is currently played!**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
             }
-        }else{
-            return message.reply("** you do not have permissions to execute this command!**");
+        } else {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **you do not have permissions to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
         }
     }
 };

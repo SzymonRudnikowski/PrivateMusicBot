@@ -7,24 +7,42 @@ module.exports = {
     name: 'loop',
     aliases: ['lp'],
     description: 'loop current song',
-    async execute(message, args, com, client){
-        if(!looped.has(message.guild.id)) looped.set(message.guild.id, false)
-        const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
+    async execute(message, args, com, client) {
+        if (!looped.has(message.guild.id)) looped.set(message.guild.id, false)
+        if (!message.member.voice.channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )
-        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
-        try{
-            if(!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) throw err;
-        }catch(err){
-            console.log("loop while no music played")
-            return message.channel.send("**No music is currently played!**");
+
+        if (!inSameChannel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
         }
-          
-        if(looped.get(message.guild.id)) return message.channel.send("***" + YoutubeTitle.get(message.guild.id)[1] + "*** **is already in a loop!**");
+        try {
+            if (!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) throw err;
+        } catch (err) {
+            console.log("loop while no music played")
+            if (!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**No music is currently played!**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+        }
+
+        if (looped.get(message.guild.id)) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${YoutubeTitle.get(message.guild.id)[1]}*** **is already in a loop!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
         looped.set(message.guild.id, true);
         console.log("looped! status: " + looped.get(message.guild.id))
-        return message.channel.send("***" + YoutubeTitle.get(message.guild.id)[1] + "*** **looped!**");
+        const messEmbednow = new MessageEmbed()
+            .setTitle(`***${YoutubeTitle.get(message.guild.id)[1]}*** **looped!**`).setColor('BLUE').setTimestamp();
+        return message.channel.send(messEmbednow);
     }
 }
