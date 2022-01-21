@@ -37,7 +37,7 @@ module.exports = {
 
         if (looped.get(message.guild.id)) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${YoutubeTitle.get(message.guild.id)[1]}*** **is already in a loop!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${YoutubeTitle.get(message.guild.id)[1]}*** **is already in loop!**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
         }
         looped.set(message.guild.id, true);

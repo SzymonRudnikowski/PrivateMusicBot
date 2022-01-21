@@ -90,7 +90,7 @@ module.exports = {
         } else {
             console.log(message.author + " already voted");
             const messEmbednow = new MessageEmbed()
-                .setTitle(`**${message.author} already voted**`).setColor('BLUE').setTimestamp();
+                .setTitle(`**${message.author} already voted**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
         }
 
