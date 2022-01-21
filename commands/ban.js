@@ -11,7 +11,7 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
         const guild = client.guild.cache.get(message.guild.id);
-        if (!guild.me.hasPermission("ADMINISTRATOR")) {
+        if (!message.guild.members.get(client.user.id).hasPermission("ADMINISTRATOR")) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`**I do not have permissions to ban** ***${message.mentions.members.first()}***`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
