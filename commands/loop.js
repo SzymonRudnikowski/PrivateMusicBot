@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const songTit = require("./play")
+const { MessageEmbed } = require('discord.js')
 
 global.looped = new Map();
 
