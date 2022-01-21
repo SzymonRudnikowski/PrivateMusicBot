@@ -14,9 +14,9 @@ module.exports = {
     cooldown: 0,
     description: 'Advanced music bot',
     async execute(message, args, command, client) {
-
+        let voice_channel = message.member.voice.channel;
         //Checking for the voicechannel and permissions.
-        if (!message.member.voice.channel) {
+        if (!voice_channel) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
