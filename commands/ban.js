@@ -10,7 +10,6 @@ module.exports = {
                 .setTitle(`***${message.author}*** **you have to specify the user you want to ban!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
-        const guild = client.guild.cache.get(message.guild.id);
         if (!message.guild.members.get(client.user.id).hasPermission("ADMINISTRATOR")) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`**I do not have permissions to ban** ***${message.mentions.members.first()}***`).setColor('BLUE').setTimestamp();
