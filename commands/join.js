@@ -1,17 +1,22 @@
 const Discord = require("discord.js");
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
     name: 'join',
     description: 'makes the client to join users channel',
     permissions: [],
     async execute(message, args, com, client) {
-        console.log('used')
-        if(hasJoinedChannel.has(message.guild.id)){
-            message.channel.send("**I'm already in a channel!**");
+        if (hasJoinedChannel.has(message.guild.id)) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**I'm already in a channel!**`).setColor('BLUE').setTimestamp();
+            message.channel.send(messEmbednow);
             return console.log("tried to join but client already in a channel");
         }
-        const voice_channel = message.member.voice.channel;
-        if(!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
+        if (!message.member.voice.channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author.tag}*** **you need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
 
         try {
             voice_channel.join();

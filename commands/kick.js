@@ -1,21 +1,39 @@
 const Discord = require("discord.js");
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
     name: 'kick',
     description: 'it does what u think it does',
     permissions: [],
     async execute(message, args) {
-        if(!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to kick!***`); //if there is no 2nd argument
-
-        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR']) || message.author.id === "391983289122029578" || message.author.id === "259046058737270784") {
+        if (!args.length) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`${message.author} ***you have to specify the user you want to kick!***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+        let person = message.guild.member(message.mentions.members.first());
+        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
             let member = message.mentions.members.first();
-            if(!member) return message.reply("**Please mention a valid member of this server**");
-            if(!member.kickable) return message.reply("**I do not have the right permissions to kick this member!**");
+
+            if (!member) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**Please mention a valid member of this server**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            if (!member.kickable) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**I do not have the right permissions to kick** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
 
             member.kick();
-            return message.channel.send(`***${member} kicked!***`)
-        }else{
-            return message.channel.send(`**${message.author} you do not have the right permissions to execute this command!**`);
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${person.user.tag} kicked!***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow)
+        } else {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**${message.author.tag} you do not have permissions to kick** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
         }
     },
 };

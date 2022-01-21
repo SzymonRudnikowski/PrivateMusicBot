@@ -11,9 +11,10 @@ module.exports = {
                 .setTitle(`***${message.author}*** **you have to specify the user you want to ban!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
-        if (!message.member.hasPermission('ADMINISTRATOR')) {
+        let person = message.guild.member(message.mentions.members.first());
+        if (!person.bannable) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`**I do not have permissions to ban** ***${message.mentions.members.first()}***`).setColor('BLUE').setTimestamp();
+                .setTitle(`**I do not have permissions to ban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
 
@@ -22,40 +23,39 @@ module.exports = {
         userId = userId.replace(/>/g, '')
         userId = userId.replace(/@/g, '')
 
+
         try {
             const banList = await message.guild.fetchBans();
             const targetId = banList.get(userId).user
 
             if (targetId) {
-                console.log(`${args[0]} is already banned!`)
+                console.log(`${person.user.tag} is already banned!`)
                 const messEmbednow = new MessageEmbed()
-                    .setTitle(`***${args[0]}*** ** is already banned!**`).setColor('BLUE').setTimestamp();
+                    .setTitle(`***${person.user.tag}*** ** is already banned!**`).setColor('BLUE').setTimestamp();
                 return message.channel.send(messEmbednow);
             }
         } catch (err) {
-            console.log(err);
+            console.log(`${person.user.tag} not banned yet`);
             if (!message.guild.member(userId)) {
                 const messEmbednow = new MessageEmbed()
-                    .setTitle(`**There is no user named** ***${args[0]}***`).setColor('BLUE').setTimestamp();
+                    .setTitle(`**There is no user named** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
                 return message.channel.send(messEmbednow);
             }
         }
 
-        if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR']) || message.author.id === '259046058737270784' || message.author.id === '391983289122029578') {
+        if (message.member.hasPermission(['ADMINISTRATOR'])) {
             if (message.mentions.members.first()) {
-                try {
-                    message.mentions.members.first().ban();
-                    console.log(`${message.mentions.members.first()} banned!`)
-                    const messEmbednow = new MessageEmbed()
-                        .setTitle(`${message.mentions.members.first()} **has been successfuly banned from this server!**`).setColor('BLUE').setTimestamp();
-                    return message.channel.send(messEmbednow);
-                } catch {
-                    return message.reply(`***I do not have permissions to ban ${message.mentions.members.first()}***`);
-                }
+                message.mentions.members.first().ban();
+                console.log(`${person.user.tag} banned!`)
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`***${person.user.tag}*** **has been successfuly banned from this server!**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
             }
         }
         else {
-            return message.reply(`***You do not have permissions to ban ${message.mentions.members.first()}***`);
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${person.user.tag}*** **You do not have permissions to ban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
         }
     },
 };

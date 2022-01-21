@@ -8,7 +8,7 @@ module.exports = {
     async execute(message, args, com, client) {
         if (!message.member.voice.channel) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`${message.author} ***You need to be in a voice channel to execute this command!***`).setColor('BLUE').setTimestamp();
+                .setTitle(`${message.author.tag} ***You need to be in a voice channel to execute this command!***`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
         if (!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**")
@@ -18,7 +18,7 @@ module.exports = {
 
         if (!inSameChannel) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${message.author.tag}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
 
@@ -61,7 +61,7 @@ module.exports = {
             }
         } else {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author}*** **you do not have permissions to execute this command!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${message.author.tag}*** **you do not have permissions to execute this command!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
     }

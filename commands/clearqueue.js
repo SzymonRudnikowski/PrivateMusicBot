@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const songTit = require("./play")
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
     name: 'clearqueue',
@@ -8,7 +9,7 @@ module.exports = {
     async execute(message) {
         if (!message.member.voice.channel) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${message.author.tag}*** **you need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
         try {

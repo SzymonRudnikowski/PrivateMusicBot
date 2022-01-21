@@ -2,6 +2,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const util = require("minecraft-server-util");
 const config = require("./config.json");
+const { MessageEmbed } = require('discord.js')
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -14,8 +15,8 @@ let mutedUsersCurrently = new Set();
 global.hasJoinedChannel = new Map();
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
-    //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
-    //const BOT_ID = "892442837252206633";
+//    30s    60s    5min    30min    1hour    3hours    12hours   24hours
+//const BOT_ID = "892442837252206633";
 const BOT_ID = config.id;
 //btw simon is a ni33er
 
@@ -79,16 +80,19 @@ client.on("message", message => {
         if (mutedUsers.has(message.author.id)) mutedUsers.set(message.author.id, mutedUsers.get(message.author.id) + 1);
         else mutedUsers.set(message.author.id, 0);
         console.log(mutedUsers.has(message.author.id));
+        const messEmbednow = new MessageEmbed()
+            .setColor('BLUE').setTimestamp();
 
         if (intervals[mutedUsers.get(message.author.id)] / 1000 <= 60)
-            message.channel.send(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)]/1000)} seconds**`);
+            messEmbednow.setTitle(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)] / 1000)} seconds**`);
         else if (intervals[mutedUsers.get(message.author.id)] / 1000 > 60 && intervals[mutedUsers.get(message.author.id)] / 1000 <= 1800)
-            message.channel.send(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)]/1000/60)} minutes**`);
+            messEmbednow.setTitle(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)] / 1000 / 60)} minutes**`);
         else if (intervals[mutedUsers.get(message.author.id)] / 1000 === 3600)
-            message.channel.send(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)]/1000/60/60)} hour**`);
+            messEmbednow.setTitle(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60)} hour**`);
         else if (intervals[mutedUsers.get(message.author.id)] / 1000 > 1800)
-            message.channel.send(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)]/1000/60/60)} hours**`);
+            messEmbednow.setTitle(`**You are sending messages to fast! Try again in ${(intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60)} hours**`);
 
+        message.channel.send(messEmbednow);
         mutedUsersCurrently.add(message.author.id);
 
         setTimeout(() => {
@@ -134,9 +138,9 @@ client.on("message", message => {
         } 
         */
 
-        client.setTimeout(function() {
+        client.setTimeout(function () {
 
-            setTimeout(function() {
+            setTimeout(function () {
                 commandUsedRecently.set(message.author.id, 0);
             }, 2000)
         });
@@ -145,7 +149,9 @@ client.on("message", message => {
             com.execute(message, args, com, client);
         } catch (error) {
             console.error(error);
-            message.reply('**There was an issue executing this command!**');
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**There was an issue executing this command!**`).setColor('BLUE').setTimestamp();
+            message.channel.send(messEmbednow);
         }
     }
 });
