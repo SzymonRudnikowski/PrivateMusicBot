@@ -4,13 +4,13 @@ module.exports = {
     name: 'ban',
     description: 'it does what u think it does',
     permissions: [],
-    async execute(message, args) {
+    async execute(message, args, com, client) {
         if (!args.length) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author}*** **you have to specify the user you want to ban!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
-        const guild = Client.guild.cache.get("GUILD_ID");
+        const guild = client.guild.cache.get(message.guild.id);
         if (!guild.me.hasPermission("ADMINISTRATOR")) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`**I do not have permissions to ban** ***${message.mentions.members.first()}***`).setColor('BLUE').setTimestamp();
