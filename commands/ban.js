@@ -6,7 +6,7 @@ module.exports = {
     description: 'it does what u think it does',
     permissions: [],
     async execute(message, args, com, client) {
-        if (!args.length) {
+        if (!args || !args[0].length) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author}*** **you have to specify the user you want to ban!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);

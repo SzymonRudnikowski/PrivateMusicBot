@@ -7,37 +7,64 @@ module.exports = {
     permissions: [],
     async execute(message, args) {
         console.log("tried to unban")
-        if (message.author.id !== '259046058737270784' && message.author.id !== '391983289122029578') {
-            if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send(`**${message.author} You don\'t have the right permission to execute this command!**`)
-            if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('**I don\'t have the permissions!**')
+        let person = message.guild.member(message.mentions.members.first());
+        if (!message.member.hasPermission("ADMINISTRATOR")) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${person.user.tag}*** **You do not have permissions to unban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
         }
-        if (!args.length) return message.channel.send(`${message.author} ***You have to specify the user you want to unban!***`); //if there is no 2nd argument
 
-        let userId = args[0].toString().replace(/</g, '')
-        userId = userId.replace(/!/g, '')
-        userId = userId.replace(/>/g, '')
-        userId = userId.replace(/@/g, '')
+        else if (!person.bannable) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**I do not have permissions to unban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+        else if (!args || !args[0].length) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **you have to specify the user you want to unban!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+        else {
+            let userId = args[0].toString().replace(/</g, '')
+            userId = userId.replace(/!/g, '')
+            userId = userId.replace(/>/g, '')
+            userId = userId.replace(/@/g, '')
 
-        try {
-            const banList = await message.guild.fetchBans();
-            const targetId = banList.get(userId).user
-            console.log(targetId)
+            try {
+                const banList = await message.guild.fetchBans();
+                const targetId = banList.get(userId).user
+                console.log(targetId)
 
-            if (!targetId) {
-                console.log(`${args[0]} is not banned!`)
-                return message.channel.send(`***${args[0]}*** ** is not banned!**`);
+                if (!targetId) {
+                    console.log(`${args[0]} is not banned!`)
+                    const messEmbednow = new MessageEmbed()
+                        .setTitle(`***${args[0]}*** ** is not banned!**`).setColor('BLUE').setTimestamp();
+                    return message.channel.send(messEmbednow);
+                }
+            } catch (err) {
+                console.log(err);
+                if (!message.guild.member(userId)) {
+                    const messEmbednow = new MessageEmbed()
+                        .setTitle(`**There is no user named** ***${args[0]}***`).setColor('BLUE').setTimestamp();
+                    return message.channel.send(messEmbednow);
+                }
+                else {
+                    const messEmbednow = new MessageEmbed()
+                        .setTitle(`**User named** ***${args[0]}*** **is not banned!**`).setColor('BLUE').setTimestamp();
+                    return message.channel.send(messEmbednow);
+                }
             }
-        } catch (err) {
-            console.log(err);
-            if (!message.guild.member(userId)) return message.channel.send(`**There is no user named** ***${args[0]}***`);
-            else return message.channel.send(`**User named** ***${args[0]}*** **is not banned!**`);
+
+            console.log(userId)
+
+            message.guild.members.unban(userId)
+                .then(() => {
+                    const messEmbednow = new MessageEmbed()
+                        .setTitle(`**Unbanned ${args[0]}. Welcome back!**`).setColor('BLUE').setTimestamp();
+                    message.channel.send(messEmbednow);
+                })
+                .catch(console.error);
+            console.log(`Unbanned ${args[0]}`);
         }
-
-        console.log(userId)
-
-        message.guild.members.unban(userId)
-            .then(message.channel.send(`**Unbanned ${args[0]}. Welcome back!**`))
-            .catch(console.error);
-        console.log(`Unbanned ${args[0]}`);
     },
 };

@@ -10,12 +10,20 @@ module.exports = {
     description: 'shows first 10 songs in the queue',
     async execute(message, args, command, client) {
         const voice_channel = message.member.voice.channel;
-        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
+        if (!voice_channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
         const inSameChannel = client.voice.connections.some(
             (connection) => connection.channel.id === message.member.voice.channelID
         )
 
-        if (!inSameChannel) return message.reply('** you need to be in the same channel as the bot!**')
+        if (!inSameChannel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
 
         try {
             if (!text.has(message.guild.id)) text.set(message.guild.id, "");

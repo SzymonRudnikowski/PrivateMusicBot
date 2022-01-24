@@ -82,7 +82,9 @@ module.exports = {
                 song = { title: video.title, url: video.url, length: video.duration.timestamp }
             } else {
                 console.log('Error while finding video.')
-                return message.channel.send('**Error while finding the video.**');
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**Error while finding the video**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
             }
             console.log("arg is not a link")
         }

@@ -23,7 +23,9 @@ module.exports = {
             hasJoinedChannel.set(message.guild.id, true)
             console.log('Joined voice channel', voice_channel.name)
         } catch (err) {
-            message.channel.send('**There was an error connecting!**');
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**There was an error connecting!**`).setColor('BLUE').setTimestamp();
+            message.channel.send(messEmbednow);
             console.log('Connection to channel error.')
             throw err;
         }

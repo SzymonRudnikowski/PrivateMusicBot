@@ -6,8 +6,16 @@ module.exports = {
     aliases: ['queue_remove', 'qr'],
     decription: "removes a specific song from queue",
     async execute(message, args) {
-        if (!message.member.voice.channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
-        if (!args.length) return message.channel.send(`${message.author} **You need to specify position in queue to remove!**`);
+        if (!message.member.voice.channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author.tag}*** **you need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+        if (!args.length) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`${message.author.tag} ** You need to specify position in queue to remove! ** `).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
 
         try {
             if (parseInt(args[0]) > server_queue.songs.length - 1 || parseInt(args[0]) < 1) return message.channel.send("**There is no such a position!**");
