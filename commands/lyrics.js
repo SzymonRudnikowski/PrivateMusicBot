@@ -122,7 +122,14 @@ const displayLyricsNoPlay = async (pages, songTitle, message) => {
 
     let res;
     try {
-        res = await lyricsFinder("", songTitle) || "Not found";
+        await fetch('http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + songTitle + '&apikey=' + API_KEY)
+            .then(function (u) { return u.json(); })
+            .then(function (json) {
+                res = json;
+
+            })
+        console.log(res.message.body.lyrics)
+        res = res.message.body.lyrics.lyrics_body;
     } catch (err) {
         console.log(err)
         res = "Not Found"
