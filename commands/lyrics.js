@@ -19,11 +19,19 @@ module.exports = {
             return displayLyricsNoPlay(pages, songNoPlay, message);
         }
         const voice_channel = message.member.voice.channel
-        if (!voice_channel) return message.channel.send(`${message.author} ***You need to be in a voice channel to execute this command!***`)
+        if (!voice_channel) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
 
         console.log(songTitles.get(message.guild.id))
         console.log(YoutubeTitle.get(message.guild.id))
-        if (!songTitles.has(message.guild.id) || songTitles.get(message.guild.id).length === 1) return message.channel.send("**No music is currently played!**");
+        if (!songTitles.has(message.guild.id) || songTitles.get(message.guild.id).length === 1) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**No music is currently played!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
 
         try {
             let reg = new RegExp("official music video|official|official video|official music|music video|video|lyric|lyrics|audio", "i")
@@ -46,7 +54,11 @@ module.exports = {
 }
 
 const displayLyrics = async (pages, songTitle, message) => {
-    if (songTitle === "") return message.channel.send("**No music is currently played!**");
+    if (songTitle === "") {
+        const messEmbednow = new MessageEmbed()
+            .setTitle(`**No music is currently played!**`).setColor('BLUE').setTimestamp();
+        return message.channel.send(messEmbednow);
+    }
     songTitle = encodeURI(songTitle)
     let current = 0
     console.log("current song title: " + songTitle)
