@@ -12,6 +12,11 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
         let person = message.guild.member(message.mentions.members.first());
+        if (!person) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**Please mention a valid member of this server**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
         if (!person.bannable) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`**I do not have permissions to ban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
@@ -51,8 +56,7 @@ module.exports = {
                     .setTitle(`***${person.user.tag}*** **has been successfuly banned from this server!**`).setColor('BLUE').setTimestamp();
                 return message.channel.send(messEmbednow);
             }
-        }
-        else {
+        } else {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${person.user.tag}*** **You do not have permissions to ban** ***${person.user.tag}***`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
