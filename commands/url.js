@@ -19,11 +19,11 @@ async function getTables(matchID, message) {
     let res;
     //getting the json response from faceit api
     await fetch('https://open.faceit.com/data/v4/matches/' + matchID + '/stats', {
-            method: 'GET',
-            headers: headerFaceit
-        })
-        .then(function(u) { return u.json(); })
-        .then(function(json) {
+        method: 'GET',
+        headers: headerFaceit
+    })
+        .then(function (u) { return u.json(); })
+        .then(function (json) {
             res = json;
         })
     console.log(res);
@@ -71,6 +71,10 @@ async function getTables(matchID, message) {
                     let array = data[i];
 
                     if (array.length) {
+                        if (array[1].replace(/"/g, '') === "ScreamingKek") {
+                            console.log("found him")
+
+                        }
                         if (array[1].replace(/"/g, '') === nickname) {
                             console.log("found: " + nickname);
                             team_name_excel = array[0];
@@ -154,7 +158,7 @@ module.exports = {
         }
         console.log(args[0])
 
-        if (!args[0].startsWith('https://faceitstats.com/match/') && !args[0].startsWith('https://www.faceit.com/pl/csgo/room/')) {
+        if (!args[0].startsWith('https://faceitstats.com/match/') && !args[0].startsWith('https://www.faceit.com/')) {
             console.log("link not valid")
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author.tag}*** **your link is not valid!**`).setColor('RED').setTimestamp();
@@ -188,7 +192,7 @@ module.exports = {
         if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
 
 
-        setTimeout(async() => {
+        setTimeout(async () => {
             if (!exist) {
 
                 console.log(matchID);
