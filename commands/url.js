@@ -73,7 +73,7 @@ async function getTables(matchID, message) {
                     if (array.length) {
                         if (array[1].replace(/"/g, '') === "ScreamingKek") {
                             console.log("found him")
-
+                            //sprawdzic czy to wyszuka
                         }
                         if (array[1].replace(/"/g, '') === nickname) {
                             console.log("found: " + nickname);
