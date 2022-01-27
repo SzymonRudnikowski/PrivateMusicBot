@@ -71,12 +71,8 @@ async function getTables(matchID, message) {
                     let array = data[i];
 
                     if (array.length) {
-                        if (array[1].replace(/"/g, '') === "ScreamingKek") {
-                            console.log("found him")
-                            //sprawdzic czy to wyszuka
-                        }
-                        if (array[1].replace(/"/g, '') === nickname) {
-                            console.log("found: " + nickname);
+                        if (array[1].replace(/"/g, '').toLowerCase().includes(nickname.toLowerCase())) {
+                            console.log("---------------------found: " + nickname);
                             team_name_excel = array[0];
                             array[2] += parseInt(kills);
                             array[3] += parseInt(assists);
@@ -86,7 +82,6 @@ async function getTables(matchID, message) {
                             array.push(parseInt(assists));
                             array.push(parseInt(deaths));
                             players_right.set(team_name, players_right.get(team_name) + 1);
-                            break;
                         } else {
                             array[5] = parseFloat(array[5]).toFixed(2);
                         }
@@ -99,7 +94,7 @@ async function getTables(matchID, message) {
                 right_players.set(message.guild.id, false);
                 return;
             } else {
-                players_right.delete(team_name);
+                players_right.set(team_name, 0);
             }
             let whole_team = [];
             data.forEach(array => {
