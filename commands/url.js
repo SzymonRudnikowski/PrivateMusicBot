@@ -151,6 +151,12 @@ module.exports = {
     name: 'wynik',
     aliases: [],
     async execute(message, args, com, client) {
+        if (!statsEnabled.has(message.guild.id) || !statsEnabled.get(message.guild.id)) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**Stats recording is currently disabled!**`).setColor('BLUE').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
+
         if (!args.length || !args[0].length) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author.tag}*** **you need to enter a link!**`).setColor('BLUE').setTimestamp();
