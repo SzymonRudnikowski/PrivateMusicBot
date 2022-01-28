@@ -81,7 +81,11 @@ client.setInterval(() => {
                 console.log('Error while reading the file', err);
             } else {
                 let settings = JSON.parse(data.toString());
-                settings.currentQueue++;
+                if (settings.statsEnabled) {
+                    settings.currentQueue++;
+                } else {
+                    console.log("not changed actually cause its off")
+                }
                 const return_string = JSON.stringify(settings, null, 4);
                 fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
                     if (err) {
