@@ -75,7 +75,7 @@ client.setInterval(() => {
     let day = date.getDay();
     let hour = date.getHours();
     console.log(day, hour);
-    if (day === 5 && hour === 8) {
+    if (day === 0 && hour === 0) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
@@ -94,7 +94,7 @@ client.setInterval(() => {
         });
     }
 
-}, 5000) // check every hour if new queue should be turned on
+}, 3600000) // check every hour if new queue should be turned on
 
 client.on("message", message => {
     if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
