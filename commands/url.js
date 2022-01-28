@@ -1,3 +1,4 @@
+const { Queue } = require("discord-player");
 const Discord = require("discord.js");
 const { MessageEmbed } = require('discord.js')
 const fs = require('fs')
@@ -13,8 +14,9 @@ const headerFaceit = {
 let good = new Map();
 let right_players = new Map();
 const PATH = "./Zawodnicy_CSGO.xlsx";
+let exceedQueue = new Map();
 
-async function getTables(matchID, message) {
+async function getTables(matchID, message, queueNumber) {
     const workbook = XLSX.readFile(PATH)
     let res;
     //getting the json response from faceit api
@@ -37,6 +39,9 @@ async function getTables(matchID, message) {
             let players = [];
             if (!players_right.has(team_name)) {
                 players_right.set(team_name, 0);
+            }
+            if (exceedQueue.has(message.guild.id)) {
+                exceedQueue.set(message.guild.id, false);
             }
 
             //getting match stats from faceit api
@@ -112,6 +117,10 @@ async function getTables(matchID, message) {
                     max_length = teammate.length;
                 }
             });
+            if ((max_length - 2) / 3 === queueNumber) {
+                exceedQueue.set(message.guild.id, true);
+                return;
+            }
             whole_team.forEach(teammate => {
                 if (teammate.length < max_length) {
                     teammate.push(0);
@@ -123,7 +132,7 @@ async function getTables(matchID, message) {
             whole_team = [];
             players = [];
         });
-        if (!right_players.get(message.guild.id)) {
+        if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
             return;
         }
         let worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -218,7 +227,13 @@ module.exports = {
                 if (!exist) {
 
                     console.log(matchID);
-                    await getTables(matchID, message);
+                    await getTables(matchID, message, queueNumber);
+
+                    if (exceedQueue.get(message.guild.id)) {
+                        const messEmbednow = new MessageEmbed()
+                            .setTitle(`**Your team has already uploaded game stats for current queue!**`).setColor('RED').setTimestamp();
+                        return message.channel.send(messEmbednow);
+                    }
 
                     if (!right_players.get(message.guild.id)) {
                         const messEmbednow = new MessageEmbed()
