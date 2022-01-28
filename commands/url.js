@@ -200,6 +200,16 @@ module.exports = {
                     }
                 });
             }
+            let queueNumber;
+            fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+                if (err) {
+                    console.log('Error while reading the file');
+                } else {
+                    const settings = JSON.parse(data.toString());
+                    queueNumber = settings.currentQueue;
+
+                }
+            });
             if (!good.has(message.guild.id)) good.set(message.guild.id, true);
             if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
 
