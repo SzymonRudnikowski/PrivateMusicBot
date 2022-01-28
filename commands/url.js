@@ -71,10 +71,6 @@ async function getTables(matchID, message) {
                     let array = data[i];
 
                     if (array.length) {
-                        if (array[1].replace(/"/g, '') === "ScreamingKek") {
-                            console.log("found him")
-                            //sprawdzic czy to wyszuka
-                        }
                         if (array[1].replace(/"/g, '') === nickname) {
                             console.log("found: " + nickname);
                             team_name_excel = array[0];
@@ -151,102 +147,113 @@ module.exports = {
     name: 'wynik',
     aliases: [],
     async execute(message, args, com, client) {
-        if (!statsEnabled.has(message.guild.id) || !statsEnabled.get(message.guild.id)) {
-            const messEmbednow = new MessageEmbed()
-                .setTitle(`**Stats recording is currently disabled!**`).setColor('BLUE').setTimestamp();
-            return message.channel.send(messEmbednow);
-        }
-
-        if (!args.length || !args[0].length) {
-            const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author.tag}*** **you need to enter a link!**`).setColor('BLUE').setTimestamp();
-            return message.channel.send(messEmbednow);
-        }
-        console.log(args[0])
-
-        if (!args[0].startsWith('https://faceitstats.com/match/') && !args[0].startsWith('https://www.faceit.com/')) {
-            console.log("link not valid")
-            const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author.tag}*** **your link is not valid!**`).setColor('RED').setTimestamp();
-            return message.channel.send(messEmbednow);
-        }
-        let link = args[0];
-        let exist = false;
-        let matchID;
-
-        matchID = link.substring(link.indexOf('1-'), link.indexOf('1-') + 38);
-
-        if (fs.existsSync(`./jsons_playlists/urls.txt`)) {
-            fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
-                if (err) {
-                    console.log('Error while reading the file');
-                } else {
-                    const links = JSON.parse(data.toString());
-                    links.forEach(matchidTXT => {
-                        if (matchidTXT === matchID) {
-                            exist = true;
-                            const messEmbednow = new MessageEmbed()
-                                .setTitle(`**This link has already been uploaded!**`).setColor('RED').setTimestamp();
-                            message.channel.send(messEmbednow);
-                        }
-                    })
-
-                }
-            });
-        }
-        if (!good.has(message.guild.id)) good.set(message.guild.id, true);
-        if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
-
-
-        setTimeout(async () => {
-            if (!exist) {
-
-                console.log(matchID);
-                await getTables(matchID, message);
-
-                if (!right_players.get(message.guild.id)) {
-                    const messEmbednow = new MessageEmbed()
-                        .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`).setColor('RED').setTimestamp();
-                    return message.channel.send(messEmbednow);
-                }
-
-                if (!good.get(message.guild.id)) {
-                    const messEmbednow = new MessageEmbed()
-                        .setTitle(`**Game under this link does not exist! Enter a valid link**`).setColor('RED').setTimestamp();
-                    return message.channel.send(messEmbednow);
-                }
-
-                if (!fs.existsSync(`./jsons_playlists/urls.txt`)) {
-                    fs.writeFile(`./jsons_playlists/urls.txt`, '[]', err => {
-                        if (err) {
-                            console.log('Error writing file', err)
-                        } else {
-                            console.log("created file")
-                        }
-                    });
-                }
-                fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
-                    if (err) {
-                        console.log("Error while reading the file");
-                    } else {
-                        const links = JSON.parse(data.toString());
-                        links.push(matchID);
-                        const return_string = JSON.stringify(links, null, 4);
-                        console.log(return_string);
-                        fs.writeFile('./jsons_playlists/urls.txt', return_string, err => {
-                            if (err) {
-                                console.log("error adding the link to the registry");
-                            } else {
-                                console.log("link added to the registry")
-                            }
-                        })
-                    }
-                })
+        let statsEnabled;
+        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+            if (err) {
+                console.log('Error while reading the file');
+            } else {
+                let settings = JSON.parse(data.toString());
+                statsEnabled = settings.statsEnabled;
+            }
+        });
+        setTimeout(() => {
+            if (!statsEnabled) {
                 const messEmbednow = new MessageEmbed()
-                    .setTitle(`**The link has been validated successfully!**`).setColor('GREEN').setTimestamp();
+                    .setTitle(`**Stats recording is currently disabled!**`).setColor('BLUE').setTimestamp();
                 return message.channel.send(messEmbednow);
             }
 
+            if (!args.length || !args[0].length) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`***${message.author.tag}*** **you need to enter a link!**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            console.log(args[0])
+
+            if (!args[0].startsWith('https://faceitstats.com/match/') && !args[0].startsWith('https://www.faceit.com/')) {
+                console.log("link not valid")
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`***${message.author.tag}*** **your link is not valid!**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            let link = args[0];
+            let exist = false;
+            let matchID;
+
+            matchID = link.substring(link.indexOf('1-'), link.indexOf('1-') + 38);
+
+            if (fs.existsSync(`./jsons_playlists/urls.txt`)) {
+                fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
+                    if (err) {
+                        console.log('Error while reading the file');
+                    } else {
+                        const links = JSON.parse(data.toString());
+                        links.forEach(matchidTXT => {
+                            if (matchidTXT === matchID) {
+                                exist = true;
+                                const messEmbednow = new MessageEmbed()
+                                    .setTitle(`**This link has already been uploaded!**`).setColor('RED').setTimestamp();
+                                message.channel.send(messEmbednow);
+                            }
+                        })
+
+                    }
+                });
+            }
+            if (!good.has(message.guild.id)) good.set(message.guild.id, true);
+            if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
+
+
+            setTimeout(async () => {
+                if (!exist) {
+
+                    console.log(matchID);
+                    await getTables(matchID, message);
+
+                    if (!right_players.get(message.guild.id)) {
+                        const messEmbednow = new MessageEmbed()
+                            .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`).setColor('RED').setTimestamp();
+                        return message.channel.send(messEmbednow);
+                    }
+
+                    if (!good.get(message.guild.id)) {
+                        const messEmbednow = new MessageEmbed()
+                            .setTitle(`**Game under this link does not exist! Enter a valid link**`).setColor('RED').setTimestamp();
+                        return message.channel.send(messEmbednow);
+                    }
+
+                    if (!fs.existsSync(`./jsons_playlists/urls.txt`)) {
+                        fs.writeFile(`./jsons_playlists/urls.txt`, '[]', err => {
+                            if (err) {
+                                console.log('Error writing file', err)
+                            } else {
+                                console.log("created file")
+                            }
+                        });
+                    }
+                    fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
+                        if (err) {
+                            console.log("Error while reading the file");
+                        } else {
+                            const links = JSON.parse(data.toString());
+                            links.push(matchID);
+                            const return_string = JSON.stringify(links, null, 4);
+                            console.log(return_string);
+                            fs.writeFile('./jsons_playlists/urls.txt', return_string, err => {
+                                if (err) {
+                                    console.log("error adding the link to the registry");
+                                } else {
+                                    console.log("link added to the registry")
+                                }
+                            })
+                        }
+                    })
+                    const messEmbednow = new MessageEmbed()
+                        .setTitle(`**The link has been validated successfully!**`).setColor('GREEN').setTimestamp();
+                    return message.channel.send(messEmbednow);
+                }
+
+            }, 1000);
         }, 1000);
 
     },

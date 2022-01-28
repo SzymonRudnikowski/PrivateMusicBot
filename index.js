@@ -70,6 +70,11 @@ client.setInterval(() => {
     console.log("muted registry cleared | map size: " + mutedUsers.size);
 }, 86400000); //clear mute stage every day 86400000
 
+// client.setInterval(() => {
+//     let a = new Date();
+
+// }, 3600000) // check every hour if new queue should be turned on
+
 client.on("message", message => {
     if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
 
