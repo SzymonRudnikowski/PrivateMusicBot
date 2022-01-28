@@ -70,10 +70,31 @@ client.setInterval(() => {
     console.log("muted registry cleared | map size: " + mutedUsers.size);
 }, 86400000); //clear mute stage every day 86400000
 
-// client.setInterval(() => {
-//     let a = new Date();
+client.setInterval(() => {
+    let date = new Date();
+    let day = date.getDay();
+    let hour = date.getHours();
+    console.log(day, hour);
+    if (day === 5 && hour === 8) {
+        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+            if (err) {
+                console.log('Error while reading the file');
+            } else {
+                let settings = JSON.parse(data.toString());
+                settings.currentQueue++;
+                const return_string = JSON.stringify(settings, null, 4);
+                fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                    if (err) {
+                        console.log("error while writing the file", err);
+                    } else {
+                        console.log("queue number got changed cause its monday");
+                    }
+                })
+            }
+        });
+    }
 
-// }, 3600000) // check every hour if new queue should be turned on
+}, 5000) // check every hour if new queue should be turned on
 
 client.on("message", message => {
     if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
