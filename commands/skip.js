@@ -11,7 +11,7 @@ module.exports = {
     async execute(message, args, command, client) {
         if (!message.member.voice.channel) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${message.author.tag}*** **You need to be in a voice channel to execute this command!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
         if (!YoutubeTitle.has(message.guild.id) || YoutubeTitle.get(message.guild.id).length === 1) {
@@ -25,7 +25,7 @@ module.exports = {
 
         if (!inSameChannel) {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`***${message.author}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
+                .setTitle(`***${message.author.tag}*** **you need to be in the same channel as the bot!**`).setColor('BLUE').setTimestamp();
             return message.channel.send(messEmbednow);
         }
         if (looped.get(message.guild.id)) {
@@ -88,9 +88,9 @@ module.exports = {
                 return message.channel.send(messEmbednow)
             }
         } else {
-            console.log(message.author + " already voted");
+            console.log(message.author.tag + " have already voted");
             const messEmbednow = new MessageEmbed()
-                .setTitle(`**${message.author} already voted**`).setColor('RED').setTimestamp();
+                .setTitle(`**${message.author.tag} have already voted**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
         }
 

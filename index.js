@@ -2,6 +2,7 @@ const fs = require("fs");
 const Discord = require("discord.js");
 const util = require("minecraft-server-util");
 const config = require("./config.json");
+const XLSX = require('xlsx');
 const { MessageEmbed } = require('discord.js')
 
 const client = new Discord.Client();
@@ -94,6 +95,34 @@ client.setInterval(() => {
                         console.log("queue number got changed cause its monday");
                     }
                 })
+                let queueNumber = settings.currentQueue;
+                let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+
+                for (let i = 0; i < data.length; i++) {
+                    let array = data[i];
+
+                    if (array.length) {
+                        if (array.length < queueNumber * 3 + 6) {
+                            array[2] += parseInt(0);
+                            array[3] += parseInt(0);
+                            array[4] += parseInt(0);
+                            array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                            array.push(parseInt(kills));
+                            array.push(parseInt(assists));
+                            array.push(parseInt(deaths));
+                            console.log(array, "got filled with 0 cause no game was played")
+                        } else {
+                            array[5] = parseFloat(array[5]).toFixed(2);
+                        }
+                    }
+
+                }
+                let worksheet = XLSX.utils.aoa_to_sheet(data);
+                let new_workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(new_workbook, worksheet, "Arkusz1");
+                XLSX.writeFile(new_workbook, PATH)
             }
         });
     }

@@ -96,6 +96,7 @@ async function getTables(matchID, message, queueNumber) {
                 }
 
             })
+            console.log("right players for team: ", players_right.get(team_name), team_name)
             if (players_right.get(team_name) < 4) {
                 right_players.set(message.guild.id, false);
                 return;
@@ -117,7 +118,8 @@ async function getTables(matchID, message, queueNumber) {
                     max_length = teammate.length;
                 }
             });
-            if ((max_length - 2) / 3 === queueNumber) {
+            console.log("queueNumber: ", queueNumber);
+            if ((max_length - 6) / 3 > queueNumber) {
                 exceedQueue.set(message.guild.id, true);
                 return;
             }
