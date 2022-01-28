@@ -78,7 +78,7 @@ client.setInterval(() => {
     if (day === 5 && hour === 8) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
-                console.log('Error while reading the file');
+                console.log('Error while reading the file', err);
             } else {
                 let settings = JSON.parse(data.toString());
                 settings.currentQueue++;
