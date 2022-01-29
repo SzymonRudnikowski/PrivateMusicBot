@@ -15,13 +15,15 @@ let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
 global.hasJoinedChannel = new Map();
 
+const PATH = "./Zawodnicy_CSGO.xlsx";
+
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
 //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
 //const BOT_ID = "892442837252206633";
-const BOT_ID = config.id;
+const BOT_ID = config.iddev;
 //btw simon is a ni33er
 
-global.prefix = '!';
+global.prefix = '?';
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -76,7 +78,8 @@ client.setInterval(() => {
     let day = date.getDay();
     let hour = date.getHours();
     console.log(day, hour);
-    if (day === 1 && hour === 0) {
+    let queueNumber;
+    if (day === 0 && hour === 1) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
@@ -87,6 +90,7 @@ client.setInterval(() => {
                 } else {
                     console.log("not changed actually cause its off")
                 }
+                queueNumber = settings.currentQueue;
                 const return_string = JSON.stringify(settings, null, 4);
                 fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
                     if (err) {
@@ -95,39 +99,41 @@ client.setInterval(() => {
                         console.log("queue number got changed cause its monday");
                     }
                 })
-                let queueNumber = settings.currentQueue;
-                let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-                let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
-
-                for (let i = 0; i < data.length; i++) {
-                    let array = data[i];
-
-                    if (array.length) {
-                        if (array.length < queueNumber * 3 + 6) {
-                            array[2] += parseInt(0);
-                            array[3] += parseInt(0);
-                            array[4] += parseInt(0);
-                            array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
-                            array.push(parseInt(kills));
-                            array.push(parseInt(assists));
-                            array.push(parseInt(deaths));
-                            console.log(array, "got filled with 0 cause no game was played")
-                        } else {
-                            array[5] = parseFloat(array[5]).toFixed(2);
-                        }
-                    }
-
-                }
-                let worksheet = XLSX.utils.aoa_to_sheet(data);
-                let new_workbook = XLSX.utils.book_new();
-
-                XLSX.utils.book_append_sheet(new_workbook, worksheet, "Arkusz1");
-                XLSX.writeFile(new_workbook, PATH)
             }
         });
+        setTimeout(() => {
+            const workbook = XLSX.readFile(PATH);
+            let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+
+            for (let i = 0; i < data.length; i++) {
+                let array = data[i];
+                console.log(array.length, queueNumber * 3 + 6);
+                if (array.length) {
+                    if (array.length === (queueNumber - 2) * 3 + 6) {
+                        array[2] += parseInt(0);
+                        array[3] += parseInt(0);
+                        array[4] += parseInt(0);
+                        array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                        array.push(parseInt(0));
+                        array.push(parseInt(0));
+                        array.push(parseInt(0));
+                        console.log(array, "got filled with 0 cause no game was played")
+                    } else {
+                        array[5] = parseFloat(array[5]).toFixed(2);
+                    }
+                }
+
+            }
+            let worksheet = XLSX.utils.aoa_to_sheet(data);
+            let new_workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(new_workbook, worksheet, "Arkusz1");
+            XLSX.writeFile(new_workbook, PATH)
+        }, 1000)
     }
 
-}, 3600000) // check every hour if new queue should be turned on
+}, 3600000) // check every hour if new queue should be turned on 
 
 client.on("message", message => {
     if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
@@ -216,4 +222,4 @@ client.on("message", message => {
 });
 
 //client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
-client.login(config.token);
+client.login(config.tokendev);
