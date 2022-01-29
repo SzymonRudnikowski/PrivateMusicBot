@@ -3,6 +3,8 @@ const songTit = require("./play")
 const fetch = require("node-fetch")
 const API_KEY = '81770d4c8270875acb7bed4b0c0f7d2d';
 const { MessageEmbed } = require('discord.js')
+const Genius = require('genius-lyrics')
+const Client = new Genius.Client();
 
 module.exports = {
     name: 'lyrics',
@@ -60,19 +62,17 @@ const displayLyrics = async (pages, songTitle, message) => {
         return message.channel.send(messEmbednow);
     }
     songTitle = encodeURI(songTitle)
+    songTitle = songTitle.replace(/%20/g, '_');
     let current = 0
     console.log("current song title: " + songTitle)
 
     let res;
     try {
-        await fetch('http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + songTitle + '&apikey=' + API_KEY)
-            .then(function (u) { return u.json(); })
-            .then(function (json) {
-                res = json;
+        const searches = await Client.songs.search(songTitle);
+        const firstSong = searches[0];
 
-            })
-        console.log(res.message.body.lyrics)
-        res = res.message.body.lyrics.lyrics_body;
+        const lyrics = await firstSong.lyrics();
+        res = lyrics;
     } catch (err) {
         console.log(err)
         res = "Not Found"
@@ -130,18 +130,16 @@ const displayLyrics = async (pages, songTitle, message) => {
 const displayLyricsNoPlay = async (pages, songTitle, message) => {
     let current = 0
     songTitle = encodeURI(songTitle)
+    songTitle = songTitle.replace(/%20/g, '_');
     console.log("current song title no play: " + songTitle)
 
     let res;
     try {
-        await fetch('http://api.musixmatch.com/ws/1.1/matcher.lyrics.get?q_track=' + songTitle + '&apikey=' + API_KEY)
-            .then(function (u) { return u.json(); })
-            .then(function (json) {
-                res = json;
+        const searches = await Client.songs.search(songTitle);
+        const firstSong = searches[0];
 
-            })
-        console.log(res.message.body.lyrics)
-        res = res.message.body.lyrics.lyrics_body;
+        const lyrics = await firstSong.lyrics();
+        res = lyrics;
     } catch (err) {
         console.log(err)
         res = "Not Found"
