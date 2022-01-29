@@ -69,9 +69,9 @@ const displayLyrics = async (pages, songTitle, message) => {
         res = await lyricsFinder("", songTitle)
     } catch (err) {
         console.log(err)
-        res = "Not Found"
+        res = "Not found (or the connection has been blocked)"
     }
-    if (res == "") res = "Not Found";
+    if (res == "") res = "Not found (or the connection has been blocked)";
 
     for (let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
@@ -132,9 +132,9 @@ const displayLyricsNoPlay = async (pages, songTitle, message) => {
         res = await lyricsFinder("", songTitle)
     } catch (err) {
         console.log(err)
-        res = "Not Found"
+        res = "Not found (or the connection has been blocked)"
     }
-    if (res == "") res = "Not Found";
+    if (res == "") res = "Not found (or the connection has been blocked)";
 
     for (let i = 0; i < res.length; i += 2048) {
         let lyrics = res.substring(i, Math.min(res.length, i + 2048))
