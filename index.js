@@ -76,7 +76,7 @@ client.setInterval(() => {
     let day = date.getDay();
     let hour = date.getHours();
     console.log(day, hour);
-    if (day === 0 && hour === 0) {
+    if (day === 1 && hour === 0) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
