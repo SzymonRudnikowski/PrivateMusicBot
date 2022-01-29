@@ -4,7 +4,7 @@ const fetch = require("node-fetch")
 const API_KEY = '81770d4c8270875acb7bed4b0c0f7d2d';
 const { MessageEmbed } = require('discord.js')
 const Genius = require('genius-lyrics')
-const Client = new Genius.Client('PfeeBIzat8Qig5aDqJ7OvPXhLVGJzD1KQHm9GkB0PsW9tpVzkfv3WoaBzebQ6chAr8jSgQ2lsgZUf8-go2Kr5Q');
+const Client = new Genius.Client('KXYisVRhLPumi5G21pjwzF0aUeOq6LGFjwJWxhb54BWdxI5gVj4PddmVF2hn45_u');
 
 module.exports = {
     name: 'lyrics',
