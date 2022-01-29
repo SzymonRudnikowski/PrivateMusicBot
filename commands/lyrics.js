@@ -3,8 +3,7 @@ const songTit = require("./play")
 const fetch = require("node-fetch")
 const API_KEY = '81770d4c8270875acb7bed4b0c0f7d2d';
 const { MessageEmbed } = require('discord.js')
-const Genius = require('genius-lyrics')
-const Client = new Genius.Client('KXYisVRhLPumi5G21pjwzF0aUeOq6LGFjwJWxhb54BWdxI5gVj4PddmVF2hn45_u');
+const lyricsFinder = require('lyrics-finder')
 
 module.exports = {
     name: 'lyrics',
@@ -62,17 +61,12 @@ const displayLyrics = async (pages, songTitle, message) => {
         return message.channel.send(messEmbednow);
     }
     songTitle = encodeURI(songTitle)
-    songTitle = songTitle.replace(/%20/g, '_');
     let current = 0
     console.log("current song title: " + songTitle)
 
     let res;
     try {
-        const searches = await Client.songs.search(songTitle);
-        const firstSong = searches[0];
-
-        const lyrics = await firstSong.lyrics();
-        res = lyrics;
+        res = await lyricsFinder("", songTitle)
     } catch (err) {
         console.log(err)
         res = "Not Found"
@@ -135,11 +129,7 @@ const displayLyricsNoPlay = async (pages, songTitle, message) => {
 
     let res;
     try {
-        const searches = await Client.songs.search(songTitle);
-        const firstSong = searches[0];
-
-        const lyrics = await firstSong.lyrics();
-        res = lyrics;
+        res = await lyricsFinder("", songTitle)
     } catch (err) {
         console.log(err)
         res = "Not Found"
