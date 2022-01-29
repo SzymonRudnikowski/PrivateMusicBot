@@ -76,32 +76,40 @@ client.setInterval(() => {
 client.setInterval(() => {
     let date = new Date();
     let day = date.getDay();
-    let hour = date.getHours();
-    console.log(day, hour);
+    let hour = date.getHours(); //kiedy stats sa off to nie zmienia 
     let queueNumber;
+    let statsEnabledFile = true;
     if (day === 0 && hour === 1) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
             } else {
                 let settings = JSON.parse(data.toString());
+                statsEnabledFile = settings.statsEnabled;
                 if (settings.statsEnabled) {
                     settings.currentQueue++;
+                    const return_string = JSON.stringify(settings, null, 4);
+                    fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                        if (err) {
+                            console.log("error while writing the file", err);
+                        } else {
+                            console.log("queue number got changed cause its monday");
+                        }
+                    })
                 } else {
                     console.log("not changed actually cause its off")
+
                 }
+
                 queueNumber = settings.currentQueue;
-                const return_string = JSON.stringify(settings, null, 4);
-                fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
-                    if (err) {
-                        console.log("error while writing the file", err);
-                    } else {
-                        console.log("queue number got changed cause its monday");
-                    }
-                })
+
             }
         });
         setTimeout(() => {
+            if (!statsEnabledFile) {
+                console.log('its monday but stats are off');
+                return;
+            }
             const workbook = XLSX.readFile(PATH);
             let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
             let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
