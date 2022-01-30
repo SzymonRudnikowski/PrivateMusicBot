@@ -6,6 +6,7 @@ module.exports = {
     name: 'current_queue',
     description: 'number of current queue in the MLE server',
     execute(message, args, com, client) {
+        if (message.guild.id !== '914969283661037618') return;
         let queueNumber;
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {

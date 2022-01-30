@@ -155,9 +155,10 @@ async function getTables(matchID, message, queueNumber) {
 
 
 module.exports = {
-    name: 'wynik',
+    name: 'score',
     aliases: [],
     async execute(message, args, com, client) {
+        if (message.guild.id !== '914969283661037618') return;
         let statsEnabled;
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
