@@ -240,7 +240,7 @@ module.exports = {
 
                     if (!right_players.get(message.guild.id)) {
                         const messEmbednow = new MessageEmbed()
-                            .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`).setColor('RED').setTimestamp();
+                            .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team! \n \n If someone from your team has changed their nickname during MLE please inform admins about it - otherwise you won't be able to upload stats for your game!**`).setColor('RED').setTimestamp();
                         return message.channel.send(messEmbednow);
                     }
 
