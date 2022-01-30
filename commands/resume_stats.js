@@ -7,7 +7,7 @@ module.exports = {
     description: 'resumes stats recording',
     permissions: [],
     async execute(message, args, com, client) {
-        if (message.author.id !== '320869071031631872') {
+        if (!message.member.hasPermission(['ADMINISTRATOR'])) {
             const messEmbednow = new MessageEmbed()
                 .setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
