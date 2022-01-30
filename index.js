@@ -79,6 +79,7 @@ client.setInterval(() => {
     let hour = date.getHours(); //kiedy stats sa off to nie zmienia 
     let queueNumber;
     let statsEnabledFile = true;
+    console.log(day, hour);
     if (day === 0 && hour === 1) {
         fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
             if (err) {
