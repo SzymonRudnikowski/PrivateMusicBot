@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const { MessageEmbed } = require('discord.js')
 const fs = require('fs')
-const fetch = require("node-fetch");
 const XLSX = require('xlsx');
 
 const PATH = "./Zawodnicy_CSGO.xlsx";
@@ -18,11 +17,11 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
 
-        let winning_team = args.join().substr(args.join().indexOf('/') + 1, args.join().length).replace(/,/g, ' ');
-        console.log(winning_team);
-
-        let losing_team = args.join().substr(0, args.join().indexOf('/')).replace(/,/g, ' ');
+        let losing_team = args.join().substr(args.join().indexOf('/') + 1, args.join().length).replace(/,/g, ' ');
         console.log(losing_team);
+
+        let winning_team = args.join().substr(0, args.join().indexOf('/')).replace(/,/g, ' ');
+        console.log(winning_team);
 
         if (!winning_team.length) {
             const messEmbednow = new MessageEmbed()
@@ -38,12 +37,29 @@ module.exports = {
         const workbook = XLSX.readFile(PATH);
         let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
         let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+        let foundTeams = {
+            team1: false, //winning team
+            team2: false, //losing team
+        }
+        let max_array_length = 0;
 
         for (let i = 0; i < data.length; i++) {
             let array = data[i];
-            console.log(array.length, queueNumber * 3 + 6);
             if (array.length) {
-                if (array.length === (queueNumber - 2) * 3 + 6) {
+
+
+                if (array[0].toLowerCase() === winning_team.toLowerCase()) {
+                    array[2] += parseInt(3);
+                    array[3] += parseInt(0);
+                    array[4] += parseInt(0);
+                    array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                    array.push(parseInt(3));
+                    array.push(parseInt(0));
+                    array.push(parseInt(0));
+                    foundTeams.team1 = true;
+                    if (max_array_length < array.length) max_array_length = array.length;
+                    console.log(array, "got awarded 3 kills cause his team won by walkover")
+                } else if (array[0].toLowerCase() === losing_team.toLowerCase()) {
                     array[2] += parseInt(0);
                     array[3] += parseInt(0);
                     array[4] += parseInt(0);
@@ -51,19 +67,54 @@ module.exports = {
                     array.push(parseInt(0));
                     array.push(parseInt(0));
                     array.push(parseInt(0));
-                    console.log(array, "got filled with 0 cause no game was played")
+                    if (max_array_length < array.length) max_array_length = array.length;
+                    console.log(array, "got awarded 0 kills cause his team lost by walkover")
+                    foundTeams.team2 = true;
                 } else {
                     array[5] = parseFloat(array[5]).toFixed(2);
                 }
             }
 
         }
-        let worksheet = XLSX.utils.aoa_to_sheet(data);
-        let new_workbook = XLSX.utils.book_new();
 
-        XLSX.utils.book_append_sheet(new_workbook, worksheet, "Arkusz1");
-        XLSX.writeFile(new_workbook, PATH)
+        let queueNumber;
+        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+            if (err) {
+                console.log('Error while reading the file');
+            } else {
+                const settings = JSON.parse(data.toString());
+                queueNumber = settings.currentQueue;
 
+            }
+        });
+
+        setTimeout(() => {
+            console.log("max array length: ", max_array_length)
+            if ((max_array_length - 6) / 3 > queueNumber) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**These teams have already played their games during this queue!**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            if (!foundTeams.team1) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**Team called** ***${winning_team}*** **does not exist!**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            if (!foundTeams.team2) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**Team called** ***${losing_team}*** **does not exist!**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+            let worksheet = XLSX.utils.aoa_to_sheet(data);
+            let new_workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(new_workbook, worksheet, "Arkusz1");
+            XLSX.writeFile(new_workbook, PATH);
+
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`**Stats have been successfully updated**`).setColor('GREEN').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }, 1000);
 
 
     },
