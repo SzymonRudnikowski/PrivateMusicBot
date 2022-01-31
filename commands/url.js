@@ -37,7 +37,9 @@ async function getTables(matchID, message, queueNumber) {
         res.rounds[0]["teams"].forEach(team => {
             let team_name = team.team_stats.Team;
             let players = [];
-            players_right.set(team_name, 0);
+            if (!players_right.has(message.guild.id)) {
+                players_right.set(team_name, 0);
+            }
 
             if (exceedQueue.has(message.guild.id)) {
                 exceedQueue.set(message.guild.id, false);
@@ -100,7 +102,7 @@ async function getTables(matchID, message, queueNumber) {
                 right_players.set(message.guild.id, false);
                 return;
             } else {
-                right_players.set(message.guild.id, true);
+                players_right.delete(team_name);
             }
             let whole_team = [];
             data.forEach(array => {
