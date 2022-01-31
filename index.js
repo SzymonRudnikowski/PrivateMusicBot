@@ -15,7 +15,7 @@ let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
 global.hasJoinedChannel = new Map();
 
-const PATH = "./jsons/Zawodnicy_CSGO.xlsx";
+const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
 //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
@@ -81,7 +81,7 @@ client.setInterval(() => {
     let statsEnabledFile = true;
     console.log(day, hour);
     if (day === 1 && hour === 1) {
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
             } else {
@@ -90,7 +90,7 @@ client.setInterval(() => {
                 if (settings.statsEnabled) {
                     settings.currentQueue++;
                     const return_string = JSON.stringify(settings, null, 4);
-                    fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                    fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
                         if (err) {
                             console.log("error while writing the file", err);
                         } else {

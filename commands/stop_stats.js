@@ -13,14 +13,14 @@ module.exports = {
                 .setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
         }
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file');
             } else {
                 let settings = JSON.parse(data.toString());
                 settings.statsEnabled = false;
                 const return_string = JSON.stringify(settings, null, 4);
-                fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
                     if (err) {
                         console.log("error while writing the file", err);
                     } else {

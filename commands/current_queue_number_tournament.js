@@ -8,7 +8,7 @@ module.exports = {
     execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
         let queueNumber;
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file');
             } else {

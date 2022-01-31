@@ -20,14 +20,14 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
         let queueNumber = parseInt(args[0]);
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file');
             } else {
                 let settings = JSON.parse(data.toString());
                 settings.currentQueue = queueNumber;
                 const return_string = JSON.stringify(settings, null, 4);
-                fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
                     if (err) {
                         console.log("error while writing the file", err);
                     } else {

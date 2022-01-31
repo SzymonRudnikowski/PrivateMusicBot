@@ -13,7 +13,7 @@ module.exports = {
                 .setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`).setColor('RED').setTimestamp();
             return message.channel.send(messEmbednow);
         }
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file');
             } else {

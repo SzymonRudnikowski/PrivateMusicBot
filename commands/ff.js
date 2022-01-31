@@ -83,7 +83,7 @@ module.exports = {
         }
 
         let queueNumber;
-        fs.readFile(`./jsons/settings.json`, 'utf-8', (err, data) => {
+        fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file');
             } else {
