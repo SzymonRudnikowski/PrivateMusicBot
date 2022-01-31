@@ -240,13 +240,8 @@ module.exports = {
 
                     if (!right_players.get(message.guild.id)) {
                         const messEmbednow = new MessageEmbed()
-                            .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`).setColor('RED').setTimestamp();
-
-                        const messEmbednow2 = new MessageEmbed()
-                            .setTitle(`**If someone from your team has changed their nickname during MLE or in the registration process has given a nickname that differs from their original Faceit nickname please inform admins about it - otherwise, you won't be able to upload stats for your game**`)
-
-                        message.channel.send(messEmbednow);
-                        return message.channel.send(messEmbednow2);
+                            .setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`).setDescription(`**If someone from your team has changed their nickname during MLE or in the registration process has given a nickname that differs from their original Faceit nickname please inform admins about it - otherwise, you won't be able to upload stats for your game**`).setColor('RED').setTimestamp();
+                        return message.channel.send(messEmbednow);
                     }
 
                     if (!good.get(message.guild.id)) {
