@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs')
 const XLSX = require('xlsx');
 
-const PATH = "./Zawodnicy_CSGO.xlsx";
+const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
 
 module.exports = {
     name: 'walkover',
