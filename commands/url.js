@@ -13,7 +13,7 @@ const headerFaceit = {
 
 let good = new Map();
 let right_players = new Map();
-const PATH = "./stats/Zawodnicy_CSGO.xlsx";
+const PATH = "./jsons/Zawodnicy_CSGO.xlsx";
 let exceedQueue = new Map();
 
 async function getTables(matchID, message, queueNumber) {
@@ -199,8 +199,8 @@ module.exports = {
 
             matchID = link.substring(link.indexOf('1-'), link.indexOf('1-') + 38);
 
-            if (fs.existsSync(`./jsons_playlists/urls.txt`)) {
-                fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
+            if (fs.existsSync(`./jsons/urls.txt`)) {
+                fs.readFile(`./jsons/urls.txt`, 'utf-8', (err, data) => {
                     if (err) {
                         console.log('Error while reading the file');
                     } else {
@@ -255,8 +255,8 @@ module.exports = {
                         return message.channel.send(messEmbednow);
                     }
 
-                    if (!fs.existsSync(`./jsons_playlists/urls.txt`)) {
-                        fs.writeFile(`./jsons_playlists/urls.txt`, '[]', err => {
+                    if (!fs.existsSync(`./jsons/urls.txt`)) {
+                        fs.writeFile(`./jsons/urls.txt`, '[]', err => {
                             if (err) {
                                 console.log('Error writing file', err)
                             } else {
@@ -264,7 +264,7 @@ module.exports = {
                             }
                         });
                     }
-                    fs.readFile(`./jsons_playlists/urls.txt`, 'utf-8', (err, data) => {
+                    fs.readFile(`./jsons/urls.txt`, 'utf-8', (err, data) => {
                         if (err) {
                             console.log("Error while reading the file");
                         } else {
@@ -272,7 +272,7 @@ module.exports = {
                             links.push(matchID);
                             const return_string = JSON.stringify(links, null, 4);
                             console.log(return_string);
-                            fs.writeFile('./jsons_playlists/urls.txt', return_string, err => {
+                            fs.writeFile('./jsons/urls.txt', return_string, err => {
                                 if (err) {
                                     console.log("error adding the link to the registry");
                                 } else {
