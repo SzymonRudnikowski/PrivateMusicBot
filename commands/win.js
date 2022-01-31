@@ -16,7 +16,7 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
 
-        let winning_team = args.join().substr(0, args.join().indexOf('/')).replace(/,/g, ' ');
+        let winning_team = args.join().substr(0, args.join().replace(/,/g, ' ').length);
         console.log(winning_team);
 
         if (!winning_team.length) {
