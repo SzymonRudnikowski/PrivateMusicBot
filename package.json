@@ -14,7 +14,6 @@
     "discord.js": "^12.5.3",
     "ffmpeg-static": "^4.4.0",
     "fs": "0.0.1-security",
-    "genius-lyrics": "^4.3.5",
     "lyrics-finder": "^21.7.0",
     "minecraft-server-util": "^3.5.2",
     "opus": "0.0.0",
