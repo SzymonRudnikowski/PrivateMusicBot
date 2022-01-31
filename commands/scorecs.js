@@ -160,7 +160,7 @@ async function getTables(matchID, message, queueNumber) {
 
 
 module.exports = {
-    name: 'score',
+    name: 'scorecs',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
