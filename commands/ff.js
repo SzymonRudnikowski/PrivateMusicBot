@@ -6,7 +6,7 @@ const XLSX = require('xlsx');
 const PATH = "./Zawodnicy_CSGO.xlsx";
 
 module.exports = {
-    name: 'ff',
+    name: 'walkover',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
