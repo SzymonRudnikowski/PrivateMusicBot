@@ -99,6 +99,8 @@ async function getTables(matchID, message, queueNumber) {
             if (players_right.get(team_name) < 4) {
                 right_players.set(message.guild.id, false);
                 return;
+            } else {
+                right_players.set(message.guild.id, true);
             }
             let whole_team = [];
             data.forEach(array => {
