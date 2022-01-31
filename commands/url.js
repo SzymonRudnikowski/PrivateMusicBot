@@ -17,6 +17,7 @@ const PATH = "./stats/Zawodnicy_CSGO.xlsx";
 let exceedQueue = new Map();
 
 async function getTables(matchID, message, queueNumber) {
+    right_players.set(message.guild.id, true);
     const workbook = XLSX.readFile(PATH)
     let res;
     //getting the json response from faceit api
@@ -35,6 +36,9 @@ async function getTables(matchID, message, queueNumber) {
         let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
         let players_right = new Map(); //keeps track about number of players that differs in each team maximum 1 per team
         res.rounds[0]["teams"].forEach(team => {
+            if (!right_players.get(message.guild.id)) {
+                return;
+            }
             let team_name = team.team_stats.Team;
             let players = [];
             if (!players_right.has(message.guild.id)) {
