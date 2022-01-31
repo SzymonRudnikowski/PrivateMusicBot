@@ -13,7 +13,7 @@ const headerFaceit = {
 
 let good = new Map();
 let right_players = new Map();
-const PATH = "./Zawodnicy_CSGO.xlsx";
+const PATH = "./stats/Zawodnicy_CSGO.xlsx";
 let exceedQueue = new Map();
 
 async function getTables(matchID, message, queueNumber) {

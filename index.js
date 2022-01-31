@@ -15,7 +15,7 @@ let mutedUsers = new Map();
 let mutedUsersCurrently = new Set();
 global.hasJoinedChannel = new Map();
 
-const PATH = "./Zawodnicy_CSGO.xlsx";
+const PATH = "./stats/Zawodnicy_CSGO.xlsx";
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]
 //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
