@@ -7,7 +7,7 @@ module.exports = {
         const help = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('List of commands for the MLE server:')
-            .setDescription('**!walkover name winning team/name losing team - win/lose by walkover (admin only) \n \n !current_queue - displays current queue number \n \n !set_queue - sets the number of the current queue (admin only) \n \n !resume_stats - enables sending game stats (admin only) \n \n !stop_stats - disables sending game stats (admin only) \n \n !score - sends stats of the game and updates the database \n \n !win name winning team (admin only)**')
+            .setDescription('**!walkover name winning team/name losing team - win/lose by walkover (admin only) \n \n !current_queue - displays current queue number \n \n !set_queue - sets the number of the current queue (admin only) \n \n !resume_stats - enables sending game stats (admin only) \n \n !stop_stats - disables sending game stats (admin only) \n \n !score - sends stats of the game and updates the database \n \n !win - name winning team (admin only)**')
             .setFooter('PMB - v1.0');
 
         return message.channel.send(help);
