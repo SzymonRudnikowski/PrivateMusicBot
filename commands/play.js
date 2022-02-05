@@ -48,7 +48,16 @@ module.exports = {
 
         //If the first argument is a link. Set the song object to have two keys. Title and URl.
         if (ytdl.validateURL(args[0])) {
-            const song_info = await ytdl.getInfo(args[0]);
+            let song_info;
+            try {
+                song_info = await ytdl.getInfo(args[0]);
+            } catch (err) {
+                console.log('video under this link not found')
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**Video under this link does not exist!**`).setColor('BLUE').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+
             let video_length_formatted = "";
             let len_sec = song_info.videoDetails.lengthSeconds;
 
