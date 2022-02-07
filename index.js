@@ -80,7 +80,7 @@ client.setInterval(() => {
     let queueNumber;
     let statsEnabledFile = true;
     console.log(day, hour);
-    if (day === 1 && hour === 0) {
+    if (day === 0 && hour === 23) {
         fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
                 console.log('Error while reading the file', err);
