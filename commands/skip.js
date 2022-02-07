@@ -43,7 +43,7 @@ module.exports = {
 
             try {
                 if (!server_queue || server_queue.songs.length === 0) {
-                    if (vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size - 1) * 0.7)) {
+                    if (vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size - 1) * 0.5)) {
                         console.log('Skipped!')
                         songTitles.get(message.guild.id).splice(1, 1);
                         YoutubeTitle.get(message.guild.id).splice(1, 1);
@@ -58,11 +58,11 @@ module.exports = {
                     vote_count.set(message.guild.id, vote_count.get(message.guild.id) + 1);
                     console.log("voted! vote count: " + vote_count.get(message.guild.id));
                     const messEmbed = new MessageEmbed()
-                        .setTitle(`**Voted!** (` + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size - 1) * 0.7) + ')').setColor('YELLOW').setTimestamp()
+                        .setTitle(`**Voted!** (` + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size - 1) * 0.5) + ')').setColor('YELLOW').setTimestamp()
                     //return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
                     return message.channel.send(messEmbed)
                 }
-                if (vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size - 1) * 0.7)) {
+                if (vote_count.get(message.guild.id) + 1 === Math.ceil((message.member.voice.channel.members.size - 1) * 0.5)) {
                     voted.set(message.guild.id, []);
                     vote_count.set(message.guild.id, 0);
                     server_queue.connection.dispatcher.end();
@@ -76,7 +76,7 @@ module.exports = {
                 console.log("voted! vote count: " + vote_count.get(message.guild.id));
                 //return message.channel.send("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size-1)*0.7) + ")");
                 const messEmbed = new MessageEmbed()
-                    .setTitle("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size - 1) * 0.7) + ")").setColor('YELLOW').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
+                    .setTitle("**Voted! **(" + vote_count.get(message.guild.id) + "/" + Math.ceil((message.member.voice.channel.members.size - 1) * 0.5) + ")").setColor('YELLOW').setFooter(`[Requested by ${message.author.tag}]`, message.author.displayAvatarURL)
                 return message.channel.send(messEmbed)
             }
             catch (error) {
