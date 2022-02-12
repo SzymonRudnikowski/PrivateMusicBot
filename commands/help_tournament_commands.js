@@ -3,7 +3,7 @@ module.exports = {
     name: 'help_mle',
     description: 'Help commands for the MLE server',
     execute(message, args) {
-        //if (message.guild.id !== '914969283661037618') return;
+        if (message.guild.id !== '914969283661037618') return;
         const help = new Discord.MessageEmbed()
             .setColor('0x03f4fc')
             .setTitle('List of commands for the MLE server:')
