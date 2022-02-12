@@ -6,6 +6,11 @@ module.exports = {
     aliases: ['c', 'cl'],
     decription: "deletes all message in a channel",
     async execute(message, args, com, client) {
+        if (!message.member.hasPermission(['ADMINISTRATOR'])) {
+            const messEmbednow = new MessageEmbed()
+                .setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`).setColor('RED').setTimestamp();
+            return message.channel.send(messEmbednow);
+        }
         let number;
         if (!args[0]) number = 25 << 2;
         else {
