@@ -5,15 +5,11 @@ const fs = require('fs')
 const fetch = require("node-fetch");
 const XLSX = require('xlsx');
 
-const KEY = 'f5abf8c7-628c-47d7-a46d-eb4a2788fc26'
-
-const headerFaceit = {
-    Authorization: `Bearer ${KEY}`
-}
+const KEY = 'RGAPI-24aaa1d5-93fc-4a8e-bba0-4290ca207bb9'
 
 let good = new Map();
 let right_players = new Map();
-const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
+const PATH = "./MLE/Zawodnicy_LOL.xlsx";
 let exceedQueue = new Map();
 
 async function getTables(matchID, message, queueNumber) {
@@ -21,10 +17,7 @@ async function getTables(matchID, message, queueNumber) {
     const workbook = XLSX.readFile(PATH)
     let res;
     //getting the json response from faceit api
-    await fetch('https://open.faceit.com/data/v4/matches/' + matchID + '/stats', {
-        method: 'GET',
-        headers: headerFaceit
-    })
+    await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/EUN1_${matchID}?api_key=${KEY}`)
         .then(function (u) { return u.json(); })
         .then(function (json) {
             res = json;
@@ -35,108 +28,125 @@ async function getTables(matchID, message, queueNumber) {
         let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
         let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
         let players_right = new Map(); //keeps track about number of players that differs in each team maximum 1 per team
-        res.rounds[0]["teams"].forEach(team => {
+        let team_name_excel_first;
+        let team_name_excel_second;
+        let whole_teams = [[], []];
+        let game_duration = Math.floor(parseInt(res["info"].gameDuration) / 60);
+
+        res["info"].participants.forEach(player => {
             if (!right_players.get(message.guild.id)) {
                 return;
             }
-            let team_name = team.team_stats.Team;
-            let players = [];
-            players_right.set(team_name, 0);
 
             if (exceedQueue.has(message.guild.id)) {
                 exceedQueue.set(message.guild.id, false);
             }
 
-            //getting match stats from faceit api
-            team.players.forEach(player => {
-                let nickname = player.nickname;
-                let hs = player.player_stats['Headshots %'];
-                let kills = player.player_stats["Kills"];
-                let assists = player.player_stats["Assists"];
-                let deaths = player.player_stats["Deaths"];
-                let kd = player.player_stats['K/D Ratio'];
+            //getting match stats from lol api
+            
+            let nickname = player.summonerName;
+            let kills = player.kills;
+            let assists = player.assists;
+            let deaths = player.deaths;
+            let cs = parseInt(player.totalMinionsKilled) + parseInt(player.neutralMinionsKilled);
+                
+            //appending stats from lol api to the excel worksheet
+            console.log("cs : game dur", cs, game_duration);
 
-                let player_info = {
-                    nickname: nickname,
-                    hs: hs,
-                    kills: kills,
-                    assists: assists,
-                    deaths: deaths,
-                    kd: kd,
-                }
-                players.push(player_info);
-
-            })
-            let team_name_excel;
-            players.forEach(player => {
-                let nickname = player.nickname;
-                let kills = player.kills;
-                let assists = player.assists
-                let deaths = player.deaths;
-                //appending stats from faceit api to the excel worksheet
-
-                for (let i = 0; i < data.length; i++) {
-                    let array = data[i];
-
-                    if (array.length) {
-                        if (array[1].replace(/"/g, '') === nickname) {
-                            console.log("found: " + nickname);
-                            team_name_excel = array[0];
-                            array[2] += parseInt(kills);
-                            array[3] += parseInt(assists);
-                            array[4] += parseInt(deaths);
-                            array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
-                            array.push(parseInt(kills));
-                            array.push(parseInt(assists));
-                            array.push(parseInt(deaths));
-                            players_right.set(team_name, players_right.get(team_name) + 1);
-                            break;
-                        } else {
-                            array[5] = parseFloat(array[5]).toFixed(2);
-                        }
-                    }
-
-                }
-
-            })
-            console.log("right players for team: ", players_right.get(team_name), team_name)
-            if (players_right.get(team_name) < 4) {
-                right_players.set(message.guild.id, false);
-                return;
-            } else {
-                players_right.delete(team_name);
-            }
-            let whole_team = [];
-            data.forEach(array => {
+            for (let i = 0; i < data.length; i++) {
+                let array = data[i];
                 if (array.length) {
-                    if (array[0] === team_name_excel) {
-                        whole_team.push(array);
+                    if (array[1] === nickname && nickname !== "Orlen16") {
+                        console.log("found: " + nickname);
+
+                        if(!team_name_excel_first) team_name_excel_first = array[0];
+                        else if(team_name_excel_first !== array[0] && !team_name_excel_second) team_name_excel_second = array[0];
+
+                        if (!players_right.has(team_name_excel_first)) {
+                            players_right.set(team_name_excel_first, 0);
+                        }
+                        if(!players_right.has(team_name_excel_second)){
+                            players_right.set(team_name_excel_second, 0);
+                        }
+
+                        if(array[0] === team_name_excel_first) players_right.set(team_name_excel_first, players_right.get(team_name_excel_first) + 1);
+                        else players_right.set(team_name_excel_second, players_right.get(team_name_excel_second) + 1);
+
+                        array[2] += parseInt(kills);
+                        array[3] += parseInt(assists);
+                        array[4] += parseInt(deaths);
+                        array[6] = (((parseInt(array[2])) + (parseInt(array[3])))/ parseInt(array[4])).toFixed(2); //KDA
+                        array.push(parseInt(kills));
+                        array.push(parseInt(assists));
+                        array.push(parseInt(deaths));
+                        array.push(parseFloat(cs / game_duration).toFixed(2));
+                        let cs_sum = 0;
+                        let number_of_games = 0;
+                        for(let i = 16; i < array.length; i+=4){
+                            cs_sum += parseFloat(array[i]);
+                            number_of_games++;
+                        }
+                        console.log("cs sum: ", cs_sum);
+                        console.log("games: ", number_of_games);
+                        array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
+
+                        break;
+                    } else {
+                        array[6] = parseFloat(array[6]).toFixed(2);
                     }
                 }
-            })
 
-            let max_length = 0;
+            }
+        });
+
+        console.log("right players for team: ", players_right.get(team_name_excel_first), team_name_excel_first)
+        console.log("right players for team: ", players_right.get(team_name_excel_second), team_name_excel_second)
+
+        if (players_right.get(team_name_excel_first) < 4 || players_right.get(team_name_excel_second) < 4) {
+            right_players.set(message.guild.id, false);
+            return;
+        } else {
+            players_right.delete(team_name_excel_first);
+            players_right.delete(team_name_excel_second);
+        }
+        
+        data.forEach(array => {
+            if (array.length) {
+                if (array[0] === team_name_excel_first) {
+                    whole_teams[0].push(array);
+                }
+                else if(array[0] === team_name_excel_second){
+                    whole_teams[1].push(array);
+                }
+            }
+        })
+
+        let max_length = 0;
+        whole_teams.forEach(whole_team => {
             whole_team.forEach(teammate => {
                 if (max_length < teammate.length) {
                     max_length = teammate.length;
                 }
-            });
-            console.log("queueNumber: ", queueNumber);
-            if ((max_length - 6) / 3 > queueNumber) {
-                exceedQueue.set(message.guild.id, true);
-                return;
-            }
+            })
+        });
+        console.log("queueNumber: ", queueNumber);
+        console.log("max length: ", max_length);
+        if ((max_length - 13) / 4 > queueNumber - 2) {
+            exceedQueue.set(message.guild.id, true);
+            return;
+        }
+        whole_teams.forEach(whole_team => {
             whole_team.forEach(teammate => {
                 if (teammate.length < max_length) {
                     teammate.push(0);
                     teammate.push(0);
                     teammate.push(0);
+                    teammate.push(0);
                     console.log(teammate[1], " got only 0")
                 }
-            });
-            whole_team = [];
-            players = [];
+            })
         });
+
         if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
             return;
         }
@@ -158,17 +168,18 @@ async function getTables(matchID, message, queueNumber) {
 
 
 module.exports = {
-    name: 'score_csgo',
+    name: 'score_lol',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
         let statsEnabled;
         fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
             if (err) {
+                console.log(err);
                 console.log('Error while reading the file');
             } else {
                 let settings = JSON.parse(data.toString());
-                statsEnabled = settings.statsEnabled;
+                statsEnabled = settings.statsEnabledLOL;
             }
         });
         setTimeout(() => {
@@ -185,17 +196,18 @@ module.exports = {
             }
             console.log(args[0])
 
-            if (!args[0].startsWith('https://faceitstats.com/match/') && !args[0].startsWith('https://www.faceit.com/')) {
+            if (!args[0].startsWith('https://www.leagueofgraphs.com/')) {
                 console.log("link not valid")
                 const messEmbednow = new MessageEmbed()
-                    .setTitle(`***${message.author.tag}*** **your link is not valid!**`).setColor('RED').setTimestamp();
+                    .setTitle(`***${message.author.tag}*** **your link is not valid!**`).setColor('RED').setTimestamp()
+                    .setDescription('(Only links from https://www.leagueofgraphs.com are accepted!)');
                 return message.channel.send(messEmbednow);
             }
             let link = args[0];
             let exist = false;
             let matchID;
 
-            matchID = link.substring(link.indexOf('1-'), link.indexOf('1-') + 38);
+            matchID = link.substring(link.indexOf('30'), link.indexOf('30') + 10);
 
             if (fs.existsSync(`./MLE/urls.txt`)) {
                 fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
@@ -221,7 +233,7 @@ module.exports = {
                     console.log('Error while reading the file');
                 } else {
                     const settings = JSON.parse(data.toString());
-                    queueNumber = settings.currentQueue;
+                    queueNumber = settings.currentQueueLOL;
 
                 }
             });

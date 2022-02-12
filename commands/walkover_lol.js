@@ -3,10 +3,10 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs')
 const XLSX = require('xlsx');
 
-const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
+const PATH = "./MLE/Zawodnicy_LOL.xlsx";
 
 module.exports = {
-    name: 'walkover',
+    name: 'walkover_lol',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
@@ -51,16 +51,22 @@ module.exports = {
         for (let i = 0; i < data.length; i++) {
             let array = data[i];
             if (array.length) {
-
-
                 if (array[0].toLowerCase() === winning_team.toLowerCase()) {
                     array[2] += parseInt(3);
                     array[3] += parseInt(0);
                     array[4] += parseInt(0);
-                    array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                    array[6] = (((parseInt(array[2])) + (parseInt(array[3])))/ parseInt(array[4])).toFixed(2); //KDA
                     array.push(parseInt(3));
                     array.push(parseInt(0));
                     array.push(parseInt(0));
+                    array.push(parseInt(0));
+                    let cs_sum = 0;
+                    let number_of_games = 0;
+                    for(let i = 16; i < array.length; i+=4){
+                        cs_sum += array[i];
+                        number_of_games++;
+                    }
+                    array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
                     foundTeams.team1 = true;
                     if (max_array_length < array.length) max_array_length = array.length;
                     console.log(array, "got awarded 3 kills cause his team won by walkover")
@@ -68,14 +74,23 @@ module.exports = {
                     array[2] += parseInt(0);
                     array[3] += parseInt(0);
                     array[4] += parseInt(0);
-                    array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                    array[6] = (((parseInt(array[2])) + (parseInt(array[3])))/ parseInt(array[4])).toFixed(2); //KDA
                     array.push(parseInt(0));
                     array.push(parseInt(0));
                     array.push(parseInt(0));
+                    array.push(parseInt(0));
+                    let cs_sum = 0;
+                    let number_of_games = 0;
+                    for(let i = 16; i < array.length; i+=4){
+                        cs_sum += array[i];
+                        number_of_games++;
+                    }
+                    array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
                     if (max_array_length < array.length) max_array_length = array.length;
                     console.log(array, "got awarded 0 kills cause his team lost by walkover")
                     foundTeams.team2 = true;
                 } else {
+                    array[6] = parseFloat(array[6]).toFixed(2);
                     array[5] = parseFloat(array[5]).toFixed(2);
                 }
             }
@@ -88,18 +103,15 @@ module.exports = {
                 console.log('Error while reading the file');
             } else {
                 const settings = JSON.parse(data.toString());
-                queueNumber = settings.currentQueue;
+                queueNumber = settings.currentQueueLOL;
 
             }
         });
 
         setTimeout(() => {
             console.log("max array length: ", max_array_length)
-            if ((max_array_length - 6) / 3 > queueNumber) {
-                const messEmbednow = new MessageEmbed()
-                    .setTitle(`**These teams have already played their games during this queue!**`).setColor('RED').setTimestamp();
-                return message.channel.send(messEmbednow);
-            }
+            console.log(foundTeams.team1, foundTeams.team2);
+            
             if (!foundTeams.team1) {
                 const messEmbednow = new MessageEmbed()
                     .setTitle(`**Team called** ***${winning_team}*** **does not exist!**`).setColor('RED').setTimestamp();
@@ -108,6 +120,12 @@ module.exports = {
             if (!foundTeams.team2) {
                 const messEmbednow = new MessageEmbed()
                     .setTitle(`**Team called** ***${losing_team}*** **does not exist!**`).setColor('RED').setTimestamp();
+                return message.channel.send(messEmbednow);
+            }
+
+            if ((max_array_length - 13) / 4 > queueNumber - 2) {
+                const messEmbednow = new MessageEmbed()
+                    .setTitle(`**These teams have already played their games during this queue!**`).setColor('RED').setTimestamp();
                 return message.channel.send(messEmbednow);
             }
             let worksheet = XLSX.utils.aoa_to_sheet(data);

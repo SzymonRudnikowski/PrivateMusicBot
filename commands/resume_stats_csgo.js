@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs');
 
 module.exports = {
-    name: 'resume_stats',
+    name: 'resume_stats_csgo',
     description: 'resumes stats recording',
     permissions: [],
     async execute(message, args, com, client) {

@@ -3,10 +3,10 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs')
 const XLSX = require('xlsx');
 
-const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
+const PATH = "./MLE/Zawodnicy_LOL.xlsx";
 
 module.exports = {
-    name: 'win',
+    name: 'win_lol',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
@@ -16,7 +16,7 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
 
-        let winning_team = args.join().substr(0, args.join().replace(/,/g, ' ').length);
+        let winning_team = args.join().replace(/,/g, ' ');
         console.log(winning_team);
 
         if (!winning_team.length) {
@@ -40,14 +40,23 @@ module.exports = {
                     array[2] += parseInt(3);
                     array[3] += parseInt(0);
                     array[4] += parseInt(0);
-                    array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
+                    array[6] = (((parseInt(array[2])) + (parseInt(array[3])))/ parseInt(array[4])).toFixed(2); //KDA
                     array.push(parseInt(3));
                     array.push(parseInt(0));
                     array.push(parseInt(0));
+                    array.push(parseInt(0));
+                    let cs_sum = 0;
+                    let number_of_games = 0;
+                    for(let i = 16; i < array.length; i+=4){
+                        cs_sum += array[i];
+                        number_of_games++;
+                    }
+                    array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
                     foundTeams.team1 = true;
                     if (max_array_length < array.length) max_array_length = array.length;
                     console.log(array, "got awarded 3 kills cause his team won by walkover cause odd number of teams")
                 }
+                array[6] = parseFloat(array[6]).toFixed(2);
                 array[5] = parseFloat(array[5]).toFixed(2);
             }
         }
@@ -58,14 +67,14 @@ module.exports = {
                 console.log('Error while reading the file');
             } else {
                 const settings = JSON.parse(data.toString());
-                queueNumber = settings.currentQueue;
+                queueNumber = settings.currentQueueLOL;
 
             }
         });
 
         setTimeout(() => {
             console.log("max array length: ", max_array_length)
-            if ((max_array_length - 6) / 3 > queueNumber) {
+            if ((max_array_length - 13) / 4 > queueNumber - 2) {
                 const messEmbednow = new MessageEmbed()
                     .setTitle(`**That team has already played their games during this queue!**`).setColor('RED').setTimestamp();
                 return message.channel.send(messEmbednow);

@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs');
 
 module.exports = {
-    name: 'set_queue',
+    name: 'set_queue_csgo',
     description: 'sets current number of queue',
     permissions: [],
     async execute(message, args, com, client) {

@@ -3,8 +3,8 @@ const { MessageEmbed } = require('discord.js')
 const fs = require('fs');
 
 module.exports = {
-    name: 'stop_stats',
-    description: 'stops stats recording',
+    name: 'resume_stats_lol',
+    description: 'resumes stats recording',
     permissions: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
@@ -18,13 +18,13 @@ module.exports = {
                 console.log('Error while reading the file');
             } else {
                 let settings = JSON.parse(data.toString());
-                settings.statsEnabled = false;
+                settings.statsEnabledLOL = true;
                 const return_string = JSON.stringify(settings, null, 4);
                 fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
                     if (err) {
                         console.log("error while writing the file", err);
                     } else {
-                        console.log("stats recording got turned off");
+                        console.log("stats recording got turned on");
                     }
                 })
             }
