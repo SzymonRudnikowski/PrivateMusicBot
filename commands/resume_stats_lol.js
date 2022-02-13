@@ -31,7 +31,7 @@ module.exports = {
         });
         setTimeout(() => {
             const messEmbednow = new MessageEmbed()
-                .setTitle(`**Stats recording disabled!**`).setColor('GREEN').setTimestamp();
+                .setTitle(`**Stats recording enabled!**`).setColor('GREEN').setTimestamp();
             return message.channel.send(messEmbednow);
         }, 1000);
     },
