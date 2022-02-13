@@ -141,11 +141,11 @@ async function getTables(matchID, message, queueNumber) {
                     teammate.push(0);
                     teammate.push(0);
                     teammate.push(0);
-                    teammate.push(0);
+                    teammate.push(parseFloat(5.00).toFixed(2));
                     console.log(teammate[1], " got only 0")
                 }
             })
-        });
+        }); //adding data for players who have not played in the game 
 
         if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
             return;

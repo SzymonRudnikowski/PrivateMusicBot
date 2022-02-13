@@ -124,7 +124,7 @@ function endQueueZeroAdd_LOL(statsEnabled, queueNumber){
                 array.push(parseInt(0));
                 array.push(parseInt(0));
                 array.push(parseInt(0));
-                array.push(parseInt(0));
+                array.push(parseFloat(0.00).toFixed(2));
                 let cs_sum = 0;
                 let number_of_games = 0;
                 for(let i = 16; i < array.length; i+=4){
