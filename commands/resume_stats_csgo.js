@@ -20,7 +20,7 @@ module.exports = {
                 let settings = JSON.parse(data.toString());
                 settings.statsEnabled = true;
                 const return_string = JSON.stringify(settings, null, 4);
-                fs.writeFile(`./jsons/settings.json`, return_string, (err) => {
+                fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
                     if (err) {
                         console.log("error while writing the file", err);
                     } else {
