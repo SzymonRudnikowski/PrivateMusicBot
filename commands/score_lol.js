@@ -56,7 +56,7 @@ async function getTables(matchID, message, queueNumber) {
             for (let i = 0; i < data.length; i++) {
                 let array = data[i];
                 if (array.length) {
-                    if (array[1] === nickname && nickname !== "Orlen16") {
+                    if (array[1] === nickname) {
                         console.log("found: " + nickname);
 
                         if(!team_name_excel_first) team_name_excel_first = array[0];
