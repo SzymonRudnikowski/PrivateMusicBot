@@ -51,12 +51,11 @@ async function getTables(matchID, message, queueNumber) {
             let cs = parseInt(player.totalMinionsKilled) + parseInt(player.neutralMinionsKilled);
                 
             //appending stats from lol api to the excel worksheet
-            console.log("cs : game dur", cs, game_duration);
 
             for (let i = 0; i < data.length; i++) {
                 let array = data[i];
                 if (array.length) {
-                    if (array[1] === nickname) {
+                    if (array[1].replace(/ /g, '') === nickname.replace(/ /g, '')) {
                         console.log("found: " + nickname);
 
                         if(!team_name_excel_first) team_name_excel_first = array[0];
@@ -86,8 +85,6 @@ async function getTables(matchID, message, queueNumber) {
                             cs_sum += parseFloat(array[i]);
                             number_of_games++;
                         }
-                        console.log("cs sum: ", cs_sum);
-                        console.log("games: ", number_of_games);
                         array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
 
                         break;
