@@ -6,7 +6,7 @@ const XLSX = require('xlsx');
 const PATH = "./MLE/Zawodnicy_CSGO.xlsx";
 
 module.exports = {
-    name: 'win',
+    name: 'win_csgo',
     aliases: [],
     async execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
@@ -16,7 +16,7 @@ module.exports = {
             return message.channel.send(messEmbednow);
         }
 
-        let winning_team = args.join().substr(0, args.join().replace(/,/g, ' ').length);
+        let winning_team = args.join().replace(/,/g, ' ');
         console.log(winning_team);
 
         if (!winning_team.length) {

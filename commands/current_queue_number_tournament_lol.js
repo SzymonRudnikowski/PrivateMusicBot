@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
-    name: 'current_queue',
+    name: 'current_queue_lol',
     description: 'number of current queue in the MLE server',
     execute(message, args, com, client) {
         if (message.guild.id !== '914969283661037618') return;
@@ -13,7 +13,7 @@ module.exports = {
                 console.log('Error while reading the file');
             } else {
                 const settings = JSON.parse(data.toString());
-                queueNumber = settings.currentQueue;
+                queueNumber = settings.currentQueueLOL;
             }
         });
 
