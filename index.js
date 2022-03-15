@@ -24,7 +24,7 @@ let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 864
 const BOT_ID = config.id;
 //btw simon is a ni33er
 
-global.prefix = config.prefix;
+global.prefix = config.prefix; //jak chcesz do dev to tak jak wszedzie masz prefixdev
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
