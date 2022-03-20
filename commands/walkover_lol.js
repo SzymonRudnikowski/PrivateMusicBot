@@ -160,6 +160,6 @@ module.exports = {
         .setColor('GREEN')
         .setTimestamp();
       return message.channel.send(messEmbednow);
-    }, 1000);
+    }, 2000);
   },
 };
