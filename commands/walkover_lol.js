@@ -86,7 +86,7 @@ module.exports = {
           array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
           foundTeams.team1 = true;
           if (max_array_length < array.length) max_array_length = array.length;
-          console.log(array, 'got awarded 3 kills cause his team won by walkover');
+          console.log(array[1], 'got awarded 3 kills cause his team won by walkover');
         } else if (array[0].toLowerCase() === losing_team.toLowerCase()) {
           array[2] += 0;
           array[3] += 0;
