@@ -69,14 +69,14 @@ module.exports = {
       let array = data[i];
       if (array.length) {
         if (array[0].toLowerCase() === winning_team.toLowerCase()) {
-          array[2] += 3;
-          array[3] += 0;
-          array[4] += 0;
+          array[2] += parseInt(3);
+          array[3] += parseInt(0);
+          array[4] += parseInt(0);
           array[6] = ((parseInt(array[2]) + parseInt(array[3])) / parseInt(array[4])).toFixed(2); //KDA
-          array.push(3);
-          array.push(0);
-          array.push(0);
-          array.push(parseFloat('5.0').toFixed(2));
+          array.push(parseInt(3));
+          array.push(parseInt(0));
+          array.push(parseInt(0));
+          array.push(parseFloat(5.0).toFixed(2));
           let cs_sum = 0;
           let number_of_games = 0;
           for (let i = 16; i < array.length; i += 4) {
@@ -86,16 +86,16 @@ module.exports = {
           array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
           foundTeams.team1 = true;
           if (max_array_length < array.length) max_array_length = array.length;
-          console.log(array[1], 'got awarded 3 kills cause his team won by walkover');
+          console.log(array, 'got awarded 3 kills cause his team won by walkover');
         } else if (array[0].toLowerCase() === losing_team.toLowerCase()) {
-          array[2] += 0;
-          array[3] += 0;
-          array[4] += 0;
+          array[2] += parseInt(0);
+          array[3] += parseInt(0);
+          array[4] += parseInt(0);
           array[6] = ((parseInt(array[2]) + parseInt(array[3])) / parseInt(array[4])).toFixed(2); //KDA
-          array.push(0);
-          array.push(0);
-          array.push(0);
-          array.push(parseFloat('0.0').toFixed(2));
+          array.push(parseInt(0));
+          array.push(parseInt(0));
+          array.push(parseInt(0));
+          array.push(parseFloat(0.0).toFixed(2));
           let cs_sum = 0;
           let number_of_games = 0;
           for (let i = 16; i < array.length; i += 4) {
@@ -160,6 +160,6 @@ module.exports = {
         .setColor('GREEN')
         .setTimestamp();
       return message.channel.send(messEmbednow);
-    }, 2000);
+    }, 1000);
   },
 };
