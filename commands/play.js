@@ -42,6 +42,20 @@ module.exports = {
       return message.channel.send(messEmbednow);
     }
 
+    const inSameChannel = client.voice.connections.some(
+      (connection) => connection.channel.id === message.member.voice.channelID
+    );
+    if (!inSameChannel && hasJoinedChannel.get(message.guild.id)) {
+      console.log('is in same channel: ' + inSameChannel);
+      console.log('hasJoinedChannels: ');
+      console.log(hasJoinedChannel);
+      const messEmbednow = new MessageEmbed()
+        .setTitle(`***${message.author.tag}*** **you need to be in the same channel as the bot!**`)
+        .setColor('BLUE')
+        .setTimestamp();
+      return message.channel.send(messEmbednow);
+    }
+
     //This is our server queue. We are getting this server queue from the global queue.
     global.server_queue = queue.get(message.guild.id);
     if (!songTitles.has(message.guild.id)) songTitles.set(message.guild.id, ['']);
@@ -119,21 +133,7 @@ module.exports = {
 
     try {
       if (YoutubeTitle.get(message.guild.id).length === 1) throw 1;
-      const inSameChannel = client.voice.connections.some(
-        (connection) => connection.channel.id === message.member.voice.channelID
-      );
-      if (!inSameChannel && hasJoinedChannel.get(message.guild.id)) {
-        console.log('is in same channel: ' + inSameChannel);
-        console.log('hasJoinedChannels: ');
-        console.log(hasJoinedChannel);
-        const messEmbednow = new MessageEmbed()
-          .setTitle(
-            `***${message.author.tag}*** **you need to be in the same channel as the bot!**`
-          )
-          .setColor('BLUE')
-          .setTimestamp();
-        return message.channel.send(messEmbednow);
-      }
+
       server_queue.songs.push(song);
       console.log(`${song.title} added to queue!`);
       const messEmbed = new MessageEmbed()
