@@ -7,6 +7,7 @@ const { WebhookClient, MessageEmbed } = require('discord.js');
 global.queue = new Map();
 global.songTitles = new Map();
 global.YoutubeTitle = new Map();
+global.hasJoinedChannel = new Map();
 
 module.exports = {
   name: 'play',
