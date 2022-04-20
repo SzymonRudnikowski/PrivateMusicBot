@@ -59,7 +59,9 @@ client.on('voiceStateUpdate', (oldState, newState) => {
       console.log('this was me who got disconnected');
       hasJoinedChannel.delete(oldState.guild.id);
       return;
-    }
+    } //if someone decides to disconnect the bot manually via discord we gotta remove this guild from map hasJoinedChannel
+    //later when we gonna call .get(guild.id) its going to return undefined (false) so the user will be
+    //able to play something again and so the error was fixed :DDDD
     if (oldState.channel.members.size - 1 === 0) {
       console.log('no users in a channel, leaving in 5 secs');
       setTimeout(() => {

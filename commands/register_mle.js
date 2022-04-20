@@ -48,6 +48,42 @@ module.exports = {
       }
     });
 
+    let mainRole;
+    let categoryRole;
+
+    if (id.startsWith('CS')) {
+      //csgo
+      categoryRole = 'CS:GO';
+      if (id[2] === 'K') {
+        //kapitan
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Kapitan');
+      } else {
+        //zawodnik
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Zawodnik');
+      }
+    } else if (id.startsWith('LO')) {
+      //lol
+      categoryRole = 'League of Legends';
+
+      if (id[2] === 'K') {
+        //kapitan
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Kapitan');
+      } else {
+        //zawodnik
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Zawodnik');
+      }
+    } else {
+      categoryRole = 'Valorant';
+
+      if (id[2] === 'K') {
+        //kapitan
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Kapitan');
+      } else {
+        //zawodnik
+        mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Zawodnik');
+      }
+    } //valorant
+
     const workbook = XLSX.readFile(PATH);
 
     let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -57,11 +93,17 @@ module.exports = {
       let array = data[i];
       if (array.length) {
         if (
+          array[3] &&
           array[3].toString() === message.author.id.toString() &&
           ((id.startsWith('LO') && array[1].startsWith('LO')) ||
             (id.startsWith('CS') && array[1].startsWith('CS')) ||
             (id.startsWith('VA') && array[1].startsWith('VA')))
         ) {
+          const messEmbednow = new MessageEmbed()
+            .setTitle(`**You have already registered for this category! (${categoryRole})**`)
+            .setColor('RED')
+            .setTimestamp();
+          return message.channel.send(messEmbednow);
         }
       }
     }
@@ -96,41 +138,7 @@ module.exports = {
       const member = message.guild.members.cache.get(userID);
       const usersNickname = member.displayName;
 
-      let mainRole;
-      let categoryRole;
       try {
-        if (id.startsWith('CS')) {
-          //csgo
-          categoryRole = 'CS:GO';
-          if (id[2] === 'K') {
-            //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Kapitan');
-          } else {
-            //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Zawodnik');
-          }
-        } else if (id.startsWith('LO')) {
-          //lol
-          categoryRole = 'League of Legends';
-
-          if (id[2] === 'K') {
-            //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Kapitan');
-          } else {
-            //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Zawodnik');
-          }
-        } else {
-          categoryRole = 'Valorant';
-
-          if (id[2] === 'K') {
-            //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Kapitan');
-          } else {
-            //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Zawodnik');
-          }
-        } //valorant
         member.roles.add(mainRole);
       } catch (error) {
         console.log(error);
