@@ -55,7 +55,11 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     newState.channelID === null
   ) {
     console.log('someone left or switched channels');
-    console.log('user that left: ', oldState.member.displayName);
+    console.log('user that id that left: ', oldState.member.id);
+    console.log('client id: ', client.user.id);
+    if (oldState.member.id === client.user.id) {
+      console.log('this was me who left');
+    }
     if (oldState.channel.members.size - 1 === 0) {
       console.log('no users in a channel, leaving in 5 secs');
       setTimeout(() => {
