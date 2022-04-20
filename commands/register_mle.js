@@ -48,6 +48,24 @@ module.exports = {
       }
     });
 
+    const workbook = XLSX.readFile(PATH);
+
+    let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+
+    for (let i = 0; i < data.length; i++) {
+      let array = data[i];
+      if (array.length) {
+        if (
+          array[3].toString() === message.author.id.toString() &&
+          ((id.startsWith('LO') && array[1].startsWith('LO')) ||
+            (id.startsWith('CS') && array[1].startsWith('CS')) ||
+            (id.startsWith('VA') && array[1].startsWith('VA')))
+        ) {
+        }
+      }
+    }
+
     setTimeout(() => {
       if (!idFree) {
         const messEmbednow = new MessageEmbed()
@@ -64,7 +82,6 @@ module.exports = {
             const ids = JSON.parse(data.toString());
             ids.push(id);
             const return_string = JSON.stringify(ids, null, 4);
-            console.log(return_string);
             fs.writeFile('./MLE/already_registered.txt', return_string, (err) => {
               if (err) {
                 console.log('error adding id to the registry');
@@ -84,39 +101,37 @@ module.exports = {
       try {
         if (id.startsWith('CS')) {
           //csgo
-          categoryRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO');
+          categoryRole = 'CS:GO';
           if (id[2] === 'K') {
             //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Kapitan');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Kapitan');
           } else {
             //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Zawodnik');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'CS:GO - Zawodnik');
           }
         } else if (id.startsWith('LO')) {
           //lol
-          categoryRole = message.guild.roles.cache.find(
-            (role) => role.name === 'League of Legends'
-          );
+          categoryRole = 'League of Legends';
 
           if (id[2] === 'K') {
             //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Kapitan');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Kapitan');
           } else {
             //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Zawodnik');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'LOL - Zawodnik');
           }
         } else {
-          categoryRole = message.guild.roles.cache.find((role) => role.name === 'Valorant');
+          categoryRole = 'Valorant';
 
           if (id[2] === 'K') {
             //kapitan
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Kapitan');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Kapitan');
           } else {
             //zawodnik
-            mainRole = message.guild.roles.cache.find((role) => role.name === 'Zawodnik');
+            mainRole = message.guild.roles.cache.find((role) => role.name === 'VAL - Zawodnik');
           }
         } //valorant
-        member.roles.add([mainRole, categoryRole]);
+        member.roles.add(mainRole);
       } catch (error) {
         console.log(error);
         const messEmbednow = new MessageEmbed()
@@ -127,11 +142,6 @@ module.exports = {
           .setTimestamp();
         return message.channel.send(messEmbednow);
       }
-
-      const workbook = XLSX.readFile(PATH);
-
-      let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
 
       let idExist = false;
 
@@ -161,7 +171,7 @@ module.exports = {
       XLSX.writeFile(new_workbook, PATH);
 
       const messEmbednow = new MessageEmbed()
-        .setTitle(`**Successfuly registered! Category: ${categoryRole.name}**`)
+        .setTitle(`**Successfuly registered! Category: ${categoryRole}**`)
         .setColor('GREEN')
         .setTimestamp();
       return message.channel.send(messEmbednow);
