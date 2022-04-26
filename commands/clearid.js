@@ -6,11 +6,19 @@ const fs = require('fs');
 const PATH = './MLE/TeamsRegistered.xlsx';
 
 module.exports = {
-	name: 'register_mle',
-	description: 'registration process for mle server',
+	name: 'clear_id',
+	description: 'deletes user data from excel table',
 	permissions: [],
 	async execute(message, args, com, client) {
 		if (message.guild.id !== '914969283661037618') return;
+		if (!message.member.hasPermission(['ADMINISTRATOR'])) {
+			const messEmbednow = new MessageEmbed()
+				.setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`)
+				.setColor('RED')
+				.setTimestamp();
+			return message.channel.send(messEmbednow);
+		}
+
 		if (!args.length || !args[0].length) {
 			const messEmbednow = new MessageEmbed()
 				.setTitle(`***${message.author.tag}*** **you need to enter an id!**`)
@@ -86,61 +94,57 @@ module.exports = {
 		let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
 		let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
 
+		let idFound = false;
+
 		for (let i = 0; i < data.length; i++) {
 			let array = data[i];
 			if (array.length) {
-				if (
-					array[3] &&
-					array[3].toString() === message.author.id.toString() &&
-					((id.startsWith('LO') && array[1].startsWith('LO')) ||
-						(id.startsWith('CS') && array[1].startsWith('CS')) ||
-						(id.startsWith('VA') && array[1].startsWith('VA')))
-				) {
-					const messEmbednow = new MessageEmbed()
-						.setTitle(`**You have already registered for this category! (${categoryRole})**`)
-						.setColor('RED')
-						.setTimestamp();
-					return message.channel.send(messEmbednow);
+				if (id === array[1]) {
+					idFound = true;
 				}
 			}
 		}
+		if (!idFound) {
+			const messEmbednow = new MessageEmbed().setTitle(`**This id does not exist**`).setColor('RED').setTimestamp();
+			return message.channel.send(messEmbednow);
+		}
 
 		setTimeout(() => {
-			if (!idFree) {
+			if (idFree) {
 				const messEmbednow = new MessageEmbed()
-					.setTitle(`**This id has already been used!**`)
+					.setTitle(`**This user has not yet registered for this category! Category: (${categoryRole})**`)
 					.setColor('RED')
 					.setTimestamp();
 				return message.channel.send(messEmbednow);
-			} else {
-				fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
-					if (err) {
-						console.log(err);
-						console.log('Error while reading the file');
-					} else {
-						const ids = JSON.parse(data.toString());
-						ids.push(id);
-						const return_string = JSON.stringify(ids, null, 4);
-						fs.writeFile('./MLE/already_registered.txt', return_string, (err) => {
-							if (err) {
-								console.log('error adding id to the registry');
-							} else {
-								console.log('id added to the registry');
-							}
-						});
-					}
-				});
 			}
+			fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
+				if (err) {
+					console.log(err);
+					console.log('Error while reading the file');
+				} else {
+					const ids = JSON.parse(data.toString());
+					ids.splice(ids.indexOf(id), 1);
+					const return_string = JSON.stringify(ids, null, 4);
+					fs.writeFile('./MLE/already_registered.txt', return_string, (err) => {
+						if (err) {
+							console.log('error removing id from the registry');
+						} else {
+							console.log('id removed from the registry');
+						}
+					});
+				}
+			});
+
 			const userID = message.author.id;
 			const member = message.guild.members.cache.get(userID);
-			const usersNickname = message.author.tag;
+			const usersNickname = member.displayName;
 
 			try {
-				member.roles.add(mainRole);
+				member.roles.remove(mainRole);
 			} catch (error) {
 				console.log(error);
 				const messEmbednow = new MessageEmbed()
-					.setTitle(`**There was an error during registration process. Please contact server staff for help.**`)
+					.setTitle(`**There was an error during user deletion process. Please contact the developer.**`)
 					.setColor('RED')
 					.setTimestamp();
 				return message.channel.send(messEmbednow);
@@ -152,19 +156,9 @@ module.exports = {
 				let array = data[i];
 				if (array.length) {
 					if (array[1].toString() === id.toString()) {
-						array.push(usersNickname);
-						array.push(userID.toString());
-						array.push(mainRole.name.includes('Kapitan') ? 'true' : 'false');
-						idExist = true;
+						array.splice(2, 3);
 					}
 				}
-			}
-			if (!idExist) {
-				const messEmbednow = new MessageEmbed()
-					.setTitle(`**This id does not exist!**`)
-					.setColor('RED')
-					.setTimestamp();
-				return message.channel.send(messEmbednow);
 			}
 
 			let worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -174,7 +168,7 @@ module.exports = {
 			XLSX.writeFile(new_workbook, PATH);
 
 			const messEmbednow = new MessageEmbed()
-				.setTitle(`**Successfuly registered! Category: ${categoryRole}**`)
+				.setTitle(`**User successfuly deleted! Category: ${categoryRole}**`)
 				.setColor('GREEN')
 				.setTimestamp();
 			return message.channel.send(messEmbednow);
