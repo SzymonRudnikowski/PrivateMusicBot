@@ -17,6 +17,8 @@ global.hasJoinedChannel = new Map();
 
 const PATH_LOL = './MLE/Zawodnicy_LOL.xlsx';
 const PATH_CSGO = './MLE/Zawodnicy_CSGO.xlsx';
+const PATH_DISPLAY_CSGO = './MLE/DisplaySheetCSGO.xlsx';
+const PATH_DISPLAY_LOL = './MLE/DisplaySheetLOL.xlsx';
 
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000];
 //    30s    60s    5min    30min    1hour    3hours    12hours   24hours
@@ -92,19 +94,31 @@ function endQueueZeroAdd_CSGO(statsEnabled, queueNumber) {
 
   for (let i = 0; i < data.length; i++) {
     let array = data[i];
-    console.log(array.length, queueNumber * 3 + 6);
+    console.log(array.length, queueNumber * 5 + 7);
     if (array.length) {
-      if (array.length === (queueNumber - 2) * 3 + 6) {
+      if (array.length === (queueNumber - 2) * 5 + 7) {
         array[2] += parseInt(0);
         array[3] += parseInt(0);
         array[4] += parseInt(0);
-        array[5] = (parseInt(array[2]) / parseInt(array[4])).toFixed(2);
-        array.push(parseInt(0));
-        array.push(parseInt(0));
-        array.push(parseInt(0));
-        console.log(array, 'got filled with 0 cause no game was played');
-      } else {
-        array[5] = parseFloat(array[5]).toFixed(2);
+
+        let divideBy = !parseInt(array[4]) ? 1 : parseInt(array[4]);
+        array[5] = (parseInt(array[2]) / divideBy).toFixed(2); //kd
+
+        array.push(0);
+        array.push(0);
+        array.push(0);
+        array.push(0);
+        array.push(0);
+
+        let total_kd = 0;
+        let rounds = 0;
+
+        for (let i = 11; i < array.length; i += 5) {
+          total_kd += array[i];
+          rounds++;
+        }
+        array[6] = (parseFloat(total_kd) / parseFloat(rounds)).toFixed(2);
+        console.log(array[1], 'got filled with 0 cause no game was played');
       }
     }
   }
@@ -127,25 +141,31 @@ function endQueueZeroAdd_LOL(statsEnabled, queueNumber) {
   for (let i = 0; i < data.length; i++) {
     let array = data[i];
     if (array.length) {
-      if (array.length === 13 + (queueNumber - 4) * 4) {
+      if (array.length === 8 + (queueNumber - 2) * 6) {
         array[2] += parseInt(0);
         array[3] += parseInt(0);
         array[4] += parseInt(0);
-        array[6] = ((parseInt(array[2]) + parseInt(array[3])) / parseInt(array[4])).toFixed(2); //KDA
-        array.push(parseInt(0));
-        array.push(parseInt(0));
-        array.push(parseInt(0));
-        array.push(parseFloat(0.0).toFixed(2));
+        let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
+        array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(2); //KDA
+        array.push(0);
+        array.push(0);
+        array.push(0);
+        array.push(0);
+        array.push(0);
+        array.push(0).toFixed(2);
+
         let cs_sum = 0;
+        let kp_sum = 0;
         let number_of_games = 0;
-        for (let i = 16; i < array.length; i += 4) {
-          cs_sum += array[i];
+        for (let i = 12; i < array.length; i += 6) {
+          cs_sum += parseFloat(array[i]);
+          kp_sum += parseFloat(array[i + 1]);
           number_of_games++;
         }
-        array[5] = parseFloat(cs_sum / number_of_games).toFixed(2);
+
+        array[6] = parseFloat(cs_sum / number_of_games).toFixed(2);
+        array[7] = parseFloat(kp_sum / number_of_games).toFixed(2);
         console.log(array[1], 'got filled with 0 cause no game was played');
-      } else {
-        array[6] = parseFloat(array[6]).toFixed(2);
       }
     }
   }
@@ -154,6 +174,134 @@ function endQueueZeroAdd_LOL(statsEnabled, queueNumber) {
 
   XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
   XLSX.writeFile(new_workbook, PATH_LOL);
+}
+
+function createDisplaySheetCSGO(statsEnabled, queueNumber) {
+  if (!statsEnabled) {
+    console.log('its monday but stats in csgo display sheet are off');
+    return;
+  }
+  const workbook = XLSX.readFile(PATH_CSGO);
+  let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+
+  let displayData = [
+    [
+      'Position',
+      'Player',
+      'Team',
+      'Score',
+      'Total Kills',
+      'Total Assists',
+      'Total Deaths',
+      'Total KD',
+      'Total HS%',
+      `${queueNumber}. Kills`,
+      `${queueNumber}. Assists`,
+      `${queueNumber}. Deaths`,
+      `${queueNumber}. KD`,
+      `${queueNumber}. HS%`,
+    ],
+  ];
+  for (let i = 1; i < data.length; i++) {
+    const array = data[i];
+    if (array.length) {
+      let playerData = [-1]; //since position is gonna get changed after sorting everything
+      for (let j = 0; j < 7; j++) {
+        playerData.push(array[j]); //total stats
+      }
+      const temp = playerData[1]; //team name
+      playerData[1] = playerData[2]; //swapping team name with player name
+      playerData[2] = temp;
+
+      const score = (playerData[3] + playerData[4] / 2) * playerData[6]; // these indexes are proper as we havent yet added score to the array
+      playerData.splice(3, 0, score); //score (total kills + total assists/2) * total kd
+
+      for (let j = 7 + (queueNumber - 1) * 5; j < 7 + (queueNumber - 1) * 5 + 5; j++) {
+        playerData.push(array[j]); //stats for this particular queue
+      }
+      displayData.push(playerData);
+    }
+  }
+
+  displayData.sort((a, b) => {
+    return b[3] - a[3]; //descending order
+  });
+
+  for (let i = 1; i < displayData.length; i++) {
+    displayData[i][0] = i; //position number
+  }
+
+  let worksheet = XLSX.utils.aoa_to_sheet(displayData);
+  let new_workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
+  XLSX.writeFile(new_workbook, PATH_DISPLAY_CSGO);
+}
+
+function createDisplaySheetLOL(statsEnabled, queueNumber) {
+  if (!statsEnabled) {
+    console.log('its monday but stats in lol display sheet are off');
+    return;
+  }
+  const workbook = XLSX.readFile(PATH_LOL);
+  let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+
+  let displayData = [
+    [
+      'Position',
+      'Player',
+      'Team',
+      'Score',
+      'Total Kills',
+      'Total Assists',
+      'Total Deaths',
+      'Total CS/min',
+      'Total KDA',
+      'Total KP',
+      `${queueNumber}. Kills`,
+      `${queueNumber}. Assists`,
+      `${queueNumber}. Deaths`,
+      `${queueNumber}. KDA`,
+      `${queueNumber}. CS/min`,
+      `${queueNumber}. KP`,
+    ],
+  ];
+  for (let i = 1; i < data.length; i++) {
+    const array = data[i];
+    if (array.length) {
+      let playerData = [-1]; //since position is gonna get changed after sorting everything
+      for (let j = 0; j < 8; j++) {
+        playerData.push(array[j]); //total stats
+      }
+      const temp = playerData[1]; //team name
+      playerData[1] = playerData[2]; //swapping team name with player name
+      playerData[2] = temp;
+
+      const score = ((playerData[3] + playerData[4]) / 2) * playerData[6];
+      playerData.splice(3, 0, score); //score (total kills + total assists)/2 * total kda
+
+      for (let j = 8 + (queueNumber - 1) * 6; j < 8 + (queueNumber - 1) * 6 + 6; j++) {
+        playerData.push(array[j]); //stats for this particular queue
+      }
+      displayData.push(playerData);
+    }
+  }
+
+  displayData.sort((a, b) => {
+    return b[3] - a[3]; //descending order
+  });
+
+  for (let i = 1; i < displayData.length; i++) {
+    displayData[i][0] = i; //position number
+  }
+
+  let worksheet = XLSX.utils.aoa_to_sheet(displayData);
+  let new_workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
+  XLSX.writeFile(new_workbook, PATH_DISPLAY_LOL);
 }
 
 client.setInterval(() => {
@@ -209,6 +357,8 @@ client.setInterval(() => {
     setTimeout(() => {
       endQueueZeroAdd_CSGO(statsEnabledFileCSGO, queueNumberCSGO);
       endQueueZeroAdd_LOL(statsEnabledFileLOL, queueNumberLOL);
+      createDisplaySheetCSGO(statsEnabledFileCSGO, queueNumberCSGO);
+      createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL);
     }, 1000);
   }
 }, 3600000); // check every hour if new queue should be turned on

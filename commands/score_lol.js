@@ -97,7 +97,7 @@ async function getTables(matchID, message, queueNumber) {
             array.push(parseFloat(kda).toFixed(2));
             array.push(parseFloat(cs / game_duration).toFixed(2));
             array.push(parseFloat(killParticipation).toFixed(2));
-            //TODO KP, CS/MIN IS GETTING WRONGLY CALCULATED
+
             let cs_sum = 0;
             let kp_sum = 0;
             let number_of_games = 0;
