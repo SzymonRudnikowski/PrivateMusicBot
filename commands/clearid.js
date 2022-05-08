@@ -168,7 +168,7 @@ module.exports = {
 			XLSX.writeFile(new_workbook, PATH);
 
 			const messEmbednow = new MessageEmbed()
-				.setTitle(`**User successfuly deleted! Category: ${categoryRole}**`)
+				.setTitle(`**User successfully deleted! Category: ${categoryRole}**`)
 				.setColor('GREEN')
 				.setTimestamp();
 			return message.channel.send(messEmbednow);
