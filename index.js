@@ -1,6 +1,5 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const util = require('minecraft-server-util');
 const config = require('./config.json');
 const XLSX = require('xlsx');
 const { MessageEmbed } = require('discord.js');
@@ -50,10 +49,7 @@ for (const file of commandFiles) {
 client.on('voiceStateUpdate', (oldState, newState) => {
 	if (!hasJoinedChannel.has(oldState.guild.id)) return;
 
-	if (
-		(oldState.channelID != null && newState.channelID != null && newState.channelID != oldState.channelID) ||
-		newState.channelID === null
-	) {
+	if ((oldState.channelID != null && newState.channelID != null && newState.channelID != oldState.channelID) || newState.channelID === null) {
 		console.log('someone left or switched channels');
 		if (oldState.member.id === client.user.id) {
 			console.log('this was me who got disconnected');
@@ -374,31 +370,18 @@ client.on('message', (message) => {
 		const messEmbednow = new MessageEmbed().setColor('BLUE').setTimestamp();
 
 		if (intervals[mutedUsers.get(message.author.id)] / 1000 <= 60)
+			messEmbednow.setTitle(`**You are sending messages too fast! Try again in ${intervals[mutedUsers.get(message.author.id)] / 1000} seconds**`);
+		else if (intervals[mutedUsers.get(message.author.id)] / 1000 > 60 && intervals[mutedUsers.get(message.author.id)] / 1000 <= 1800)
 			messEmbednow.setTitle(
-				`**You are sending messages too fast! Try again in ${
-					intervals[mutedUsers.get(message.author.id)] / 1000
-				} seconds**`
-			);
-		else if (
-			intervals[mutedUsers.get(message.author.id)] / 1000 > 60 &&
-			intervals[mutedUsers.get(message.author.id)] / 1000 <= 1800
-		)
-			messEmbednow.setTitle(
-				`**You are sending messages too fast! Try again in ${
-					intervals[mutedUsers.get(message.author.id)] / 1000 / 60
-				} minutes**`
+				`**You are sending messages too fast! Try again in ${intervals[mutedUsers.get(message.author.id)] / 1000 / 60} minutes**`
 			);
 		else if (intervals[mutedUsers.get(message.author.id)] / 1000 === 3600)
 			messEmbednow.setTitle(
-				`**You are sending messages too fast! Try again in ${
-					intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60
-				} hour**`
+				`**You are sending messages too fast! Try again in ${intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60} hour**`
 			);
 		else if (intervals[mutedUsers.get(message.author.id)] / 1000 > 1800)
 			messEmbednow.setTitle(
-				`**You are sending messages too fast! Try again in ${
-					intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60
-				} hours**`
+				`**You are sending messages too fast! Try again in ${intervals[mutedUsers.get(message.author.id)] / 1000 / 60 / 60} hours**`
 			);
 
 		message.channel.send(messEmbednow);
@@ -455,10 +438,7 @@ client.on('message', (message) => {
 			com.execute(message, args, com, client);
 		} catch (error) {
 			console.error(error);
-			const messEmbednow = new MessageEmbed()
-				.setTitle(`**There was an issue executing this command!**`)
-				.setColor('BLUE')
-				.setTimestamp();
+			const messEmbednow = new MessageEmbed().setTitle(`**There was an issue executing this command!**`).setColor('BLUE').setTimestamp();
 			message.channel.send(messEmbednow);
 		}
 	}
