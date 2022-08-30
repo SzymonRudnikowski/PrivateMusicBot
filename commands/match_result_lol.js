@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const fs = require('fs/promises');
 
 module.exports = {
-	name: 'match_result_csgo',
+	name: 'match_result_lol',
 	async execute(message, args, com, client) {
 		if (message.guild.id !== '914969283661037618') return;
 		if (!args || !args.length) {
@@ -14,8 +14,9 @@ module.exports = {
 		const team1 = input[0];
 		const team2 = input[3];
 
+		console.log(input);
 		if (
-			input.length != 4 ||
+			input.length !== 4 ||
 			isNaN(input[1]) ||
 			isNaN(input[2]) ||
 			(input[1] !== '0' && input[1] !== '1') ||
@@ -31,7 +32,7 @@ module.exports = {
 			[team2]: input[2],
 		};
 
-		fs.readFile(`./MLE/match_results_csgo.txt`, 'utf-8')
+		fs.readFile(`./MLE/match_results_lol.txt`, 'utf-8')
 			.then((data) => {
 				let matchResults = JSON.parse(data.toString());
 				matchResults.forEach((match_result) => {
@@ -46,7 +47,7 @@ module.exports = {
 				matchResults.push(result);
 
 				const return_string = JSON.stringify(matchResults, null, 4);
-				fs.writeFile(`./MLE/match_results_csgo.txt`, return_string, (err) => {
+				fs.writeFile(`./MLE/match_results_lol.txt`, return_string, (err) => {
 					if (err) {
 						console.log('error while writing the file', err);
 					} else {
