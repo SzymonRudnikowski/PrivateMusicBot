@@ -121,19 +121,36 @@ module.exports = {
       const member = message.guild.members.cache.get(userID);
       const usersNickname = message.author.tag;
 
-      try {
-        member.roles.add(mainRole);
-        member.roles.remove(guestRole);
-      } catch (error) {
-        console.log(error);
-        const messEmbednow = new MessageEmbed()
-          .setTitle(
-            `**There was an error during registration process. Please contact server staff for help.**`
-          )
-          .setColor('RED')
-          .setTimestamp();
-        return message.channel.send(messEmbednow);
-      }
+      member.roles
+        .add(mainRole)
+        .then(() => {
+          console.log('proper role added');
+        })
+        .catch((err) => {
+          console.log(err);
+          const messEmbednow = new MessageEmbed()
+            .setTitle(
+              `**There was an error during registration process. Please contact <@391983289122029578>**`
+            )
+            .setColor('RED')
+            .setTimestamp();
+          return message.channel.send(messEmbednow);
+        });
+      member.roles
+        .remove(guestRole)
+        .then(() => {
+          console.log('proper role added');
+        })
+        .catch((err) => {
+          console.log(err);
+          const messEmbednow = new MessageEmbed()
+            .setTitle(
+              `**There was an error during registration process. Please contact <@391983289122029578>**`
+            )
+            .setColor('RED')
+            .setTimestamp();
+          return message.channel.send(messEmbednow);
+        });
 
       let idExist = false;
 
@@ -144,7 +161,21 @@ module.exports = {
             array.push(usersNickname);
             array.push(userID.toString());
             array.push(mainRole.name.includes('Kapitan') ? 'true' : 'false');
-            member.setNickname(array[0].toString());
+            member
+              .setNickname(array[0].toString())
+              .then(() => {
+                console.log('nickname set:', array[0].toString());
+              })
+              .catch((err) => {
+                console.log(err);
+                const messEmbednow = new MessageEmbed()
+                  .setTitle(
+                    `**There was an error during registration process. Please contact <@391983289122029578>**`
+                  )
+                  .setColor('RED')
+                  .setTimestamp();
+                return message.channel.send(messEmbednow);
+              });
             idExist = true;
           }
         }
