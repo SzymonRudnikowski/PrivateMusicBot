@@ -15,6 +15,7 @@ module.exports = {
   cooldown: 0,
   description: 'Advanced music bot',
   async execute(message, args, command, client) {
+    return; // command inactive - bot is currently being used for other purposes
     let voice_channel = message.member.voice.channel;
     //Checking for the voicechannel and permissions.
     if (!voice_channel) {

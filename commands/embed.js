@@ -1,26 +1,26 @@
-const Discord = require("discord.js");
+const Discord = require('discord.js');
 module.exports = {
-    name: 'embed',
-    description: 'Wiadomosc embed',
-    execute(message, args) {
-        const embed = new Discord.MessageEmbed()
-        // Kolor 
-        .setColor('0x03f4fc')
-        // Tytul 
-        .setTitle('title')
-        // Tekst, enter = \n
-        .setDescription('text')
-        /// Wiele pol do dodania (opcjonalne - zakomendtowane)
-        // .addFields(
-        //     {name: '', value: ''},
-        //     {name: '', value: ''}
-        // )
-        .setFooter('PMB');
+  name: 'embed',
+  description: 'Wiadomosc embed',
+  execute(message, args) {
+    return; // command inactive - bot is currently being used for other purposes
+    const embed = new Discord.MessageEmbed()
+      // Kolor
+      .setColor('0x03f4fc')
+      // Tytul
+      .setTitle('title')
+      // Tekst, enter = \n
+      .setDescription('text')
+      /// Wiele pol do dodania (opcjonalne - zakomendtowane)
+      // .addFields(
+      //     {name: '', value: ''},
+      //     {name: '', value: ''}
+      // )
+      .setFooter('PMB');
 
-        message.channel.send(embed);
-    },
+    message.channel.send(embed);
+  },
 };
-
 
 /* == TEMPLATE
 const Discord = require("discord.js");
@@ -45,7 +45,7 @@ module.exports = {
         message.channel.send(embed);
     },
 };
-*/ 
+*/
 
 /* == TICKET SYSTEM EMBED
 const Discord = require("discord.js");

@@ -6,6 +6,7 @@ module.exports = {
   description: 'makes the client to join users channel',
   permissions: [],
   async execute(message, args, com, client) {
+    return; // command inactive - bot is currently being used for other purposes
     const voice_channel = message.member.voice.channel;
     if (hasJoinedChannel.has(message.guild.id)) {
       const messEmbednow = new MessageEmbed()
