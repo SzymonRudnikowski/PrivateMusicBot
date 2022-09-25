@@ -179,7 +179,7 @@ module.exports = {
       member.roles
         .remove(guestRole)
         .then(() => {
-          console.log('proper role added');
+          console.log('guest role removed');
         })
         .catch((err) => {
           console.log(err);
