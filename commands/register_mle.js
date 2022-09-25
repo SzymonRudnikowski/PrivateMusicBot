@@ -122,6 +122,7 @@ module.exports = {
       const usersNickname = message.author.tag;
 
       let idExist = false;
+      let teamName;
 
       for (let i = 0; i < data.length; i++) {
         let array = data[i];
@@ -130,21 +131,8 @@ module.exports = {
             array.push(usersNickname);
             array.push(userID.toString());
             array.push(mainRole.name.includes('Kapitan') ? 'true' : 'false');
-            member
-              .setNickname(array[0].toString())
-              .then(() => {
-                console.log('nickname set:', array[0].toString());
-              })
-              .catch((err) => {
-                console.log(err);
-                const messEmbednow = new MessageEmbed()
-                  .setTitle(
-                    `**There was an error during registration process. Please contact <@391983289122029578>**`
-                  )
-                  .setColor('RED')
-                  .setTimestamp();
-                return message.channel.send(messEmbednow);
-              });
+            teamName = array[0].toString();
+
             idExist = true;
           }
         }
@@ -156,6 +144,22 @@ module.exports = {
           .setTimestamp();
         return message.channel.send(messEmbednow);
       }
+
+      member
+        .setNickname(teamName)
+        .then(() => {
+          console.log('nickname set:', teamName);
+        })
+        .catch((err) => {
+          console.log(err);
+          const messEmbednow = new MessageEmbed()
+            .setTitle(
+              `**There was an error during registration process. Please contact <@391983289122029578>**`
+            )
+            .setColor('RED')
+            .setTimestamp();
+          return message.channel.send(messEmbednow);
+        });
 
       member.roles
         .add(mainRole)
