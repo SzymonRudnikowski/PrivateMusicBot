@@ -191,6 +191,24 @@ module.exports = {
             .setTimestamp();
           return message.channel.send(messEmbednow);
         });
+      // to make sure that the nickname is being changed
+      setTimeout(() => {
+        member
+          .setNickname(teamName)
+          .then(() => {
+            console.log('nickname set once more:', teamName);
+          })
+          .catch((err) => {
+            console.log(err);
+            const messEmbednow = new MessageEmbed()
+              .setTitle(
+                `**There was an error during registration process. Please contact <@391983289122029578>**`
+              )
+              .setColor('RED')
+              .setTimestamp();
+            return message.channel.send(messEmbednow);
+          });
+      }, 5000);
 
       fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
         if (err) {
