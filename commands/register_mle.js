@@ -191,7 +191,7 @@ module.exports = {
             .setTimestamp();
           return message.channel.send(messEmbednow);
         });
-      // to make sure that the nickname is being changed
+      // to ensure that the nickname is being changed
       setTimeout(() => {
         member
           .setNickname(teamName)
