@@ -208,6 +208,38 @@ module.exports = {
               .setTimestamp();
             return message.channel.send(messEmbednow);
           });
+
+        member.roles
+          .add(mainRole)
+          .then(() => {
+            console.log('proper role added once more');
+          })
+          .catch((err) => {
+            console.log(err);
+            const messEmbednow = new MessageEmbed()
+              .setTitle(
+                `**There was an error during registration process. Please contact <@391983289122029578>**`
+              )
+              .setColor('RED')
+              .setTimestamp();
+            return message.channel.send(messEmbednow);
+          });
+
+        member.roles
+          .remove(guestRole)
+          .then(() => {
+            console.log('guest role removed once more');
+          })
+          .catch((err) => {
+            console.log(err);
+            const messEmbednow = new MessageEmbed()
+              .setTitle(
+                `**There was an error during registration process. Please contact <@391983289122029578>**`
+              )
+              .setColor('RED')
+              .setTimestamp();
+            return message.channel.send(messEmbednow);
+          });
       }, 5000);
 
       fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
