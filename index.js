@@ -24,8 +24,8 @@ let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 864
 //const BOT_ID = "892442837252206633";
 //btw simon is a ni33er
 
-global.prefix = config.prefixdev;
-global.BOT_ID = config.iddev;
+global.prefix = config.prefix;
+global.BOT_ID = config.id;
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -440,6 +440,6 @@ client.on('message', (message) => {
 	}
 });
 
-client.login(config.tokendev);
+client.login(config.token);
 
 //client.login("ODkyNDQyODM3MjUyMjA2NjMz.YVM-KQ.D1qaqUjLmd_KWQsCVFPjPDOk7c8");
