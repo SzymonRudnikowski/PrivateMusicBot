@@ -132,60 +132,96 @@ module.exports = {
 				}
 			});
 
-			const userID = message.author.id;
-			const member = message.guild.members.cache.get(userID);
-			const usersNickname = member.displayName;
-			const guestRole = message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
+			setTimeout(() => {
+				const userID = message.author.id;
+				const member = message.guild.members.cache.get(userID);
+				const usersNickname = member.displayName;
+				const guestRole = message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
 
-			member.roles.remove(mainRole).catch((err) => {
-				console.log(err);
-				const messEmbednow = new MessageEmbed()
-					.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-					.setColor('RED')
-					.setTimestamp();
-				return message.channel.send(messEmbednow);
-			});
+				member.roles.remove(mainRole).catch((err) => {
+					console.log(err);
+					const messEmbednow = new MessageEmbed()
+						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+						.setColor('RED')
+						.setTimestamp();
+					return message.channel.send(messEmbednow);
+				});
 
-			member.roles.add(guestRole).catch((err) => {
-				console.log(err);
-				const messEmbednow = new MessageEmbed()
-					.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-					.setColor('RED')
-					.setTimestamp();
-				return message.channel.send(messEmbednow);
-			});
+				member.roles.add(guestRole).catch((err) => {
+					console.log(err);
+					const messEmbednow = new MessageEmbed()
+						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+						.setColor('RED')
+						.setTimestamp();
+					return message.channel.send(messEmbednow);
+				});
 
-			member.setNickname('').catch((err) => {
-				console.log(err);
-				const messEmbednow = new MessageEmbed()
-					.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-					.setColor('RED')
-					.setTimestamp();
-				return message.channel.send(messEmbednow);
-			});
+				member.setNickname('').catch((err) => {
+					console.log(err);
+					const messEmbednow = new MessageEmbed()
+						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+						.setColor('RED')
+						.setTimestamp();
+					return message.channel.send(messEmbednow);
+				});
 
-			let idExist = false;
+				setTimeout(() => {
+					member.roles.remove(mainRole).catch((err) => {
+						console.log(err);
+						console.log('err during main role remove');
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					});
 
-			for (let i = 0; i < data.length; i++) {
-				let array = data[i];
-				if (array.length) {
-					if (array[1].toString() === id.toString()) {
-						array.splice(2, 3);
+					member.roles.add(guestRole).catch((err) => {
+						console.log(err);
+						console.log('err during guest role add');
+
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					});
+
+					member.setNickname('').catch((err) => {
+						console.log(err);
+						console.log('err during nickname reset');
+
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					});
+				}, 5000);
+
+				let idExist = false;
+
+				for (let i = 0; i < data.length; i++) {
+					let array = data[i];
+					if (array.length) {
+						if (array[1].toString() === id.toString()) {
+							array.splice(2, 3);
+						}
 					}
 				}
-			}
 
-			let worksheet = XLSX.utils.aoa_to_sheet(data);
-			let new_workbook = XLSX.utils.book_new();
+				let worksheet = XLSX.utils.aoa_to_sheet(data);
+				let new_workbook = XLSX.utils.book_new();
 
-			XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
-			XLSX.writeFile(new_workbook, PATH);
+				XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
+				XLSX.writeFile(new_workbook, PATH);
 
-			const messEmbednow = new MessageEmbed()
-				.setTitle(`**User successfully deleted! Category: ${categoryRole}**`)
-				.setColor('GREEN')
-				.setTimestamp();
-			return message.channel.send(messEmbednow);
+				const messEmbednow = new MessageEmbed()
+					.setTitle(`**User successfully deleted! Category: ${categoryRole}**`)
+					.setColor('GREEN')
+					.setTimestamp();
+				return message.channel.send(messEmbednow);
+			}, 1000);
 		}, 100);
 	},
 };
