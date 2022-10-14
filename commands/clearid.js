@@ -120,7 +120,7 @@ module.exports = {
 
 			setTimeout(async () => {
 				console.log(userID);
-				const member = await message.guild.members.cache.get(userID);
+				const member = await message.guild.members.fetch(userID);
 				const usersNickname = await member.displayName;
 				const guestRole = await message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
 
