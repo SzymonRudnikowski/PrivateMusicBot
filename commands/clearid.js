@@ -117,23 +117,6 @@ module.exports = {
 					.setTimestamp();
 				return message.channel.send(messEmbednow);
 			}
-			fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
-				if (err) {
-					console.log(err);
-					console.log('Error while reading the file');
-				} else {
-					const ids = JSON.parse(data.toString());
-					ids.splice(ids.indexOf(id), 1);
-					const return_string = JSON.stringify(ids, null, 4);
-					fs.writeFile('./MLE/already_registered.txt', return_string, (err) => {
-						if (err) {
-							console.log('error removing id from the registry');
-						} else {
-							console.log('id removed from the registry');
-						}
-					});
-				}
-			});
 
 			setTimeout(() => {
 				console.log(userID);
@@ -167,6 +150,24 @@ module.exports = {
 						}
 					}
 				}
+
+				fs.readFile(`./MLE/already_registered.txt`, 'utf-8', (err, data) => {
+					if (err) {
+						console.log(err);
+						console.log('Error while reading the file');
+					} else {
+						const ids = JSON.parse(data.toString());
+						ids.splice(ids.indexOf(id), 1);
+						const return_string = JSON.stringify(ids, null, 4);
+						fs.writeFile('./MLE/already_registered.txt', return_string, (err) => {
+							if (err) {
+								console.log('error removing id from the registry');
+							} else {
+								console.log('id removed from the registry');
+							}
+						});
+					}
+				});
 
 				let worksheet = XLSX.utils.aoa_to_sheet(data);
 				let new_workbook = XLSX.utils.book_new();
