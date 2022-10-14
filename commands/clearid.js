@@ -93,11 +93,14 @@ module.exports = {
 
 		let idFound = false;
 
+		let userID;
+
 		for (let i = 0; i < data.length; i++) {
 			let array = data[i];
 			if (array.length) {
 				if (id === array[1]) {
 					idFound = true;
+					userID = array[3];
 				}
 			}
 		}
@@ -133,73 +136,27 @@ module.exports = {
 			});
 
 			setTimeout(() => {
-				const userID = message.author.id;
 				const member = message.guild.members.cache.get(userID);
 				const usersNickname = member.displayName;
 				const guestRole = message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
 
 				member.roles.remove(mainRole).catch((err) => {
 					console.log(err);
-					const messEmbednow = new MessageEmbed()
-						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-						.setColor('RED')
-						.setTimestamp();
+					const messEmbednow = new MessageEmbed().setTitle(`**Failed to remove category role**`).setColor('RED').setTimestamp();
 					return message.channel.send(messEmbednow);
 				});
 
 				member.roles.add(guestRole).catch((err) => {
 					console.log(err);
-					const messEmbednow = new MessageEmbed()
-						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-						.setColor('RED')
-						.setTimestamp();
+					const messEmbednow = new MessageEmbed().setTitle(`**Failed to add guest role**`).setColor('RED').setTimestamp();
 					return message.channel.send(messEmbednow);
 				});
 
 				member.setNickname('').catch((err) => {
 					console.log(err);
-					const messEmbednow = new MessageEmbed()
-						.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-						.setColor('RED')
-						.setTimestamp();
+					const messEmbednow = new MessageEmbed().setTitle(`**Failed to reset the nickname**`).setColor('RED').setTimestamp();
 					return message.channel.send(messEmbednow);
 				});
-
-				setTimeout(() => {
-					member.roles.remove(mainRole).catch((err) => {
-						console.log(err);
-						console.log('err during main role remove');
-						const messEmbednow = new MessageEmbed()
-							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-							.setColor('RED')
-							.setTimestamp();
-						return message.channel.send(messEmbednow);
-					});
-
-					member.roles.add(guestRole).catch((err) => {
-						console.log(err);
-						console.log('err during guest role add');
-
-						const messEmbednow = new MessageEmbed()
-							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-							.setColor('RED')
-							.setTimestamp();
-						return message.channel.send(messEmbednow);
-					});
-
-					member.setNickname('').catch((err) => {
-						console.log(err);
-						console.log('err during nickname reset');
-
-						const messEmbednow = new MessageEmbed()
-							.setTitle(`**There was an error during user deletion process. Please contact <@&391983289122029578>**`)
-							.setColor('RED')
-							.setTimestamp();
-						return message.channel.send(messEmbednow);
-					});
-				}, 5000);
-
-				let idExist = false;
 
 				for (let i = 0; i < data.length; i++) {
 					let array = data[i];
