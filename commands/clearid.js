@@ -118,11 +118,11 @@ module.exports = {
 				return message.channel.send(messEmbednow);
 			}
 
-			setTimeout(() => {
+			setTimeout(async () => {
 				console.log(userID);
-				const member = message.guild.members.cache.get(userID);
-				const usersNickname = member.displayName;
-				const guestRole = message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
+				const member = await message.guild.members.cache.get(userID);
+				const usersNickname = await member.displayName;
+				const guestRole = await message.guild.roles.cache.find((role) => role.name === 'Go\u015B\u0107');
 
 				member.roles.remove(mainRole).catch((err) => {
 					console.log(err);
