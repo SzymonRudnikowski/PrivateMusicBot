@@ -12,333 +12,298 @@ const PATH = './MLE/Zawodnicy_LOL.xlsx';
 let exceedQueue = new Map();
 
 async function getTables(matchID, message, queueNumber) {
-  right_players.set(message.guild.id, true);
-  const workbook = XLSX.readFile(PATH);
-  let res;
-  //getting the json response from faceit api
-  await fetch(
-    `https://europe.api.riotgames.com/lol/match/v5/matches/EUN1_${matchID}?api_key=${KEY}`
-  )
-    .then(function (u) {
-      return u.json();
-    })
-    .then(function (json) {
-      res = json;
-    });
+	right_players.set(message.guild.id, true);
+	const workbook = XLSX.readFile(PATH);
+	let res;
+	//getting the json response from faceit api
+	await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/EUN1_${matchID}?api_key=${KEY}`)
+		.then(function (u) {
+			return u.json();
+		})
+		.then(function (json) {
+			res = json;
+		});
 
-  try {
-    let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
-    let players_right = new Map(); //keeps track about number of players that differs in each team maximum 1 per team
-    let team_name_excel_first;
-    let team_name_excel_second;
-    let whole_teams = [[], []];
-    let game_duration = Math.floor(parseInt(res['info'].gameDuration) / 60);
+	try {
+		let first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
+		let data = XLSX.utils.sheet_to_json(first_worksheet, { header: 1 });
+		let players_right = new Map(); //keeps track about number of players that differs in each team maximum 1 per team
+		let team_name_excel_first;
+		let team_name_excel_second;
+		let whole_teams = [[], []];
+		let game_duration = Math.floor(parseInt(res['info'].gameDuration) / 60);
 
-    res['info'].participants.forEach((player) => {
-      if (!right_players.get(message.guild.id)) {
-        return;
-      }
+		res['info'].participants.forEach((player) => {
+			if (!right_players.get(message.guild.id)) {
+				return;
+			}
 
-      if (exceedQueue.has(message.guild.id)) {
-        exceedQueue.set(message.guild.id, false);
-      }
+			if (exceedQueue.has(message.guild.id)) {
+				exceedQueue.set(message.guild.id, false);
+			}
 
-      //getting match stats from lol api
+			//getting match stats from lol api
 
-      let nickname = player.summonerName;
-      let kills = player.kills;
-      let assists = player.assists;
-      let deaths = player.deaths;
-      let kda = player.challenges.kda;
-      let cs = parseInt(player.totalMinionsKilled) + parseInt(player.neutralMinionsKilled);
-      let killParticipation = parseFloat(player.challenges.killParticipation);
+			let nickname = player.summonerName;
+			let kills = player.kills;
+			let assists = player.assists;
+			let deaths = player.deaths;
+			let kda = player.challenges.kda;
+			let cs = parseInt(player.totalMinionsKilled) + parseInt(player.neutralMinionsKilled);
+			let killParticipation = parseFloat(player.challenges.killParticipation);
 
-      //appending stats from lol api to the excel worksheet
+			//appending stats from lol api to the excel worksheet
 
-      for (let i = 0; i < data.length; i++) {
-        let array = data[i];
-        if (array.length) {
-          if (array[1].replace(/ /g, '') === nickname.replace(/ /g, '')) {
-            console.log('found: ' + nickname);
+			for (let i = 1; i < data.length; i++) {
+				let array = data[i];
+				if (array.length) {
+					if (array[1].replace(/ /g, '') === nickname.replace(/ /g, '')) {
+						console.log('found: ' + nickname);
 
-            if (!team_name_excel_first) team_name_excel_first = array[0];
-            else if (team_name_excel_first !== array[0] && !team_name_excel_second)
-              team_name_excel_second = array[0];
+						if (!team_name_excel_first) team_name_excel_first = array[0];
+						else if (team_name_excel_first !== array[0] && !team_name_excel_second) team_name_excel_second = array[0];
 
-            if (!players_right.has(team_name_excel_first)) {
-              players_right.set(team_name_excel_first, 0);
-            }
-            if (!players_right.has(team_name_excel_second)) {
-              players_right.set(team_name_excel_second, 0);
-            }
+						if (!players_right.has(team_name_excel_first)) {
+							players_right.set(team_name_excel_first, 0);
+						}
+						if (!players_right.has(team_name_excel_second)) {
+							players_right.set(team_name_excel_second, 0);
+						}
 
-            if (array[0] === team_name_excel_first)
-              players_right.set(
-                team_name_excel_first,
-                players_right.get(team_name_excel_first) + 1
-              );
-            else
-              players_right.set(
-                team_name_excel_second,
-                players_right.get(team_name_excel_second) + 1
-              );
+						if (array[0] === team_name_excel_first) players_right.set(team_name_excel_first, players_right.get(team_name_excel_first) + 1);
+						else players_right.set(team_name_excel_second, players_right.get(team_name_excel_second) + 1);
 
-            array[2] += parseInt(kills);
-            array[3] += parseInt(assists);
-            array[4] += parseInt(deaths);
-            let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
-            array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(
-              2
-            ); //KDA
-            array.push(parseInt(kills));
-            array.push(parseInt(assists));
-            array.push(parseInt(deaths));
-            array.push(parseFloat(kda).toFixed(2));
-            array.push(parseFloat(cs / game_duration).toFixed(2));
-            array.push(parseFloat(killParticipation).toFixed(2));
+						array[2] += parseInt(kills);
+						array[3] += parseInt(assists);
+						array[4] += parseInt(deaths);
+						let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
+						array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(2); //KDA
+						array.push(parseInt(kills));
+						array.push(parseInt(assists));
+						array.push(parseInt(deaths));
+						array.push(parseFloat(kda).toFixed(2));
+						array.push(parseFloat(cs / game_duration).toFixed(2));
+						array.push(parseFloat(killParticipation).toFixed(2));
 
-            let cs_sum = 0;
-            let kp_sum = 0;
-            let number_of_games = 0;
-            for (let i = 12; i < array.length; i += 6) {
-              cs_sum += parseFloat(array[i]);
-              kp_sum += parseFloat(array[i + 1]);
-              number_of_games++;
-            }
-            array[6] = parseFloat(cs_sum / number_of_games).toFixed(2);
-            array[7] = parseFloat(kp_sum / number_of_games).toFixed(2);
+						let cs_sum = 0;
+						let kp_sum = 0;
+						let number_of_games = 0;
+						for (let i = 12; i < array.length; i += 6) {
+							cs_sum += parseFloat(array[i]);
+							kp_sum += parseFloat(array[i + 1]);
+							number_of_games++;
+						}
+						array[6] = parseFloat(cs_sum / number_of_games).toFixed(2);
+						array[7] = parseFloat(kp_sum / number_of_games).toFixed(2);
 
-            break;
-          }
-        }
-      }
-    });
+						break;
+					}
+				}
+			}
+		});
 
-    console.log(
-      'right players for team: ',
-      players_right.get(team_name_excel_first),
-      team_name_excel_first
-    );
-    console.log(
-      'right players for team: ',
-      players_right.get(team_name_excel_second),
-      team_name_excel_second
-    );
+		console.log('right players for team: ', players_right.get(team_name_excel_first), team_name_excel_first);
+		console.log('right players for team: ', players_right.get(team_name_excel_second), team_name_excel_second);
 
-    if (
-      players_right.get(team_name_excel_first) < 4 ||
-      players_right.get(team_name_excel_second) < 4
-    ) {
-      right_players.set(message.guild.id, false);
-      return;
-    } else {
-      players_right.delete(team_name_excel_first);
-      players_right.delete(team_name_excel_second);
-    }
+		if (players_right.get(team_name_excel_first) < 4 || players_right.get(team_name_excel_second) < 4) {
+			right_players.set(message.guild.id, false);
+			return;
+		} else {
+			players_right.delete(team_name_excel_first);
+			players_right.delete(team_name_excel_second);
+		}
 
-    data.forEach((array) => {
-      if (array.length) {
-        if (array[0] === team_name_excel_first) {
-          whole_teams[0].push(array);
-        } else if (array[0] === team_name_excel_second) {
-          whole_teams[1].push(array);
-        }
-      }
-    });
+		data.forEach((array) => {
+			if (array.length) {
+				if (array[0] === team_name_excel_first) {
+					whole_teams[0].push(array);
+				} else if (array[0] === team_name_excel_second) {
+					whole_teams[1].push(array);
+				}
+			}
+		});
 
-    let max_length = 0;
-    whole_teams.forEach((whole_team) => {
-      whole_team.forEach((teammate) => {
-        if (max_length < teammate.length) {
-          max_length = teammate.length;
-        }
-      });
-    });
-    console.log('queueNumber: ', queueNumber);
-    console.log('max length: ', max_length);
-    if ((max_length - 8) / 6 > queueNumber) {
-      exceedQueue.set(message.guild.id, true);
-      return;
-    }
-    whole_teams.forEach((whole_team) => {
-      whole_team.forEach((teammate) => {
-        if (teammate.length < max_length) {
-          teammate.push(0);
-          teammate.push(0);
-          teammate.push(0);
-          teammate.push(0);
-          teammate.push(parseFloat(5.0).toFixed(2));
-          teammate.push(0);
-          console.log(teammate[1], ' got only 0');
-        }
-      });
-    }); //adding data for players who have not played in the game
+		let max_length = 0;
+		whole_teams.forEach((whole_team) => {
+			whole_team.forEach((teammate) => {
+				if (max_length < teammate.length) {
+					max_length = teammate.length;
+				}
+			});
+		});
+		console.log('queueNumber: ', queueNumber);
+		console.log('max length: ', max_length);
+		if ((max_length - 8) / 6 > queueNumber) {
+			exceedQueue.set(message.guild.id, true);
+			return;
+		}
+		whole_teams.forEach((whole_team) => {
+			whole_team.forEach((teammate) => {
+				if (teammate.length < max_length) {
+					teammate.push(0);
+					teammate.push(0);
+					teammate.push(0);
+					teammate.push(0);
+					teammate.push(parseFloat(5.0).toFixed(2));
+					teammate.push(0);
+					console.log(teammate[1], ' got only 0');
+				}
+			});
+		}); //adding data for players who have not played in the game
 
-    if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
-      return;
-    }
-    let worksheet = XLSX.utils.aoa_to_sheet(data);
-    let new_workbook = XLSX.utils.book_new();
+		if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
+			return;
+		}
+		let worksheet = XLSX.utils.aoa_to_sheet(data);
+		let new_workbook = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
-    XLSX.writeFile(new_workbook, PATH);
-  } catch (err) {
-    console.log(err);
-    console.log('not found');
-    good.set(message.guild.id, false);
-    return;
-  }
-  good.set(message.guild.id, true);
-  right_players.set(message.guild.id, true);
+		XLSX.utils.book_append_sheet(new_workbook, worksheet, 'Arkusz1');
+		XLSX.writeFile(new_workbook, PATH);
+	} catch (err) {
+		console.log(err);
+		console.log('not found');
+		good.set(message.guild.id, false);
+		return;
+	}
+	good.set(message.guild.id, true);
+	right_players.set(message.guild.id, true);
 }
 
 module.exports = {
-  name: 'score_lol',
-  aliases: [],
-  async execute(message, args, com, client) {
-    if (message.guild.id !== '914969283661037618') return;
-    let statsEnabled;
-    fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
-      if (err) {
-        console.log(err);
-        console.log('Error while reading the file');
-      } else {
-        let settings = JSON.parse(data.toString());
-        statsEnabled = settings.statsEnabledLOL;
-      }
-    });
-    setTimeout(() => {
-      if (!statsEnabled) {
-        const messEmbednow = new MessageEmbed()
-          .setTitle(`**Stats recording is currently disabled!**`)
-          .setColor('BLUE')
-          .setTimestamp();
-        return message.channel.send(messEmbednow);
-      }
+	name: 'score_lol',
+	aliases: [],
+	async execute(message, args, com, client) {
+		if (message.guild.id !== '914969283661037618') return;
+		let statsEnabled;
+		fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
+			if (err) {
+				console.log(err);
+				console.log('Error while reading the file');
+			} else {
+				let settings = JSON.parse(data.toString());
+				statsEnabled = settings.statsEnabledLOL;
+			}
+		});
+		setTimeout(() => {
+			if (!statsEnabled) {
+				const messEmbednow = new MessageEmbed().setTitle(`**Stats recording is currently disabled!**`).setColor('BLUE').setTimestamp();
+				return message.channel.send(messEmbednow);
+			}
 
-      if (!args.length || !args[0].length) {
-        const messEmbednow = new MessageEmbed()
-          .setTitle(`***${message.author.tag}*** **you need to enter a link!**`)
-          .setColor('BLUE')
-          .setTimestamp();
-        return message.channel.send(messEmbednow);
-      }
-      console.log(args[0]);
+			if (!args.length || !args[0].length) {
+				const messEmbednow = new MessageEmbed()
+					.setTitle(`***${message.author.tag}*** **you need to enter a link!**`)
+					.setColor('BLUE')
+					.setTimestamp();
+				return message.channel.send(messEmbednow);
+			}
+			console.log(args[0]);
 
-      if (!args[0].startsWith('https://www.leagueofgraphs.com/')) {
-        console.log('link not valid');
-        const messEmbednow = new MessageEmbed()
-          .setTitle(`***${message.author.tag}*** **your link is not valid!**`)
-          .setColor('RED')
-          .setTimestamp()
-          .setDescription('(Only links from https://www.leagueofgraphs.com are accepted!)');
-        return message.channel.send(messEmbednow);
-      }
-      let link = args[0];
-      let exist = false;
-      let matchID;
+			if (!args[0].startsWith('https://www.leagueofgraphs.com/')) {
+				console.log('link not valid');
+				const messEmbednow = new MessageEmbed()
+					.setTitle(`***${message.author.tag}*** **your link is not valid!**`)
+					.setColor('RED')
+					.setTimestamp()
+					.setDescription('(Only links from https://www.leagueofgraphs.com are accepted!)');
+				return message.channel.send(messEmbednow);
+			}
+			let link = args[0];
+			let exist = false;
+			let matchID;
 
-      matchID = link.substring(link.indexOf('30'), link.indexOf('30') + 10);
+			matchID = link.substring(link.indexOf('30'), link.indexOf('30') + 10);
 
-      if (fs.existsSync(`./MLE/urls.txt`)) {
-        fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
-          if (err) {
-            console.log('Error while reading the file');
-          } else {
-            const links = JSON.parse(data.toString());
-            links.forEach((matchidTXT) => {
-              if (matchidTXT === matchID) {
-                exist = true;
-                const messEmbednow = new MessageEmbed()
-                  .setTitle(`**This link has already been uploaded!**`)
-                  .setColor('RED')
-                  .setTimestamp();
-                message.channel.send(messEmbednow);
-              }
-            });
-          }
-        });
-      }
-      let queueNumber;
-      fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
-        if (err) {
-          console.log('Error while reading the file');
-        } else {
-          const settings = JSON.parse(data.toString());
-          queueNumber = settings.currentQueueLOL;
-        }
-      });
-      if (!good.has(message.guild.id)) good.set(message.guild.id, true);
-      if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
+			if (fs.existsSync(`./MLE/urls.txt`)) {
+				fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
+					if (err) {
+						console.log('Error while reading the file');
+					} else {
+						const links = JSON.parse(data.toString());
+						links.forEach((matchidTXT) => {
+							if (matchidTXT === matchID) {
+								exist = true;
+								const messEmbednow = new MessageEmbed().setTitle(`**This link has already been uploaded!**`).setColor('RED').setTimestamp();
+								message.channel.send(messEmbednow);
+							}
+						});
+					}
+				});
+			}
+			let queueNumber;
+			fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
+				if (err) {
+					console.log('Error while reading the file');
+				} else {
+					const settings = JSON.parse(data.toString());
+					queueNumber = settings.currentQueueLOL;
+				}
+			});
+			if (!good.has(message.guild.id)) good.set(message.guild.id, true);
+			if (!right_players.has(message.guild.id)) right_players.set(message.guild.id, true);
 
-      setTimeout(async () => {
-        if (!exist) {
-          console.log(matchID);
-          await getTables(matchID, message, queueNumber);
+			setTimeout(async () => {
+				if (!exist) {
+					console.log(matchID);
+					await getTables(matchID, message, queueNumber);
 
-          if (exceedQueue.get(message.guild.id)) {
-            const messEmbednow = new MessageEmbed()
-              .setTitle(`**Your team has already uploaded game stats for current queue!**`)
-              .setColor('RED')
-              .setTimestamp();
-            return message.channel.send(messEmbednow);
-          }
+					if (exceedQueue.get(message.guild.id)) {
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**Your team has already uploaded game stats for current queue!**`)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					}
 
-          if (!right_players.get(message.guild.id)) {
-            const messEmbednow = new MessageEmbed()
-              .setTitle(
-                `**The number of players who are not participating in the tournament cannot exceed 1 per team!**`
-              )
-              .setDescription(
-                `**If someone from your team has changed their nickname during MLE or in the registration process has given a nickname that differs from their original Faceit nickname please inform admins about it - otherwise, you won't be able to upload stats for your game**`
-              )
-              .setColor('RED')
-              .setTimestamp();
-            return message.channel.send(messEmbednow);
-          }
+					if (!right_players.get(message.guild.id)) {
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**The number of players who are not participating in the tournament cannot exceed 1 per team!**`)
+							.setDescription(
+								`**If someone from your team has changed their nickname during MLE or in the registration process has given a nickname that differs from their original Faceit nickname please inform admins about it - otherwise, you won't be able to upload stats for your game**`
+							)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					}
 
-          if (!good.get(message.guild.id)) {
-            const messEmbednow = new MessageEmbed()
-              .setTitle(`**Game under this link does not exist! Enter a valid link**`)
-              .setColor('RED')
-              .setTimestamp();
-            return message.channel.send(messEmbednow);
-          }
+					if (!good.get(message.guild.id)) {
+						const messEmbednow = new MessageEmbed()
+							.setTitle(`**Game under this link does not exist! Enter a valid link**`)
+							.setColor('RED')
+							.setTimestamp();
+						return message.channel.send(messEmbednow);
+					}
 
-          if (!fs.existsSync(`./MLE/urls.txt`)) {
-            fs.writeFile(`./MLE/urls.txt`, '[]', (err) => {
-              if (err) {
-                console.log('Error writing file', err);
-              } else {
-                console.log('created file');
-              }
-            });
-          }
-          fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
-            if (err) {
-              console.log('Error while reading the file');
-            } else {
-              const links = JSON.parse(data.toString());
-              links.push(matchID);
-              const return_string = JSON.stringify(links, null, 4);
-              console.log(return_string);
-              fs.writeFile('./MLE/urls.txt', return_string, (err) => {
-                if (err) {
-                  console.log('error adding the link to the registry');
-                } else {
-                  console.log('link added to the registry');
-                }
-              });
-            }
-          });
-          const messEmbednow = new MessageEmbed()
-            .setTitle(`**The link has been validated successfully!**`)
-            .setColor('GREEN')
-            .setTimestamp();
-          return message.channel.send(messEmbednow);
-        }
-      }, 1000);
-    }, 1000);
-  },
+					if (!fs.existsSync(`./MLE/urls.txt`)) {
+						fs.writeFile(`./MLE/urls.txt`, '[]', (err) => {
+							if (err) {
+								console.log('Error writing file', err);
+							} else {
+								console.log('created file');
+							}
+						});
+					}
+					fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
+						if (err) {
+							console.log('Error while reading the file');
+						} else {
+							const links = JSON.parse(data.toString());
+							links.push(matchID);
+							const return_string = JSON.stringify(links, null, 4);
+							console.log(return_string);
+							fs.writeFile('./MLE/urls.txt', return_string, (err) => {
+								if (err) {
+									console.log('error adding the link to the registry');
+								} else {
+									console.log('link added to the registry');
+								}
+							});
+						}
+					});
+					const messEmbednow = new MessageEmbed().setTitle(`**The link has been validated successfully!**`).setColor('GREEN').setTimestamp();
+					return message.channel.send(messEmbednow);
+				}
+			}, 1000);
+		}, 1000);
+	},
 };
