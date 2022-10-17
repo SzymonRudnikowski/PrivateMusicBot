@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const fs = require('fs/promises');
+
 module.exports = {
 	name: 'send_custom_codes',
 	permissions: [],
@@ -11,5 +13,25 @@ module.exports = {
 				.setTimestamp();
 			return message.channel.send(messEmbednow);
 		}
+		let teamsCodeData;
+		await fs.readFile(`./MLE/lol-custom-codes/codes.txt`, 'utf-8').then((data) => {
+			teamsCodeData = JSON.parse(data.toString());
+		});
+
+		const roleID = '966006170747822131';
+
+		const lolCaptains = await message.guild.roles.cache.get(roleID).members;
+
+		lolCaptains.forEach((captain) => {
+			for (let i = 0; i < teamsCodeData.length; i++) {
+				const match = teamsCodeData[i];
+				if (match.team1 === captain.displayName || match.team2 === captain.displayName) {
+					console.log(captain.displayName, match.code);
+					// captain.send(
+					// 	`Hi! I am just here to give you your tournament codes. \n Your opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
+					// );
+				}
+			}
+		});
 	},
 };
