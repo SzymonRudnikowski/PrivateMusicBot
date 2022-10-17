@@ -88,7 +88,7 @@ async function getTables(matchID, message, queueNumber) {
 						let cs_sum = 0;
 						let kp_sum = 0;
 						let number_of_games = 0;
-						for (let i = 12; i < array.length; i += 6) {
+						for (let i = 11; i < array.length; i += 6) {
 							cs_sum += parseFloat(array[i]);
 							kp_sum += parseFloat(array[i + 1]);
 							number_of_games++;
