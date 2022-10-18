@@ -35,7 +35,6 @@ module.exports = {
 					// }
 					if (match.team1 == captain.displayName || match.team2 == captain.displayName) {
 						// codeAppear.set(match.code, codeAppear.get(match.code) ? codeAppear.get(match.code) + 1 : 1);
-						console.log('code sent to:', captain.displayName);
 						const messEmbednow = new MessageEmbed()
 							.setTitle(`Hi! I am just here to give you your tournament codes.`)
 							.setDescription(
@@ -43,7 +42,8 @@ module.exports = {
 							)
 							.setColor('BLUE')
 							.setTimestamp();
-						captain.send(messEmbednow);
+						captain.send(messEmbednow).then(() => console.log('code sent to:', captain.displayName));
+
 						sleep(2000);
 					}
 				}
