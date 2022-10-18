@@ -26,6 +26,8 @@ module.exports = {
 
 		let codesSent = 0;
 		console.log(users.length);
+
+		let sendErrors = [];
 		try {
 			await lolCaptains.forEach(async (captain) => {
 				//console.log('searching for:', captain.nickname);
@@ -54,16 +56,27 @@ module.exports = {
 								sleep(100);
 							})
 							.catch(() => {
-								console.log(`${captain.nickname} has DMs closed or has no mutual servers with the bot`);
+								sendErrors.push(captain.nickname);
 							});
 					}
 				}
 			});
+
 			if (codesSent === users.length) {
-				const messEmbednow = new MessageEmbed().setTitle('Codes sent successfully').setColor('GREEN').setTimestamp();
+				const messEmbednow = new MessageEmbed().setTitle('All codes were sent successfully').setColor('GREEN').setTimestamp();
 				await message.author.send(messEmbednow);
 			} else {
-				const messEmbednow = new MessageEmbed().setTitle('Not all codes were sent').setColor('RED').setTimestamp();
+				let sendErrorsString = `**`;
+				sendErrors.forEach((error) => {
+					sendErrorsString += error + '\n';
+				});
+				sendErrorsString += '**';
+
+				const messEmbednow = new MessageEmbed()
+					.setTitle('Not all codes were sent. Captains that errored:')
+					.setDescription(sendErrorsString)
+					.setColor('RED')
+					.setTimestamp();
 				await message.author.send(messEmbednow);
 			}
 		} catch (err) {
