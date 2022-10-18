@@ -25,64 +25,66 @@ module.exports = {
 		let codeAppear = new Map();
 
 		let codesSent = 0;
-		console.log(users.length);
 
 		let sendErrors = [];
-		try {
-			await lolCaptains.forEach(async (captain) => {
-				console.log('searching for:', captain.nickname);
-				for (let i = 0; i < teamsCodeData.length; i++) {
-					const match = teamsCodeData[i];
-					// if (match.team1 === captain.nickname) {
-					// 	console.log('team1 found:', match.team1);
-					// } else if (match.team2 === captain.nickname) {
-					// 	console.log('team2 found:', match.team2);
-					// }
-					if (match.team1 == captain.nickname || match.team2 == captain.nickname) {
-						// codeAppear.set(match.code, codeAppear.get(match.code) ? codeAppear.get(match.code) + 1 : 1);
-						const messEmbednow = new MessageEmbed()
-							.setTitle(`Hi! I am just here to give you your tournament codes.`)
-							.setDescription(
-								`\nYour opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
-							)
-							.setColor('BLUE')
-							.setTimestamp();
-						console.log('trying to send to:', captain.nickname);
+		setTimeout(async () => {
+			console.log(users.length);
+			try {
+				await lolCaptains.forEach(async (captain) => {
+					console.log('searching for:', captain.nickname);
+					for (let i = 0; i < teamsCodeData.length; i++) {
+						const match = teamsCodeData[i];
+						// if (match.team1 === captain.nickname) {
+						// 	console.log('team1 found:', match.team1);
+						// } else if (match.team2 === captain.nickname) {
+						// 	console.log('team2 found:', match.team2);
+						// }
+						if (match.team1 == captain.nickname || match.team2 == captain.nickname) {
+							// codeAppear.set(match.code, codeAppear.get(match.code) ? codeAppear.get(match.code) + 1 : 1);
+							const messEmbednow = new MessageEmbed()
+								.setTitle(`Hi! I am just here to give you your tournament codes.`)
+								.setDescription(
+									`\nYour opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
+								)
+								.setColor('BLUE')
+								.setTimestamp();
+							console.log('trying to send to:', captain.nickname);
 
-						await captain.user
-							.send(messEmbednow)
-							.then(() => {
-								console.log('code sent to:', captain.nickname);
-								codesSent++;
-								sleep(100);
-							})
-							.catch(() => {
-								sendErrors.push(captain.nickname);
-							});
+							await captain.user
+								.send(messEmbednow)
+								.then(() => {
+									console.log('code sent to:', captain.nickname);
+									codesSent++;
+									sleep(100);
+								})
+								.catch(() => {
+									sendErrors.push(captain.nickname);
+								});
+						}
 					}
-				}
-			});
-
-			if (codesSent === users.length) {
-				const messEmbednow = new MessageEmbed().setTitle('All codes were sent successfully').setColor('GREEN').setTimestamp();
-				await message.author.send(messEmbednow);
-			} else {
-				let sendErrorsString = `**`;
-				sendErrors.forEach((error) => {
-					sendErrorsString += error + '\n';
 				});
-				sendErrorsString += '**';
 
-				const messEmbednow = new MessageEmbed()
-					.setTitle('Not all codes were sent. Captains that errored:')
-					.setDescription(sendErrorsString)
-					.setColor('RED')
-					.setTimestamp();
-				await message.author.send(messEmbednow);
+				if (codesSent === users.length) {
+					const messEmbednow = new MessageEmbed().setTitle('All codes were sent successfully').setColor('GREEN').setTimestamp();
+					await message.author.send(messEmbednow);
+				} else {
+					let sendErrorsString = `**`;
+					sendErrors.forEach((error) => {
+						sendErrorsString += error + '\n';
+					});
+					sendErrorsString += '**';
+
+					const messEmbednow = new MessageEmbed()
+						.setTitle('Not all codes were sent. Captains that errored:')
+						.setDescription(sendErrorsString)
+						.setColor('RED')
+						.setTimestamp();
+					await message.author.send(messEmbednow);
+				}
+			} catch (err) {
+				console.log(err);
 			}
-		} catch (err) {
-			console.log(err);
-		}
+		}, 1000);
 	},
 };
 
