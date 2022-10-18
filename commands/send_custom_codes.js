@@ -42,14 +42,21 @@ module.exports = {
 							)
 							.setColor('BLUE')
 							.setTimestamp();
-						await captain.send(messEmbednow).then(() => console.log('code sent to:', captain.displayName));
 
-						sleep(2000);
+						await captain
+							.send(messEmbednow)
+							.then(() => {
+								console.log('code sent to:', captain.displayName);
+								sleep(2000);
+							})
+							.catch(() => {
+								console.log(`${captain.displayName} has DMs closed or has no mutual servers with the bot`);
+							});
 					}
 				}
 			});
 			const messEmbednow = new MessageEmbed().setTitle('Codes sent successfully').setColor('BLUE').setTimestamp();
-			message.author.send(messEmbednow);
+			await message.author.send(messEmbednow);
 		} catch (err) {
 			console.log(err);
 		}
