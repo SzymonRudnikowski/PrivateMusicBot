@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const config = require('./config.json');
 const XLSX = require('xlsx');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Intents } = require('discord.js');
 
 const intents = new Intents([
 	Intents.NON_PRIVILEGED, // include all non-privileged intents, would be better to specify which ones you actually need
