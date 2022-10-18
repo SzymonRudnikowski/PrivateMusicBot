@@ -57,7 +57,7 @@ module.exports = {
 								sleep(100);
 							})
 							.catch((err) => {
-								console.log(err);
+								console.log(captain.nickname, 'has dms blocked');
 								sendErrors.push(captain.nickname);
 							});
 					}
@@ -74,6 +74,7 @@ module.exports = {
 					sendErrorsString += error + '\n';
 				});
 				sendErrorsString += '**';
+				console.log(sendErrorsString);
 
 				const messEmbednow = new MessageEmbed()
 					.setTitle('Not all codes were sent. Captains that errored:')
