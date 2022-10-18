@@ -75,7 +75,7 @@ async function getTables(matchID, message, queueNumber) {
 							array[5] = (parseInt(array[2]) / divideBy).toFixed(2); //kd
 
 							console.log(nickname, parseInt(kills), assists, deaths, kd, hs);
-							array.push(parseInt(kills));
+							array.push(kills);
 							array.push(parseInt(assists));
 							array.push(parseInt(deaths));
 							array.push(parseFloat(kd));
