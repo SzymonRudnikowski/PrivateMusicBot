@@ -59,7 +59,6 @@ async function getTables(matchID, message, queueNumber) {
 				let assists = player.player_stats['Assists'];
 				let deaths = player.player_stats['Deaths'];
 				let kd = player.player_stats['K/D Ratio'];
-				console.log(nickname, parseInt(kills), assists, deaths, kd, hs);
 				//appending stats from faceit api to the excel worksheet
 
 				for (let i = 1; i < data.length; i++) {
@@ -75,6 +74,7 @@ async function getTables(matchID, message, queueNumber) {
 							let divideBy = parseInt(array[4]) == 0 ? 1 : parseInt(array[4]);
 							array[5] = (parseInt(array[2]) / divideBy).toFixed(2); //kd
 
+							console.log(nickname, parseInt(kills), assists, deaths, kd, hs);
 							array.push(parseInt(kills));
 							array.push(parseInt(assists));
 							array.push(parseInt(deaths));
