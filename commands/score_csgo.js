@@ -74,21 +74,20 @@ async function getTables(matchID, message, queueNumber) {
 							let divideBy = parseInt(array[4]) == 0 ? 1 : parseInt(array[4]);
 							array[5] = (parseInt(array[2]) / divideBy).toFixed(2); //kd
 
-							console.log(nickname, parseInt(kills), assists, deaths, kd, hs);
 							array.push(parseInt(kills));
 							array.push(parseInt(assists));
 							array.push(parseInt(deaths));
 							array.push(parseFloat(kd));
 							array.push(parseFloat(hs));
 							console.log('after insertion:', array);
-							let total_kd = 0;
+							let total_hs = 0;
 							let rounds = 0;
 
 							for (let i = 11; i < array.length; i += 5) {
-								total_kd += array[i];
+								total_hs += array[i];
 								rounds++;
 							}
-							array[6] = (parseFloat(total_kd) / parseFloat(rounds)).toFixed(2);
+							array[6] = (parseFloat(total_hs) / parseFloat(rounds)).toFixed(2);
 							players_right.set(team_name, players_right.get(team_name) + 1);
 							break;
 						}
@@ -138,11 +137,6 @@ async function getTables(matchID, message, queueNumber) {
 		if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
 			return;
 		}
-		data.forEach((array) => {
-			if (array.length > 6) {
-				console.log(array);
-			}
-		});
 		let worksheet = XLSX.utils.aoa_to_sheet(data);
 		let new_workbook = XLSX.utils.book_new();
 
