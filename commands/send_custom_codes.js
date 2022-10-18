@@ -68,7 +68,8 @@ module.exports = {
 				const messEmbednow = new MessageEmbed().setTitle('All codes were sent successfully').setColor('GREEN').setTimestamp();
 				await message.author.send(messEmbednow);
 			} else {
-				let sendErrorsString = `**`;
+				let sendErrorsString = '**';
+				console.log(sendErrors);
 				sendErrors.forEach((error) => {
 					sendErrorsString += error + '\n';
 				});
