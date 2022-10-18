@@ -78,6 +78,7 @@ async function getTables(matchID, message, queueNumber) {
 						array[4] += parseInt(deaths);
 						let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
 						array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(2); //KDA
+
 						array.push(parseInt(kills));
 						array.push(parseInt(assists));
 						array.push(parseInt(deaths));
@@ -88,7 +89,7 @@ async function getTables(matchID, message, queueNumber) {
 						let cs_sum = 0;
 						let kp_sum = 0;
 						let number_of_games = 0;
-						for (let i = 11; i < array.length; i += 6) {
+						for (let i = 12; i < array.length; i += 6) {
 							cs_sum += parseFloat(array[i]);
 							kp_sum += parseFloat(array[i + 1]);
 							number_of_games++;
