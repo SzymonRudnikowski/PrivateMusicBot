@@ -74,6 +74,13 @@ async function getTables(matchID, message, queueNumber) {
 							let divideBy = parseInt(array[4]) == 0 ? 1 : parseInt(array[4]);
 							array[5] = (parseInt(array[2]) / divideBy).toFixed(2); //kd
 
+							array.push(parseInt(kills));
+							array.push(parseInt(assists));
+							array.push(parseInt(deaths));
+							array.push(parseFloat(kd));
+							array.push(parseFloat(hs));
+							console.log('after insertion:', array);
+
 							let total_hs = 0;
 							let rounds = 0;
 
@@ -82,13 +89,6 @@ async function getTables(matchID, message, queueNumber) {
 								rounds++;
 							}
 							array[6] = (parseFloat(total_hs) / parseFloat(rounds)).toFixed(2);
-
-							array.push(parseInt(kills));
-							array.push(parseInt(assists));
-							array.push(parseInt(deaths));
-							array.push(parseFloat(kd));
-							array.push(parseFloat(hs));
-							console.log('after insertion:', array);
 
 							players_right.set(team_name, players_right.get(team_name) + 1);
 							break;
