@@ -138,7 +138,11 @@ async function getTables(matchID, message, queueNumber) {
 		if (!right_players.get(message.guild.id) || exceedQueue.get(message.guild.id)) {
 			return;
 		}
-		console.log(data.map((array) => array.length > 6));
+		data.forEach((array) => {
+			if (array.length > 6) {
+				console.log(array);
+			}
+		});
 		let worksheet = XLSX.utils.aoa_to_sheet(data);
 		let new_workbook = XLSX.utils.book_new();
 
