@@ -21,19 +21,22 @@ module.exports = {
 		const roleID = '966006170747822131';
 
 		const lolCaptains = await message.guild.roles.cache.get(roleID).members;
+		const users = await message.guild.roles.cache.get(roleID).members.map((member) => member.user);
 		let codeAppear = new Map();
 
+		let codesSent = 0;
+		console.log(users.length);
 		try {
 			await lolCaptains.forEach(async (captain) => {
-				console.log('searching for:', captain.displayName);
+				//console.log('searching for:', captain.nickname);
 				for (let i = 0; i < teamsCodeData.length; i++) {
 					const match = teamsCodeData[i];
-					// if (match.team1 === captain.displayName) {
+					// if (match.team1 === captain.nickname) {
 					// 	console.log('team1 found:', match.team1);
-					// } else if (match.team2 === captain.displayName) {
+					// } else if (match.team2 === captain.nickname) {
 					// 	console.log('team2 found:', match.team2);
 					// }
-					if (match.team1 == captain.displayName || match.team2 == captain.displayName) {
+					if (match.team1 == captain.nickname || match.team2 == captain.nickname) {
 						// codeAppear.set(match.code, codeAppear.get(match.code) ? codeAppear.get(match.code) + 1 : 1);
 						const messEmbednow = new MessageEmbed()
 							.setTitle(`Hi! I am just here to give you your tournament codes.`)
@@ -43,20 +46,26 @@ module.exports = {
 							.setColor('BLUE')
 							.setTimestamp();
 
-						await captain
+						await captain.user
 							.send(messEmbednow)
 							.then(() => {
-								console.log('code sent to:', captain.displayName);
-								sleep(2000);
+								console.log('code sent to:', captain.nickname);
+								codesSent++;
+								sleep(100);
 							})
 							.catch(() => {
-								console.log(`${captain.displayName} has DMs closed or has no mutual servers with the bot`);
+								console.log(`${captain.nickname} has DMs closed or has no mutual servers with the bot`);
 							});
 					}
 				}
 			});
-			const messEmbednow = new MessageEmbed().setTitle('Codes sent successfully').setColor('BLUE').setTimestamp();
-			await message.author.send(messEmbednow);
+			if (codesSent === users.length) {
+				const messEmbednow = new MessageEmbed().setTitle('Codes sent successfully').setColor('GREEN').setTimestamp();
+				await message.author.send(messEmbednow);
+			} else {
+				const messEmbednow = new MessageEmbed().setTitle('Not all codes were sent').setColor('RED').setTimestamp();
+				await message.author.send(messEmbednow);
+			}
 		} catch (err) {
 			console.log(err);
 		}
