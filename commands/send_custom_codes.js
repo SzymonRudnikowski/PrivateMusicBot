@@ -24,7 +24,7 @@ module.exports = {
 		let codeAppear = new Map();
 
 		try {
-			lolCaptains.forEach((captain) => {
+			await lolCaptains.forEach(async (captain) => {
 				//console.log('searching for:', captain.displayName);
 				for (let i = 0; i < teamsCodeData.length; i++) {
 					const match = teamsCodeData[i];
@@ -42,7 +42,7 @@ module.exports = {
 							)
 							.setColor('BLUE')
 							.setTimestamp();
-						captain.send(messEmbednow).then(() => console.log('code sent to:', captain.displayName));
+						await captain.send(messEmbednow).then(() => console.log('code sent to:', captain.displayName));
 
 						sleep(2000);
 					}
