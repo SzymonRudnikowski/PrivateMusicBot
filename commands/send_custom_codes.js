@@ -20,7 +20,7 @@ module.exports = {
 
 		const roleID = '966006170747822131';
 
-		await message.guild.members.fetch();
+		await message.guild.members.fetch(); // fill the cache with members
 		const lolCaptains = await message.guild.roles.cache.get(roleID).members;
 		const users = await message.guild.roles.cache.get(roleID).members.map((member) => member.user);
 		let codeAppear = new Map();
