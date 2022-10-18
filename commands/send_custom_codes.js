@@ -36,8 +36,9 @@ module.exports = {
 					if (match.team1 == captain.displayName || match.team2 == captain.displayName) {
 						// codeAppear.set(match.code, codeAppear.get(match.code) ? codeAppear.get(match.code) + 1 : 1);
 						const messEmbednow = new MessageEmbed()
-							.setTitle(
-								`Hi! I am just here to give you your tournament codes. \n Your opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
+							.setTitle(`Hi! I am just here to give you your tournament codes.`)
+							.setDescription(
+								`\nYour opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
 							)
 							.setColor('BLUE')
 							.setTimestamp();
