@@ -30,7 +30,7 @@ module.exports = {
 		let sendErrors = [];
 		try {
 			await lolCaptains.forEach(async (captain) => {
-				//console.log('searching for:', captain.nickname);
+				console.log('searching for:', captain.nickname);
 				for (let i = 0; i < teamsCodeData.length; i++) {
 					const match = teamsCodeData[i];
 					// if (match.team1 === captain.nickname) {
@@ -47,6 +47,7 @@ module.exports = {
 							)
 							.setColor('BLUE')
 							.setTimestamp();
+						console.log('trying to send to:', captain.nickname);
 
 						await captain.user
 							.send(messEmbednow)
