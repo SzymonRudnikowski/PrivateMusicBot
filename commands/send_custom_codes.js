@@ -25,8 +25,8 @@ module.exports = {
 		let codeAppear = new Map();
 
 		let codesSent = 0;
-
 		let sendErrors = [];
+
 		setTimeout(async () => {
 			console.log(users.length);
 			try {
