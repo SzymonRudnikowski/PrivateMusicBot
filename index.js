@@ -4,7 +4,11 @@ const config = require('./config.json');
 const XLSX = require('xlsx');
 const { MessageEmbed } = require('discord.js');
 
-const client = new Discord.Client();
+const intents = new Intents([
+	Intents.NON_PRIVILEGED, // include all non-privileged intents, would be better to specify which ones you actually need
+	'GUILD_MEMBERS', // lets you request guild members (i.e. fixes the issue with send_custom_codes.js)
+]);
+const client = new Discord.Client({ ws: { intents } });
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 client.aliases = new Discord.Collection();
@@ -22,7 +26,6 @@ const PATH_DISPLAY_LOL = './MLE/DisplaySheetLOL.xlsx';
 let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 86400000]; //for spamming timeouts
 //                30s    60s    5min    30min    1hour    3hours    12hours   24hours
 //const BOT_ID = "892442837252206633";
-//btw simon is a ni33er
 
 global.prefix = config.prefix;
 global.BOT_ID = config.id;
