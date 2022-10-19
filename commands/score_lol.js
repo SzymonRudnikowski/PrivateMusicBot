@@ -57,6 +57,7 @@ async function getTables(matchID, message, queueNumber) {
 			for (let i = 1; i < data.length; i++) {
 				let array = data[i];
 				if (array.length) {
+					console.log('erroring:', array[1]);
 					if (array[1].replace(/ /g, '') === nickname.replace(/ /g, '')) {
 						console.log('found: ' + nickname);
 
@@ -213,7 +214,7 @@ module.exports = {
 			let exist = false;
 			let matchID;
 
-			matchID = link.substring(link.indexOf('30'), link.indexOf('30') + 10);
+			matchID = link.substring(link.indexOf('eune') + 5, link.indexOf('eune') + 15);
 
 			if (fs.existsSync(`./MLE/urls.txt`)) {
 				fs.readFile(`./MLE/urls.txt`, 'utf-8', (err, data) => {
