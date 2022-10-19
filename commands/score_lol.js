@@ -57,7 +57,6 @@ async function getTables(matchID, message, queueNumber) {
 			for (let i = 1; i < data.length; i++) {
 				let array = data[i];
 				if (array.length) {
-					console.log('erroring:', array[1]);
 					if (array[1].toString().replace(/ /g, '') === nickname.replace(/ /g, '')) {
 						console.log('found: ' + nickname);
 
