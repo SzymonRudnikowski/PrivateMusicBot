@@ -109,8 +109,6 @@ module.exports = {
 					if (max_array_length < array.length) max_array_length = array.length;
 					console.log(array, 'got awarded 0 kills cause his team lost by walkover');
 					foundTeams.team2 = true;
-				} else {
-					array[5] = parseFloat(array[5]).toFixed(2);
 				}
 			}
 		}
