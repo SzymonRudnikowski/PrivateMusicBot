@@ -44,7 +44,6 @@ module.exports = {
 		let team2Found = false;
 
 		for (let i = 0; i < data.length; i++) {
-			console.log(data[i][0]);
 			if (data[i][0] === team1) {
 				console.log(team1, 'found');
 				team1Found = true;
