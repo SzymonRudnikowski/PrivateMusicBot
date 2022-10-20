@@ -145,7 +145,7 @@ module.exports = {
 				return message.channel.send(messEmbednow);
 			}
 
-			if ((max_array_length - 13) / 4 > queueNumber - 2) {
+			if ((max_array_length - 8) / 6 > queueNumber) {
 				const messEmbednow = new MessageEmbed()
 					.setTitle(`**These teams have already played their games during this queue!**`)
 					.setColor('RED')

@@ -125,7 +125,7 @@ module.exports = {
 
 		setTimeout(() => {
 			console.log('max array length: ', max_array_length);
-			if ((max_array_length - 6) / 3 > queueNumber) {
+			if ((max_array_length - 7) / 5 > queueNumber) {
 				const messEmbednow = new MessageEmbed()
 					.setTitle(`**These teams have already played their games during this queue!**`)
 					.setColor('RED')
