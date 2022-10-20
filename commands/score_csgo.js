@@ -79,7 +79,6 @@ async function getTables(matchID, message, queueNumber) {
 							array.push(parseInt(deaths));
 							array.push(parseFloat(kd));
 							array.push(parseFloat(hs));
-							console.log('after insertion:', array);
 
 							let total_hs = 0;
 							let rounds = 0;
