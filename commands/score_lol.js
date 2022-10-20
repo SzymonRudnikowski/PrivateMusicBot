@@ -70,6 +70,8 @@ async function getTables(matchID, message, queueNumber) {
 							players_right.set(team_name_excel_second, 0);
 						}
 
+						if (!killParticipation) killParticipation = 0;
+
 						if (array[0] === team_name_excel_first) players_right.set(team_name_excel_first, players_right.get(team_name_excel_first) + 1);
 						else players_right.set(team_name_excel_second, players_right.get(team_name_excel_second) + 1);
 
@@ -96,6 +98,7 @@ async function getTables(matchID, message, queueNumber) {
 						}
 						array[6] = parseFloat(cs_sum / number_of_games).toFixed(2);
 						array[7] = parseFloat(kp_sum / number_of_games).toFixed(2);
+						console.log(killParticipation, ' - ', kp_sum, '/', number_of_games, ' - ', array[7]);
 
 						break;
 					}
