@@ -66,7 +66,8 @@ module.exports = {
 					array[2] += parseInt(3);
 					array[3] += parseInt(0);
 					array[4] += parseInt(0);
-					array[5] = ((parseInt(array[2]) + parseInt(array[3])) / parseInt(array[4])).toFixed(2); //KDA
+					let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
+					array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(2); //KDA
 					array.push(parseInt(5));
 					array.push(parseInt(0));
 					array.push(parseInt(0));
@@ -90,7 +91,8 @@ module.exports = {
 					array[2] += parseInt(0);
 					array[3] += parseInt(0);
 					array[4] += parseInt(0);
-					array[5] = ((parseInt(array[2]) + parseInt(array[3])) / parseInt(array[4])).toFixed(2); //KDA
+					let divideBy = !parseFloat(array[4]) ? 1 : parseFloat(array[4]);
+					array[5] = parseFloat((parseFloat(array[2]) + parseFloat(array[3])) / divideBy).toFixed(2); //KDA
 					array.push(parseInt(0));
 					array.push(parseInt(0));
 					array.push(parseInt(0));
