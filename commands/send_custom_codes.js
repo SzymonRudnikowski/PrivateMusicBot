@@ -43,7 +43,7 @@ module.exports = {
 						const messEmbednow = new MessageEmbed()
 							.setTitle(`Hi! I am just here to give you your tournament codes.`)
 							.setDescription(
-								`\nYour opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n **Code:** ***${match.code}***`
+								`\nYour opponent have received the same message, enter this code in the *League of Legends* client at the time you and your opponents have agreed on. \n \n **Code:** ***${match.code}***`
 							)
 							.setColor('BLUE')
 							.setTimestamp();
