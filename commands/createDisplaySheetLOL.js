@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
+const XLSX = require('xlsx');
 
 const PATH_LOL = './MLE/Zawodnicy_LOL.xlsx';
 const PATH_CSGO = './MLE/Zawodnicy_CSGO.xlsx';
