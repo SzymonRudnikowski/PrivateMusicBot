@@ -8,7 +8,7 @@ const PATH_DISPLAY_CSGO = './MLE/DisplaySheetCSGO.xlsx';
 const PATH_DISPLAY_LOL = './MLE/DisplaySheetLOL.xlsx';
 
 module.exports = {
-	name: 'create-display-sheet-lol',
+	name: 'create-display-sheet-csgo',
 	description: 'stops stats recording',
 	permissions: [],
 	async execute(message, args, com, client) {
