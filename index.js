@@ -310,7 +310,6 @@ client.setInterval(() => {
 	let queueNumberLOL;
 	let statsEnabledFileCSGO = true;
 	let statsEnabledFileLOL = true;
-	console.log(day, hour);
 	if (day === 1 && hour === 0) {
 		fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
 			if (err) {
@@ -348,13 +347,14 @@ client.setInterval(() => {
 		});
 
 		setTimeout(() => {
-			endQueueZeroAdd_CSGO(statsEnabledFileCSGO, queueNumberCSGO);
-			endQueueZeroAdd_LOL(statsEnabledFileLOL, queueNumberLOL);
-			createDisplaySheetCSGO(statsEnabledFileCSGO, queueNumberCSGO);
-			createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL);
+			console.log('updating all stats cause its monday, queue csgo:', queueNumberCSGO - 1, ' | queue lol: ', queueNumberLOL - 1);
+			endQueueZeroAdd_CSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
+			endQueueZeroAdd_LOL(statsEnabledFileLOL, queueNumberLOL - 1);
+			createDisplaySheetCSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
+			createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL - 1);
 		}, 1000);
 	}
-}, 3600000); // check every hour if new queue should be turned on
+}, 60000); // check every hour if new queue should be turned on
 
 client.on('message', (message) => {
 	if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
