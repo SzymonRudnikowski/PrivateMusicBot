@@ -308,7 +308,7 @@ client.setInterval(() => {
 	let queueNumberLOL;
 	let statsEnabledFileCSGO = true;
 	let statsEnabledFileLOL = true;
-	if (day === 1 && hour === 19) {
+	if (day === 1 && hour === 21) {
 		fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
 			if (err) {
 				console.log('Error while reading the file', err);
@@ -352,7 +352,7 @@ client.setInterval(() => {
 			createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL - 1);
 		}, 1000);
 	}
-}, 3000); // check every hour if new queue should be turned on
+}, 3600000); // check every hour if new queue should be turned on
 
 client.on('message', (message) => {
 	if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
