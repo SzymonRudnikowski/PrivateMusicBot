@@ -33,7 +33,6 @@ function endQueueZeroAdd_CSGO(statsEnabled, queueNumber) {
 
 	for (let i = 0; i < data.length; i++) {
 		let array = data[i];
-		console.log(array.length, queueNumber * 5 + 7);
 		if (array.length) {
 			if (array.length === (queueNumber - 1) * 5 + 7) {
 				array[2] += parseInt(0);
