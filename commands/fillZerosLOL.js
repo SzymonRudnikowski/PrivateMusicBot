@@ -18,7 +18,7 @@ module.exports = {
 				.setTimestamp();
 			return message.channel.send(messEmbednow);
 		}
-		endQueueZeroAdd_LOL(true, 2);
+		endQueueZeroAdd_LOL(true, 3);
 	},
 };
 

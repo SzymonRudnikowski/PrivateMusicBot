@@ -18,7 +18,7 @@ module.exports = {
 				.setTimestamp();
 			return message.channel.send(messEmbednow);
 		}
-		endQueueZeroAdd_CSGO(true, 2);
+		endQueueZeroAdd_CSGO(true, 3);
 	},
 };
 
