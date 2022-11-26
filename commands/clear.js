@@ -6,14 +6,6 @@ module.exports = {
 	aliases: ['c', 'cl'],
 	decription: 'deletes all message in a channel',
 	async execute(message, args, com, client) {
-		if (!message.member.hasPermission(['ADMINISTRATOR'])) {
-			const messEmbednow = new MessageEmbed()
-				.setTitle(`***${message.author.tag}*** **you don't have permissions to execute this command!**`)
-				.setColor('RED')
-				.setTimestamp();
-			return message.channel.send(messEmbednow);
-		}
-
 		let number;
 		if (!args[0]) number = 25 << 2;
 		else {
@@ -27,10 +19,7 @@ module.exports = {
 			number = args[0];
 		}
 		if (isNaN(number)) {
-			const messEmbednow = new MessageEmbed()
-				.setTitle(`**You need to pass a number**`)
-				.setColor('RED')
-				.setTimestamp();
+			const messEmbednow = new MessageEmbed().setTitle(`**You need to pass a number**`).setColor('RED').setTimestamp();
 			return message.channel.send(messEmbednow);
 		}
 
@@ -39,10 +28,7 @@ module.exports = {
 		message.channel
 			.bulkDelete(number)
 			.then(() => {
-				const messEmbednoww = new MessageEmbed()
-					.setTitle(`**Deleted ${number} messages!**`)
-					.setColor('BLUE')
-					.setTimestamp();
+				const messEmbednoww = new MessageEmbed().setTitle(`**Deleted ${number} messages!**`).setColor('BLUE').setTimestamp();
 				message.channel.send(messEmbednoww).then((msg) => {
 					msg.delete({ timeout: 3000 }).catch((error) => {
 						console.log(error);
