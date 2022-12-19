@@ -300,59 +300,59 @@ client.setInterval(() => {
 	console.log('muted registry cleared | map size: ' + mutedUsers.size);
 }, 86400000); //clear mute stage every day 86400000
 
-client.setInterval(() => {
-	let date = new Date();
-	let day = date.getDay();
-	let hour = date.getHours(); //kiedy stats sa off to nie zmienia
-	let queueNumberCSGO;
-	let queueNumberLOL;
-	let statsEnabledFileCSGO = true;
-	let statsEnabledFileLOL = true;
-	if (day === 1 && hour === 21) {
-		fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
-			if (err) {
-				console.log('Error while reading the file', err);
-			} else {
-				let settings = JSON.parse(data.toString());
-				statsEnabledFileCSGO = settings.statsEnabled;
-				statsEnabledFileLOL = settings.statsEnabledLOL;
+// client.setInterval(() => {
+// 	let date = new Date();
+// 	let day = date.getDay();
+// 	let hour = date.getHours(); //kiedy stats sa off to nie zmienia
+// 	let queueNumberCSGO;
+// 	let queueNumberLOL;
+// 	let statsEnabledFileCSGO = true;
+// 	let statsEnabledFileLOL = true;
+// 	if (day === 1 && hour === 21) {
+// 		fs.readFile(`./MLE/settings.json`, 'utf-8', (err, data) => {
+// 			if (err) {
+// 				console.log('Error while reading the file', err);
+// 			} else {
+// 				let settings = JSON.parse(data.toString());
+// 				statsEnabledFileCSGO = settings.statsEnabled;
+// 				statsEnabledFileLOL = settings.statsEnabledLOL;
 
-				if (settings.statsEnabled || settings.statsEnabledLOL) {
-					if (settings.statsEnabled) {
-						settings.currentQueue++;
-						console.log('cs queue number incremented');
-					}
-					if (settings.statsEnabledLOL) {
-						settings.currentQueueLOL++;
-						console.log('lol queue number incremented');
-					}
+// 				if (settings.statsEnabled || settings.statsEnabledLOL) {
+// 					if (settings.statsEnabled) {
+// 						settings.currentQueue++;
+// 						console.log('cs queue number incremented');
+// 					}
+// 					if (settings.statsEnabledLOL) {
+// 						settings.currentQueueLOL++;
+// 						console.log('lol queue number incremented');
+// 					}
 
-					const return_string = JSON.stringify(settings, null, 4);
-					fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
-						if (err) {
-							console.log('error while writing the file', err);
-						} else {
-							console.log('queue number got changed cause its monday');
-						}
-					});
-				} else {
-					console.log('not changed actually cause cs is off');
-				}
+// 					const return_string = JSON.stringify(settings, null, 4);
+// 					fs.writeFile(`./MLE/settings.json`, return_string, (err) => {
+// 						if (err) {
+// 							console.log('error while writing the file', err);
+// 						} else {
+// 							console.log('queue number got changed cause its monday');
+// 						}
+// 					});
+// 				} else {
+// 					console.log('not changed actually cause cs is off');
+// 				}
 
-				queueNumberCSGO = settings.currentQueue;
-				queueNumberLOL = settings.currentQueueLOL;
-			}
-		});
+// 				queueNumberCSGO = settings.currentQueue;
+// 				queueNumberLOL = settings.currentQueueLOL;
+// 			}
+// 		});
 
-		setTimeout(() => {
-			console.log('updating all stats cause its monday, queue csgo:', queueNumberCSGO - 1, ' | queue lol: ', queueNumberLOL - 1);
-			endQueueZeroAdd_CSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
-			endQueueZeroAdd_LOL(statsEnabledFileLOL, queueNumberLOL - 1);
-			createDisplaySheetCSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
-			createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL - 1);
-		}, 1000);
-	}
-}, 3600000); // check every hour if new queue should be turned on
+// 		setTimeout(() => {
+// 			console.log('updating all stats cause its monday, queue csgo:', queueNumberCSGO - 1, ' | queue lol: ', queueNumberLOL - 1);
+// 			endQueueZeroAdd_CSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
+// 			endQueueZeroAdd_LOL(statsEnabledFileLOL, queueNumberLOL - 1);
+// 			createDisplaySheetCSGO(statsEnabledFileCSGO, queueNumberCSGO - 1);
+// 			createDisplaySheetLOL(statsEnabledFileLOL, queueNumberLOL - 1);
+// 		}, 1000);
+// 	}
+// }, 3600000); // check every hour if new queue should be turned on
 
 client.on('message', (message) => {
 	if (!message.content.startsWith(prefix) || mutedUsersCurrently.has(message.author.id)) return;
