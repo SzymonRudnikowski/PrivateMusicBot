@@ -15,7 +15,8 @@ module.exports = {
 			return message.channel.send(messEmbednow);
 		}
 		let person = message.guild.member(message.mentions.members.first());
-		if (message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])) {
+		//message.member.hasPermission(['KICK_MEMBERS', 'ADMINISTRATOR'])
+		if (true) {
 			let member = message.mentions.members.first();
 
 			if (!member) {
