@@ -30,8 +30,9 @@ let intervals = [30000, 60000, 300000, 1800000, 3600000, 10800000, 43200000, 864
 global.prefix = config.prefix;
 global.BOT_ID = config.id;
 
-client.on('ready', () => {
+client.on('ready', async () => {
 	console.log(`Logged in as ${client.user.tag}!`);
+
 });
 
 for (const file of commandFiles) {

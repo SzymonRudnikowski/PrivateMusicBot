@@ -8,6 +8,6 @@
     "selenium-webdriver": "^4.4.0",
     "xlsx": "^0.18.5",
     "yt-search": "^2.10.3",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "^4.11.4"
   }
 }
